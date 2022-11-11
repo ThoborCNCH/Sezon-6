@@ -371,8 +371,8 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     public void setGliseraPower(double power) {
-        glisiera1.setPower(power);
-        glisiera2.setPower(-power);
+        glisiera1.setPower(-power);
+        glisiera2.setPower(power);
     }
 
     public void glisierautonom(double power) throws InterruptedException {

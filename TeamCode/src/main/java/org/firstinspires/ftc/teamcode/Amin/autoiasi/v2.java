@@ -43,8 +43,7 @@ import java.util.ArrayList;
 
 @Config
 @Autonomous(name = "stg red && stg blue")
-public class v2 extends LinearOpMode
-{
+public class v2 extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -61,10 +60,10 @@ public class v2 extends LinearOpMode
     double cx = 402.145;
     double cy = 221.506;
 
-    private  DcMotorEx leftFront, leftRear, rightRear, rightFront;
-    public  DcMotor glisiera1;
-    public  DcMotor glisiera2;
-    public  CRServo marus;
+    private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    public DcMotor glisiera1;
+    public DcMotor glisiera2;
+    public CRServo marus;
 
     public static double fata = 25;
     public static double unghi1 = -40;
@@ -81,7 +80,6 @@ public class v2 extends LinearOpMode
     public static double INITIALX = 12;
     public static double initialy = 64;
     public static double initialunghi = 180;
-
 
 
     // UNITS ARE METERS
@@ -102,10 +100,10 @@ public class v2 extends LinearOpMode
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
 
-        glisiera1 = hardwareMap.get(DcMotor .class, "glisiera1");
+        glisiera1 = hardwareMap.get(DcMotor.class, "glisiera1");
         glisiera2 = hardwareMap.get(DcMotor.class, "glisiera2");
 
-        marus = hardwareMap.get(CRServo .class, "marus");
+        marus = hardwareMap.get(CRServo.class, "marus");
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -113,215 +111,194 @@ public class v2 extends LinearOpMode
 
         robot = new SampleMecanumDrive(hardwareMap);
 
+        robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
 
         camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                camera.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
 
             }
         });
 
-        telemetry.setMsTransmissionInterval(50);
-
-
-        while (!isStarted() && !isStopRequested())
-        {
+        waitForStart();
+        while (opModeIsActive()) {
+//            detectie();
+//            switch (tagOfInterest.id) {
+//                case 1:
+//                    stanga();
+//                    break;
+//                case 2:
+//                    mijloc();
+//                    break;
+//                case 3:
+//                    dreapta();
+//                    break;
+//                default:
+//                    mijloc();
+//                    break;
+//            }
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-            if(currentDetections.size() != 0)
-            {
-                boolean tagFound = false;
-
-                for(AprilTagDetection tag : currentDetections)
-                {
-                    if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
-                    {
+            if (currentDetections.size() != 0) {
+                for (AprilTagDetection tag : currentDetections) {
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
+                        telemetry.addLine(String.valueOf(tag));
+                        telemetry.update();
                         tagOfInterest = tag;
-                        tagFound = true;
-                        break;
                     }
                 }
-
-                if(tagFound)
-                {
-                    telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
-                    tagToTelemetry(tagOfInterest);
-                }
-                else
-                {
-                    telemetry.addLine("Don't see tag of interest :(");
-
-                    if(tagOfInterest == null)
-                    {
-                        telemetry.addLine("(The tag has never been seen)");
-                    }
-                    else
-                    {
-                        telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                        tagToTelemetry(tagOfInterest);
-                    }
-                }
-
             }
-            else
-            {
-                telemetry.addLine("Don't see tag of interest :(");
-
-                if(tagOfInterest == null)
-                {
-                    telemetry.addLine("(The tag has never been seen)");
-                }
-                else
-                {
-                    telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                    tagToTelemetry(tagOfInterest);
-                }
-
+            sleep(1000);
+            switch (tagOfInterest.id) {
+                case 1:
+                    stanga();
+                    break;
+                case 2:
+                    mijloc();
+                    break;
+                case 3:
+                    dreapta();
+                    break;
+                default:
+                    mijloc();
+                    break;
             }
 
+
             telemetry.update();
-            sleep(20);
+            stop();
         }
 
-
-
-        if(tagOfInterest != null)
-        {
-            telemetry.addLine("Tag snapshot:\n");
-            tagToTelemetry(tagOfInterest);
-            telemetry.update();
-        }
-        else
-        {
-            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-            telemetry.update();
-        }
-
-
-        if(tagOfInterest == null || tagOfInterest.id == LEFT){
-            stanga();
-        }else if(tagOfInterest.id == MIDDLE){
-            mijloc();
-        }else{
-            dreapta();
-        }
-    }
-
-    void tagToTelemetry(AprilTagDetection detection)
-    {
-        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
-        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
-        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
     }
 
     private void mijloc() throws InterruptedException {
+        Trajectory pozitionare = robot.trajectoryBuilder(new Pose2d(-36, -68, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+                .addTemporalMarker(0, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addTemporalMarker(1.5, () -> {
+                    robot.setGliseraPower(0);
+                })
+                .build();
+        robot.followTrajectory(pozitionare);
 
-        Trajectory marian = robot.trajectoryBuilder(new Pose2d(0,0,Math.toRadians(initialunghi)))
-                .forward(fata)
+        Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
+                .forward(11.22)
+//                .addDisplacementMarker(()->{
+//                    robot.setIntake(-1);
+//                })
                 .build();
-        Trajectory front = robot.trajectoryBuilder(marian.end().plus(new Pose2d(0,0,Math.toRadians(-45))))
-                .forward(poquito)
-                .build();
-        Trajectory back = robot.trajectoryBuilder(front.end())
-                .back(poquito)
-                .build();
-        Trajectory stanga = robot.trajectoryBuilder(marian.end())
-                .strafeLeft(2)
-                .build();
-        robot.turn(Math.toRadians(180));
-        robot.followTrajectory(marian);
-        robot.turn(Math.toRadians(unghi1));
-        robot.glisierautonom(1);
-        robot.intakeautonom(-1);
-        robot.followTrajectory(front);
-        sleep(700);
-        robot.intakeautonom(1);
-        sleep(200);
-        robot.followTrajectory(back);
-        sleep(200);
-        robot.glisierautonom(-1);
-        robot.turn(Math.toRadians(unghi2));
-//        robot.followTrajectory(stanga);
+        robot.followTrajectory(pune_ceva_macar_te_rog);
+
+        robot.setIntake(1);
         sleep(2000);
-    }
-    private void stanga() throws InterruptedException {
+        robot.setIntake(0);
 
-        Trajectory marian = robot.trajectoryBuilder(new Pose2d(0,0,Math.toRadians(initialunghi)))
-                .forward(fata)
+        Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
+                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
+                .addTemporalMarker(1, () -> {
+                    robot.setGliseraPower(-1);
+                })
+                .addTemporalMarker(5.5, () -> {
+                    robot.setGliseraPower(0);
+                })
+//                .back(20)
                 .build();
-        Trajectory front = robot.trajectoryBuilder(marian.end().plus(new Pose2d(0,0,Math.toRadians(-45))))
-                .forward(poquito)
+        robot.followTrajectory(oleaka_inapoi);
+
+    }
+
+    private void stanga() throws InterruptedException {
+        Trajectory pozitionare = robot.trajectoryBuilder(new Pose2d(-36, -68, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+                .addTemporalMarker(0, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addTemporalMarker(1.5, () -> {
+                    robot.setGliseraPower(0);
+                })
                 .build();
-        Trajectory back = robot.trajectoryBuilder(front.end())
-                .back(poquito)
+        robot.followTrajectory(pozitionare);
+
+        Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
+                .forward(11.22)
+//                .addDisplacementMarker(()->{
+//                    robot.setIntake(-1);
+//                })
                 .build();
-        Trajectory stanga = robot.trajectoryBuilder(marian.end())
-                .strafeLeft(strafe)
+        robot.followTrajectory(pune_ceva_macar_te_rog);
+
+        robot.setIntake(1);
+        sleep(2000);
+        robot.setIntake(0);
+
+        Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
+                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
+                .addTemporalMarker(1, () -> {
+                    robot.setGliseraPower(-1);
+                })
+                .addTemporalMarker(5.5, () -> {
+                    robot.setGliseraPower(0);
+                })
+//                .back(20)
                 .build();
-        robot.turn(Math.toRadians(180));
-        robot.followTrajectory(marian);
-        robot.turn(Math.toRadians(unghi1));
-        robot.glisierautonom(1);
-        robot.intakeautonom(-1);
-        robot.followTrajectory(front);
-        sleep(700);
-        robot.intakeautonom(1);
-        sleep(200);
-        robot.followTrajectory(back);
-        sleep(200);
-        robot.glisierautonom(-1);
-        robot.turn(Math.toRadians(unghi2));
-        sleep(800);
-        robot.followTrajectory(stanga);
+        robot.followTrajectory(oleaka_inapoi);
+
+        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi.end())
+                .back(23)
+                .build();
+        robot.followTrajectory(hai_du_te_la_parcare);
+
     }
 
     private void dreapta() throws InterruptedException {
 
-        Trajectory marian = robot.trajectoryBuilder(new Pose2d(0,0,Math.toRadians(initialunghi)))
-                .forward(fata)
+        Trajectory pozitionare = robot.trajectoryBuilder(new Pose2d(-36, -68, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+                .addTemporalMarker(0, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addTemporalMarker(1.5, () -> {
+                    robot.setGliseraPower(0);
+                })
                 .build();
-        Trajectory homarian = robot.trajectoryBuilder(marian.end())
-                .back(30)
+        robot.followTrajectory(pozitionare);
+
+        Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
+                .forward(11.22)
+//                .addDisplacementMarker(()->{
+//                    robot.setIntake(-1);
+//                })
                 .build();
-        Trajectory front = robot.trajectoryBuilder(marian.end().plus(new Pose2d(0,0,Math.toRadians(-45))))
-                .forward(poquito)
+        robot.followTrajectory(pune_ceva_macar_te_rog);
+
+        robot.setIntake(1);
+        sleep(2000);
+        robot.setIntake(0);
+
+        Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
+                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
+                .addTemporalMarker(1, () -> {
+                    robot.setGliseraPower(-1);
+                })
+                .addTemporalMarker(5.5, () -> {
+                    robot.setGliseraPower(0);
+                })
+//                .back(20)
                 .build();
-        Trajectory back = robot.trajectoryBuilder(front.end())
-                .back(poquito)
+        robot.followTrajectory(oleaka_inapoi);
+
+        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi.end())
+                .forward(23)
                 .build();
-        Trajectory stanga = robot.trajectoryBuilder(marian.end())
-                .strafeRight(strafe)
-                .build();
-        robot.turn(Math.toRadians(180));
-        robot.followTrajectory(marian);
-        robot.turn(Math.toRadians(unghi1));
-        robot.glisierautonom(1);
-        robot.intakeautonom(-1);
-        robot.followTrajectory(front);
-        sleep(700);
-        robot.intakeautonom(1);
-        sleep(200);
-        robot.followTrajectory(back);
-        sleep(200);
-        robot.glisierautonom(-1);
-        robot.turn(Math.toRadians(unghi2));
-        sleep(800);
-        robot.followTrajectory(stanga);
-        }
+        robot.followTrajectory(hai_du_te_la_parcare);
+    }
+
 }
-//sugi pulul
-//nu
-//greculaina a fost aici
-//pwp
