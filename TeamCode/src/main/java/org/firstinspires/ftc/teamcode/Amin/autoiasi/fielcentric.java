@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_INTAKE;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -22,6 +23,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * See lines 42-57.
  */
 @TeleOp(name = "PistoletoBlindato")
+@Disabled
 public class fielcentric extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

@@ -1,29 +1,8 @@
-/*
- * Copyright (c) 2021 OpenFTC Team
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package org.firstinspires.ftc.teamcode.Amin.autoiasi;
 
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.*;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -111,7 +90,7 @@ public class v2 extends LinearOpMode {
 
         robot = new SampleMecanumDrive(hardwareMap);
 
-        robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
+        robot.setPoseEstimate(START_ST_RED_BLUE);
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -178,8 +157,8 @@ public class v2 extends LinearOpMode {
     }
 
     private void mijloc() throws InterruptedException {
-        Trajectory pozitionare = robot.trajectoryBuilder(new Pose2d(-36, -68, Math.toRadians(-90)))
-                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+        Trajectory pozitionare = robot.trajectoryBuilder(START_ST_RED_BLUE)
+                .lineToLinearHeading(POSITION_ST_RED_BLUE)
                 .addTemporalMarker(0, () -> {
                     robot.setGliseraPower(1);
                 })
@@ -202,7 +181,7 @@ public class v2 extends LinearOpMode {
         robot.setIntake(0);
 
         Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
-                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
+                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
                 .addTemporalMarker(1, () -> {
                     robot.setGliseraPower(-1);
                 })
@@ -216,8 +195,8 @@ public class v2 extends LinearOpMode {
     }
 
     private void stanga() throws InterruptedException {
-        Trajectory pozitionare = robot.trajectoryBuilder(new Pose2d(-36, -68, Math.toRadians(-90)))
-                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+        Trajectory pozitionare = robot.trajectoryBuilder(START_ST_RED_BLUE)
+                .lineToLinearHeading(POSITION_ST_RED_BLUE)
                 .addTemporalMarker(0, () -> {
                     robot.setGliseraPower(1);
                 })
@@ -240,7 +219,7 @@ public class v2 extends LinearOpMode {
         robot.setIntake(0);
 
         Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
-                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
+                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
                 .addTemporalMarker(1, () -> {
                     robot.setGliseraPower(-1);
                 })
@@ -260,8 +239,8 @@ public class v2 extends LinearOpMode {
 
     private void dreapta() throws InterruptedException {
 
-        Trajectory pozitionare = robot.trajectoryBuilder(new Pose2d(-36, -68, Math.toRadians(-90)))
-                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+        Trajectory pozitionare = robot.trajectoryBuilder(START_ST_RED_BLUE)
+                .lineToLinearHeading(POSITION_ST_RED_BLUE)
                 .addTemporalMarker(0, () -> {
                     robot.setGliseraPower(1);
                 })
@@ -284,7 +263,7 @@ public class v2 extends LinearOpMode {
         robot.setIntake(0);
 
         Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
-                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
+                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
                 .addTemporalMarker(1, () -> {
                     robot.setGliseraPower(-1);
                 })
