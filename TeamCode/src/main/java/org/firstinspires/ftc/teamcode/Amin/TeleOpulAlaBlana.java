@@ -42,6 +42,7 @@ public class TeleOpulAlaBlana extends LinearOpMode {
         SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
 
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
 
 //        waitForStart();
 
@@ -100,9 +101,14 @@ public class TeleOpulAlaBlana extends LinearOpMode {
                 robot.setIntake(0);
             }
         }
+
+        robot.update();
+
+
     }
 
 
 }
 
-
+// vr sa mor
+// simt cum disper

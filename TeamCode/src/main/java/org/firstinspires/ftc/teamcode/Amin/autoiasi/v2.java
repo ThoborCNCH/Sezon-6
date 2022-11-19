@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Amin.autoiasi;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.*;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -69,7 +71,7 @@ public class v2 extends LinearOpMode {
     int MIDDLE = 2;
     int RIGHT = 3;
 
-    AprilTagDetection tagOfInterest = null;
+    AprilTagDetection tagOfInterest = new AprilTagDetection();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -126,14 +128,18 @@ public class v2 extends LinearOpMode {
 
             if (currentDetections.size() != 0) {
                 for (AprilTagDetection tag : currentDetections) {
-                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
-                        telemetry.addLine(String.valueOf(tag));
-                        telemetry.update();
-                        tagOfInterest = tag;
-                    }
+                        if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
+                            telemetry.addLine(String.valueOf(tag.id));
+                            telemetry.update();
+                            tagOfInterest = tag;
+                        }
                 }
+            } else{
+                tagOfInterest.id = 2;
             }
-            sleep(1000);
+
+
+
             switch (tagOfInterest.id) {
                 case 1:
                     stanga();
@@ -162,14 +168,14 @@ public class v2 extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addTemporalMarker(1.5, () -> {
+                .addTemporalMarker(1.7, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
         robot.followTrajectory(pozitionare);
 
         Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
-                .forward(11.22)
+                .forward(9.8)
 //                .addDisplacementMarker(()->{
 //                    robot.setIntake(-1);
 //                })
@@ -182,15 +188,69 @@ public class v2 extends LinearOpMode {
 
         Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-                .addTemporalMarker(1, () -> {
-                    robot.setGliseraPower(-1);
-                })
-                .addTemporalMarker(5.5, () -> {
-                    robot.setGliseraPower(0);
-                })
+//                .addTemporalMarker(1, () -> {
+//                    robot.setGliseraPower(-1);
+//                })
+//                .addTemporalMarker(4, () -> {
+//                    robot.setGliseraPower(0);
+//                })
 //                .back(20)
                 .build();
         robot.followTrajectory(oleaka_inapoi);
+
+        Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
+                .lineToLinearHeading(new Pose2d(-60.8, -45, Math.toRadians(180)))
+                .build();
+        robot.followTrajectory(mai_ia_unu);
+        robot.setGliseraPower(-.68);
+        sleep(500);
+        robot.setGliseraPower(0);
+
+        robot.setIntake(-1);
+        sleep(2000);
+
+        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
+                .forward(1)
+                .build();
+        robot.followTrajectory(mai_ia_unu2);
+        robot.setGliseraPower(-.68);
+        sleep(500);
+        robot.setGliseraPower(0);
+
+//        robot.setIntake(0);
+
+        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu2.end())
+                .back(7)
+                .build();
+        robot.followTrajectory(mai_ia_unu3);
+
+        TrajectorySequence btb = robot.trajectorySequenceBuilder(mai_ia_unu3.end())
+                .lineToLinearHeading(POSITION_ST_RED_BLUE)
+                .addTemporalMarker(0, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addTemporalMarker(2, () -> {
+                    robot.setGliseraPower(0);
+                })
+                .forward(8)
+                .build();
+        robot.followTrajectorySequence(btb);
+
+        robot.setIntake(1);
+        sleep(2000);
+        robot.setIntake(0);
+
+        Trajectory oleaka_inapoi_part2 = robot.trajectoryBuilder(btb.end())
+                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
+//                .addTemporalMarker(1, () -> {
+//                    robot.setGliseraPower(-1);
+//                })
+//                .addTemporalMarker(4, () -> {
+//                    robot.setGliseraPower(0);
+//                })
+//                .back(20)
+                .build();
+        robot.followTrajectory(oleaka_inapoi_part2);
 
     }
 
