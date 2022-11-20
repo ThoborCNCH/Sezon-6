@@ -169,7 +169,11 @@ public class SampleMecanumDrive extends MecanumDrive {
             rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-
+//        TEST PENTRU GLISIERE PE ENCODER
+        if(GLISIERE_ENCODER){
+            glisiera1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            glisiera2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
@@ -361,6 +365,31 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
+    }
+
+    public void moveGlisiera(double distance){
+        double COUNTS_PER_CM = GLISIERA_COUNTS / DISTANTA_GLISIERA;
+        int positieLeft = this.glisiera1.getCurrentPosition() + (int)(distance * COUNTS_PER_CM);
+        int positieRight = this.glisiera2.getCurrentPosition() + (int)(distance * COUNTS_PER_CM);
+
+        this.glisiera1.setTargetPosition(positieLeft);
+        this.glisiera2.setTargetPosition(positieRight);
+
+        this.glisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.glisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.glisiera1.setPower(1);
+        this.glisiera2.setPower(1);
+
+        while(this.glisiera1.isBusy() && this.glisiera2.isBusy()){
+            //vai
+        }
+
+        this.glisiera1.setPower(0);
+        this.glisiera2.setPower(0);
+
+        this.glisiera1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.glisiera2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     public synchronized void bagaViteza(double lfp, double rfp, double lrp, double rrp) {

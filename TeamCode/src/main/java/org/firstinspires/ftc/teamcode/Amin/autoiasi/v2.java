@@ -198,6 +198,7 @@ public class v2 extends LinearOpMode {
                 .build();
         robot.followTrajectory(oleaka_inapoi);
 
+//        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
         Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
                 .lineToLinearHeading(new Pose2d(-60.8, -45, Math.toRadians(180)))
                 .build();
