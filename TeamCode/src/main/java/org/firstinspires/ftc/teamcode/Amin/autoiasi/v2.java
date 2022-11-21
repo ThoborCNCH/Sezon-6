@@ -220,6 +220,7 @@ public class v2 extends LinearOpMode {
 //                .build();
 //        robot.followTrajectory(oleaka_inapoi_part2);
 
+
         Trajectory pune = robot.trajectoryBuilder(START_ST_RED_BLUE)
 //                .splineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(30)), Math.toRadians(20))
                 .lineToSplineHeading(new Pose2d(-31, -33, Math.toRadians(-30)))
