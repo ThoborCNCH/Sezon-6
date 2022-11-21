@@ -113,11 +113,11 @@ public class v2 extends LinearOpMode {
 
             if (currentDetections.size() != 0) {
                 for (AprilTagDetection tag : currentDetections) {
-                        if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
-                            telemetry.addLine(String.valueOf(tag.id));
-                            telemetry.update();
-                            tagOfInterest = tag;
-                        }
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
+                        telemetry.addLine(String.valueOf(tag.id));
+                        telemetry.update();
+                        tagOfInterest = tag;
+                    }
                 }
             } else {
                 tagOfInterest.id = 2;
@@ -148,17 +148,14 @@ public class v2 extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addTemporalMarker(1.7, () -> {
+                .addTemporalMarker(1.00, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
         robot.followTrajectory(pozitionare);
 
         Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
-                .forward(9.8)
-//                .addDisplacementMarker(()->{
-//                    robot.setIntake(-1);
-//                })
+                .forward(6.8)
                 .build();
         robot.followTrajectory(pune_ceva_macar_te_rog);
 
@@ -168,53 +165,49 @@ public class v2 extends LinearOpMode {
 
         Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-//                .addTemporalMarker(1, () -> {
-//                    robot.setGliseraPower(-1);
-//                })
-//                .addTemporalMarker(4, () -> {
-//                    robot.setGliseraPower(0);
-//                })
-//                .back(20)
                 .build();
         robot.followTrajectory(oleaka_inapoi);
 
 //        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
         Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
-//                .lineToLinearHeading(new Pose2d(-60.8, -45, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(-60, -45, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-60.0, -45, Math.toRadians(180)))
                 .build();
         robot.followTrajectory(mai_ia_unu);
-        robot.setGliseraPower(-.70);
-        sleep(500);
+        robot.setGliseraPower(-.67);
+        sleep(415);
         robot.setGliseraPower(0);
 
         robot.setIntake(-1);
-        sleep(2000);
+        sleep(2060);
 
-        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
-                .forward(1)
-                .build();
-        robot.followTrajectory(mai_ia_unu2);
-        robot.setGliseraPower(-.68);
-        sleep(580);
+//        DE ASTA MERGE IN FATA ---------------------
+//        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
+//                .forward(1)
+//                .build();
+//        robot.followTrajectory(mai_ia_unu2);
+        robot.setGliseraPower(.8);
+        sleep(700);
         robot.setGliseraPower(0);
 
-//        robot.setIntake(0);
-
-        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu2.end())
+        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu.end())
                 .back(7)
                 .build();
         robot.followTrajectory(mai_ia_unu3);
 
+//        robot.turn(Math.toRadians(10));
+//        robot.turn(Math.toRadians(-20));
+//        robot.turn(Math.toRadians(20));
+//        robot.turn(Math.toRadians(-10));
+
         TrajectorySequence btb = robot.trajectorySequenceBuilder(mai_ia_unu3.end())
-                .lineToLinearHeading(POSITION_ST_RED_BLUE)
-                .addTemporalMarker(0, () -> {
-                    robot.setGliseraPower(1);
-                })
-                .addTemporalMarker(2, () -> {
-                    robot.setGliseraPower(0);
-                })
-                .forward(8)
+                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(33)))
+//                .addTemporalMarker(0, () -> {
+//                    robot.setGliseraPower(1);
+//                })
+//                .addTemporalMarker(0.35, () -> {
+//                    robot.setGliseraPower(0);
+//                })
+                .forward(6.6)
                 .build();
         robot.followTrajectorySequence(btb);
 
@@ -224,13 +217,6 @@ public class v2 extends LinearOpMode {
 
         Trajectory oleaka_inapoi_part2 = robot.trajectoryBuilder(btb.end())
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-//                .addTemporalMarker(1, () -> {
-//                    robot.setGliseraPower(-1);
-//                })
-//                .addTemporalMarker(4, () -> {
-//                    robot.setGliseraPower(0);
-//                })
-//                .back(20)
                 .build();
         robot.followTrajectory(oleaka_inapoi_part2);
 
@@ -242,17 +228,14 @@ public class v2 extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addTemporalMarker(1.5, () -> {
+                .addTemporalMarker(1.4, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
         robot.followTrajectory(pozitionare);
 
         Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
-                .forward(11.22)
-//                .addDisplacementMarker(()->{
-//                    robot.setIntake(-1);
-//                })
+                .forward(6.8)
                 .build();
         robot.followTrajectory(pune_ceva_macar_te_rog);
 
@@ -262,21 +245,63 @@ public class v2 extends LinearOpMode {
 
         Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-                .addTemporalMarker(1, () -> {
-                    robot.setGliseraPower(-1);
-                })
-                .addTemporalMarker(5.5, () -> {
-                    robot.setGliseraPower(0);
-                })
-//                .back(20)
                 .build();
         robot.followTrajectory(oleaka_inapoi);
 
-        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi.end())
+//        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
+        Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
+                .lineToLinearHeading(new Pose2d(-60, -44, Math.toRadians(180)))
+                .build();
+        robot.followTrajectory(mai_ia_unu);
+        robot.setGliseraPower(-.70);
+        sleep(460);
+        robot.setGliseraPower(0);
+
+        robot.setIntake(-1);
+        sleep(2000);
+
+        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
+                .forward(1)
+                .build();
+        robot.followTrajectory(mai_ia_unu2);
+        robot.setGliseraPower(.8);
+        sleep(500);
+        robot.setGliseraPower(0);
+
+        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu2.end())
+                .back(7)
+                .build();
+        robot.followTrajectory(mai_ia_unu3);
+
+        robot.turn(Math.toRadians(10));
+        robot.turn(Math.toRadians(-20));
+        robot.turn(Math.toRadians(20));
+        robot.turn(Math.toRadians(-10));
+
+        TrajectorySequence btb = robot.trajectorySequenceBuilder(mai_ia_unu3.end())
+                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+                .addTemporalMarker(0, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addTemporalMarker(0.8, () -> {
+                    robot.setGliseraPower(0);
+                })
+                .forward(6.6)
+                .build();
+        robot.followTrajectorySequence(btb);
+
+        robot.setIntake(1);
+        sleep(2000);
+        robot.setIntake(0);
+
+        Trajectory oleaka_inapoi_part2 = robot.trajectoryBuilder(btb.end())
+                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
+                .build();
+        robot.followTrajectory(oleaka_inapoi_part2);
+        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi_part2.end())
                 .back(23)
                 .build();
         robot.followTrajectory(hai_du_te_la_parcare);
-
     }
 
     private void dreapta() throws InterruptedException {
@@ -285,17 +310,14 @@ public class v2 extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addTemporalMarker(1.5, () -> {
+                .addTemporalMarker(1.4, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
         robot.followTrajectory(pozitionare);
 
         Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
-                .forward(11.22)
-//                .addDisplacementMarker(()->{
-//                    robot.setIntake(-1);
-//                })
+                .forward(6.8)
                 .build();
         robot.followTrajectory(pune_ceva_macar_te_rog);
 
@@ -305,17 +327,60 @@ public class v2 extends LinearOpMode {
 
         Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-                .addTemporalMarker(1, () -> {
-                    robot.setGliseraPower(-1);
-                })
-                .addTemporalMarker(5.5, () -> {
-                    robot.setGliseraPower(0);
-                })
-//                .back(20)
                 .build();
         robot.followTrajectory(oleaka_inapoi);
 
-        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi.end())
+//        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
+        Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
+                .lineToLinearHeading(new Pose2d(-60, -44, Math.toRadians(180)))
+                .build();
+        robot.followTrajectory(mai_ia_unu);
+        robot.setGliseraPower(-.70);
+        sleep(460);
+        robot.setGliseraPower(0);
+
+        robot.setIntake(-1);
+        sleep(2000);
+
+        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
+                .forward(1)
+                .build();
+        robot.followTrajectory(mai_ia_unu2);
+        robot.setGliseraPower(.8);
+        sleep(500);
+        robot.setGliseraPower(0);
+
+        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu2.end())
+                .back(7)
+                .build();
+        robot.followTrajectory(mai_ia_unu3);
+
+        robot.turn(Math.toRadians(10));
+        robot.turn(Math.toRadians(-20));
+        robot.turn(Math.toRadians(20));
+        robot.turn(Math.toRadians(-10));
+
+        TrajectorySequence btb = robot.trajectorySequenceBuilder(mai_ia_unu3.end())
+                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
+                .addTemporalMarker(0, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addTemporalMarker(0.8, () -> {
+                    robot.setGliseraPower(0);
+                })
+                .forward(6.6)
+                .build();
+        robot.followTrajectorySequence(btb);
+
+        robot.setIntake(1);
+        sleep(2000);
+        robot.setIntake(0);
+
+        Trajectory oleaka_inapoi_part2 = robot.trajectoryBuilder(btb.end())
+                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
+                .build();
+        robot.followTrajectory(oleaka_inapoi_part2);
+        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi_part2.end())
                 .forward(23)
                 .build();
         robot.followTrajectory(hai_du_te_la_parcare);

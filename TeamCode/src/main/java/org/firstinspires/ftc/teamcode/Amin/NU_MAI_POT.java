@@ -15,7 +15,7 @@ public class NU_MAI_POT {
     public static int GLISIERA_COUNTS = 0;
 
     public static Pose2d START_ST_RED_BLUE = new Pose2d(-36, -68, Math.toRadians(-90));
-    public static Pose2d POSITION_ST_RED_BLUE = new Pose2d(-36, -38, Math.toRadians(32));
+    public static Pose2d POSITION_ST_RED_BLUE = new Pose2d(-36, -38, Math.toRadians(30));
     public static Pose2d BACK_A_LITTLE_ST_RED_BLUE = new Pose2d(-36, -40, Math.toRadians(0));
 
     public static Pose2d START_DR_RED_BLUE = new Pose2d(-36, -68, Math.toRadians(-90));
