@@ -180,10 +180,11 @@ public class v2 extends LinearOpMode {
 
 //        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
         Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
-                .lineToLinearHeading(new Pose2d(-60.8, -45, Math.toRadians(180)))
+//                .lineToLinearHeading(new Pose2d(-60.8, -45, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-60, -45, Math.toRadians(180)))
                 .build();
         robot.followTrajectory(mai_ia_unu);
-        robot.setGliseraPower(-.68);
+        robot.setGliseraPower(-.70);
         sleep(500);
         robot.setGliseraPower(0);
 
@@ -195,7 +196,7 @@ public class v2 extends LinearOpMode {
                 .build();
         robot.followTrajectory(mai_ia_unu2);
         robot.setGliseraPower(-.68);
-        sleep(500);
+        sleep(580);
         robot.setGliseraPower(0);
 
 //        robot.setIntake(0);
