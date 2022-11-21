@@ -108,7 +108,7 @@ public class v2 extends LinearOpMode {
         });
 
         waitForStart();
-        while (opModeIsActive()) {
+        while (opModeIsActive() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if (currentDetections.size() != 0) {
@@ -222,11 +222,12 @@ public class v2 extends LinearOpMode {
 
         Trajectory pune = robot.trajectoryBuilder(START_ST_RED_BLUE)
 //                .splineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(30)), Math.toRadians(20))
-                .splineToLinearHeading(new Pose2d(-31, -34, Math.toRadians(10)), Math.toRadians(-20))
+                .lineToSplineHeading(new Pose2d(-31, -33, Math.toRadians(-30)))
+//                .lineToLinearHeading(new Pose2d(-31,-34, Math.toRadians(10))) , Math.toRadians(0)
                 .addDisplacementMarker(t -> t * 0.1, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addDisplacementMarker(t -> t * 0.8, () -> {
+                .addDisplacementMarker(t -> t * 0.78, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
@@ -238,25 +239,36 @@ public class v2 extends LinearOpMode {
         robot.setIntake(0);
 
         Trajectory ia = robot.trajectoryBuilder(pune.end())
-                .splineToLinearHeading(new Pose2d(-59.7, -45, Math.toRadians(180)), Math.toRadians(20))
+                .splineToLinearHeading(new Pose2d(-53,-45, Math.toRadians(180)), Math.toRadians(-20))
+//                .splineToLinearHeading(new Pose2d(-53, -45, Math.toRadians(180)), Math.toRadians(15))
                 .addDisplacementMarker(t -> t * 0.3, () -> {
                     robot.setGliseraPower(-1);
                 })
-                .addDisplacementMarker(t -> t * 0.38, () -> {
+                .addDisplacementMarker(t -> t * 0.45, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
         robot.followTrajectory(ia);
 
         robot.setIntake(-1);
-        sleep(2000);
-        robot.setIntake(0);
 
-        Trajectory pune_2 = robot.trajectoryBuilder(ia.end())
-                .splineToLinearHeading(new Pose2d(-31, -34, Math.toRadians(10)), Math.toRadians(30))
+        Trajectory fmm = robot.trajectoryBuilder(ia.end())
+                .forward(6.7)
+                .build();
+        robot.followTrajectory(fmm);
+
+
+        robot.setIntake(-1);
+//        sleep(2000);
+//        robot.setIntake(0);
+
+        Trajectory pune_2 = robot.trajectoryBuilder(fmm.end(), true)
+                .splineToLinearHeading(new Pose2d(-31, -34, Math.toRadians(10)), Math.toRadians(-40))
+//                .lineToSplineHeading(new Pose2d(-31, -34, Math.toRadians(10)))
                 .addDisplacementMarker(t -> t * 0.0, () -> {
                     robot.setGliseraPower(1);
                 })
+
                 .addDisplacementMarker(t -> t * 6, () -> {
                     robot.setGliseraPower(0);
                 })
