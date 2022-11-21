@@ -109,21 +109,6 @@ public class v2 extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-//            detectie();
-//            switch (tagOfInterest.id) {
-//                case 1:
-//                    stanga();
-//                    break;
-//                case 2:
-//                    mijloc();
-//                    break;
-//                case 3:
-//                    dreapta();
-//                    break;
-//                default:
-//                    mijloc();
-//                    break;
-//            }
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if (currentDetections.size() != 0) {
@@ -134,11 +119,9 @@ public class v2 extends LinearOpMode {
                             tagOfInterest = tag;
                         }
                 }
-            } else{
+            } else {
                 tagOfInterest.id = 2;
             }
-
-
 
             switch (tagOfInterest.id) {
                 case 1:
@@ -149,9 +132,6 @@ public class v2 extends LinearOpMode {
                     break;
                 case 3:
                     dreapta();
-                    break;
-                default:
-                    mijloc();
                     break;
             }
 
@@ -299,7 +279,6 @@ public class v2 extends LinearOpMode {
     }
 
     private void dreapta() throws InterruptedException {
-
         Trajectory pozitionare = robot.trajectoryBuilder(START_ST_RED_BLUE)
                 .lineToLinearHeading(POSITION_ST_RED_BLUE)
                 .addTemporalMarker(0, () -> {
