@@ -28,6 +28,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -43,6 +44,8 @@ public class TeleOpulAlaBlana extends LinearOpMode {
 
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
+
+        robot.glisiera2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 //        waitForStart();
 
