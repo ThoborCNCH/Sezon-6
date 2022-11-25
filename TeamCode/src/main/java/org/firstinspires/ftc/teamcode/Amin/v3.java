@@ -277,7 +277,7 @@ public class v3 extends LinearOpMode {
         robot.setIntake(0);
 
         TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
-                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(90)))
 //                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
                 .lineToLinearHeading(new Pose2d(57.5, -22, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
