@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous
+@Disabled
+
 public class TesterEncoder extends LinearOpMode {
 
     SampleMecanumDrive robot;

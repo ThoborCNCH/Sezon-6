@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous
+@Autonomous@Disabled
+
 public class Test_auto extends LinearOpMode {
     DcMotor rf, lf, rr, lr;
     public double power = 0.2;

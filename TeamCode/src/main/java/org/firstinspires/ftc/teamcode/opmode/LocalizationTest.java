@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @TeleOp(group = "drive")
 //@Disabled()\@Disabled
+@Disabled
 
 public class LocalizationTest extends LinearOpMode {
     @Override

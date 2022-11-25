@@ -33,7 +33,8 @@ import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_INTAKE;
 /**
  * feel free to change the name or group of your class to better fit your robot
  */
-@TeleOp(name = "Claudiu wow")
+@TeleOp(name = "Claudiu wow")@Disabled
+
 public class teleop extends LinearOpMode {
 
     /**

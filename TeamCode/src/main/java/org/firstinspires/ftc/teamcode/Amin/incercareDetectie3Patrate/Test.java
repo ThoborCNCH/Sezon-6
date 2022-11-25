@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp()
 @Config
+@Disabled
+
 public class Test extends LinearOpMode {
     DcMotor rf, lf, rr, lr;
     public double power = 0.2;

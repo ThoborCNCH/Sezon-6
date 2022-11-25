@@ -155,348 +155,303 @@ public class v2 extends LinearOpMode {
 
     }
 
-    private void mijloc() throws InterruptedException {
-//        Trajectory pozitionare = robot.trajectoryBuilder(START_ST_RED_BLUE)
-//                .lineToLinearHeading(POSITION_ST_RED_BLUE)
-//                .addTemporalMarker(0, () -> {
-//                    robot.setGliseraPower(1);
-//                })
-//                .addTemporalMarker(1.00, () -> {
-//                    robot.setGliseraPower(0);
-//                })
-//                .build();
-//        robot.followTrajectory(pozitionare);
-//
-//        Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
-//                .forward(6.8)
-//                .build();
-//        robot.followTrajectory(pune_ceva_macar_te_rog);
-//
-//        robot.setIntake(1);
-//        sleep(2000);
-//        robot.setIntake(0);
-//
-//        Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
-//                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-//                .build();
-//        robot.followTrajectory(oleaka_inapoi);
-//
-////        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
-//        Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
-//                .lineToLinearHeading(new Pose2d(-60.0, -45, Math.toRadians(180)))
-//                .build();
-//        robot.followTrajectory(mai_ia_unu);
-//        robot.setGliseraPower(-.67);
-//        sleep(415);
-//        robot.setGliseraPower(0);
-//
-//        robot.setIntake(-1);
-//        sleep(2060);
-//
-////        DE ASTA MERGE IN FATA ---------------------
-////        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
-////                .forward(1)
-////                .build();
-////        robot.followTrajectory(mai_ia_unu2);
-//        robot.setGliseraPower(.8);
-//        sleep(700);
-//        robot.setGliseraPower(0);
-//
-//        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu.end())
-//                .back(7)
-//                .build();
-//        robot.followTrajectory(mai_ia_unu3);
-//
-////        robot.turn(Math.toRadians(10));
-////        robot.turn(Math.toRadians(-20));
-////        robot.turn(Math.toRadians(20));
-////        robot.turn(Math.toRadians(-10));
-//
-//        TrajectorySequence btb = robot.trajectorySequenceBuilder(mai_ia_unu3.end())
-//                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(33)))
-////                .addTemporalMarker(0, () -> {
-////                    robot.setGliseraPower(1);
-////                })
-////                .addTemporalMarker(0.35, () -> {
-////                    robot.setGliseraPower(0);
-////                })
-//                .forward(6.6)
-//                .build();
-//        robot.followTrajectorySequence(btb);
-//
-//        robot.setIntake(1);
-//        sleep(2000);
-//        robot.setIntake(0);
-//
-//        Trajectory oleaka_inapoi_part2 = robot.trajectoryBuilder(btb.end())
-//                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-//                .build();
-//        robot.followTrajectory(oleaka_inapoi_part2);
 
-        Trajectory pune = robot.trajectoryBuilder(START_ST_RED_BLUE)
-//                .splineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(30)), Math.toRadians(20))
-                .lineToLinearHeading(new Pose2d(-31.7, -31.2, Math.toRadians(-5)))
-//                .lineToLinearHeading(new Pose2d(-31,-34, Math.toRadians(10))) , Math.toRadians(0)
-                .addDisplacementMarker(t -> t * 0.1, () -> {
+    private void stanga() throws InterruptedException{
+        Trajectory putin = robot.trajectoryBuilder(START_ST_RED_BLUE)
+                .lineToLinearHeading(new Pose2d(-37, -31, Math.toRadians(0)))
+                .addDisplacementMarker(t -> t * .1, () -> {
                     robot.setGliseraPower(1);
-//                    glisieraHandle.glisieraEncoder(58);
-
                 })
-                .addDisplacementMarker(t -> t * .8629, () -> {
+                .addDisplacementMarker(t -> t * .8, () -> {
                     robot.setGliseraPower(0);
-//                    glisieraHandle.stopGlisieraEncoder();
                 })
-//                .addTemporalMarker(0, ()->{
-//                    glisieraHandle.glisieraEncoder(53.5);
-//                })
-//                .forward(.5)
                 .build();
-        robot.followTrajectory(pune);
-
-        TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(pune.end())
-                .forward(1.18)
-                .addTemporalMarker(0, ()->{
+        robot.followTrajectory(putin);
+        TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
+                .forward(6.7)
+                .addTemporalMarker(1, () -> {
                     robot.setIntake(1);
                 })
-                .addTemporalMarker(1.79, ()->{
-                    robot.setIntake(0);
-                })
                 .waitSeconds(1.75)
-                .back(3.5)
+                .back(6)
                 .build();
         robot.followTrajectorySequence(aproape_saPui);
 
-//        sleep(500);
-//        robot.setIntake(1);
-//        sleep(2000);
-//        robot.setIntake(0);
+        robot.setIntake(0);
 
         TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
-                .splineToLinearHeading(new Pose2d(-40,-20, Math.toRadians(180)), Math.toRadians(-20))
-                .lineToLinearHeading(new Pose2d(-57.5, -21, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(90)))
+//                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
+                .lineToLinearHeading(new Pose2d(-57.5, -22, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(26)
                 )
                 .addDisplacementMarker(t -> t * 0.3, () -> {
                     robot.setGliseraPower(-.32);
                 })
-                .addDisplacementMarker(t -> t * 0.369 , () -> {
+                .addDisplacementMarker(t -> t * 0.379, () -> {
                     robot.setGliseraPower(0);
                 })
-//                .addTemporalMarker(0, ()->{
-//                    glisieraHandle.glisieraEncoder(-50);
-//                })
-//                .addDisplacementMarker(t -> t * 0.9, ()->{
-//                    glisieraHandle.stopGlisieraEncoder();
-//                })
                 .build();
         robot.followTrajectorySequence(ia);
 
         robot.setIntake(-1);
-//        sleep(2000);
+
         Trajectory fmm = robot.trajectoryBuilder(ia.end())
-                .addTemporalMarker(0,()->{
-                    robot.setGliseraPower(-.474);
-                })
-                .addTemporalMarker(1.667,()->{
-                    robot.setGliseraPower(0);
-                })
-                .forward(3.82,
+                .forward(2.7,
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(23))
+//                .addDisplacementMarker(t -> t * 0.8, () -> {
+//                    robot.setGliseraPower(-.474);
+//                })
+//                .addTemporalMarker(1.967, () -> {
+//                    robot.setGliseraPower(0);
+//                })
                 .build();
 
         robot.followTrajectory(fmm);
+        robot.setGliseraPower(-.474);
+        sleep(600);
+        robot.setGliseraPower(0);
 
 
         robot.setIntake(-1);
         sleep(1000);
-        robot.setIntake(0);
+//        robot.setIntake(0);
 
-        Trajectory pune_2 = robot.trajectoryBuilder(ia.end(), true)
-                .splineToLinearHeading(new Pose2d(-31, -33, Math.toRadians(10)), Math.toRadians(-40))
-//                .lineToSplineHeading(new Pose2d(-31, -34, Math.toRadians(10)))
-                .addDisplacementMarker(t -> t * 0.0, () -> {
-                    robot.setGliseraPower(1);
-                })
+        robot.setGliseraPower(1);
+        sleep(850);
+        robot.setGliseraPower(0);
 
-                .addDisplacementMarker(t -> t * .488, () -> {
-                    robot.setGliseraPower(0);
-                })
+        Trajectory bb = robot.trajectoryBuilder(fmm.end())
+                .back(20)
                 .build();
-        robot.followTrajectory(pune_2);
+        robot.followTrajectory(bb);
+
+//        Trajectory pune_2 = robot.trajectoryBuilder(bb.end(), true)
+//                .splineToLinearHeading(new Pose2d(-30, -33, Math.toRadians(10)), Math.toRadians(-40))
+//                .build();
+//        robot.followTrajectory(pune_2);
+
+        TrajectorySequence pune_2 = robot.trajectorySequenceBuilder(bb.end())
+                .lineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(-33)),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, 20, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .forward(12)
+                .build();
+        robot.followTrajectorySequence(pune_2);
+
 
         robot.setIntake(1);
         sleep(2000);
         robot.setIntake(0);
 
-        Trajectory park = robot.trajectoryBuilder(pune_2.end())
+        TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
+                .back(7)
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
+                .back(23)
                 .build();
-        robot.followTrajectory(park);
+        robot.followTrajectorySequence(park);
 
 
     }
 
-    private void stanga() throws InterruptedException {
-        Trajectory pozitionare = robot.trajectoryBuilder(START_ST_RED_BLUE)
-                .lineToLinearHeading(POSITION_ST_RED_BLUE)
-                .addTemporalMarker(0, () -> {
-                    robot.setGliseraPower(1);
+    private void mijloc() throws InterruptedException {  Trajectory putin = robot.trajectoryBuilder(START_ST_RED_BLUE)
+            .lineToLinearHeading(new Pose2d(-37, -31, Math.toRadians(0)))
+            .addDisplacementMarker(t -> t * .1, () -> {
+                robot.setGliseraPower(1);
+            })
+            .addDisplacementMarker(t -> t * .8, () -> {
+                robot.setGliseraPower(0);
+            })
+            .build();
+        robot.followTrajectory(putin);
+        TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
+                .forward(6.7)
+                .addTemporalMarker(1, () -> {
+                    robot.setIntake(1);
                 })
-                .addTemporalMarker(1.4, () -> {
+                .waitSeconds(1.75)
+                .back(6)
+                .build();
+        robot.followTrajectorySequence(aproape_saPui);
+
+        robot.setIntake(0);
+
+        TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
+                .lineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(90)))
+//                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
+                .lineToLinearHeading(new Pose2d(-57.5, -22, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(26)
+                )
+                .addDisplacementMarker(t -> t * 0.3, () -> {
+                    robot.setGliseraPower(-.32);
+                })
+                .addDisplacementMarker(t -> t * 0.379, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
-        robot.followTrajectory(pozitionare);
-
-        Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
-                .forward(6.8)
-                .build();
-        robot.followTrajectory(pune_ceva_macar_te_rog);
-
-        robot.setIntake(1);
-        sleep(2000);
-        robot.setIntake(0);
-
-        Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
-                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-                .build();
-        robot.followTrajectory(oleaka_inapoi);
-
-//        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
-        Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
-                .lineToLinearHeading(new Pose2d(-60, -44, Math.toRadians(180)))
-                .build();
-        robot.followTrajectory(mai_ia_unu);
-        robot.setGliseraPower(-.70);
-        sleep(460);
-        robot.setGliseraPower(0);
+        robot.followTrajectorySequence(ia);
 
         robot.setIntake(-1);
-        sleep(2000);
 
-        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
-                .forward(1)
+        Trajectory fmm = robot.trajectoryBuilder(ia.end())
+                .forward(2.7,
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(23))
+//                .addDisplacementMarker(t -> t * 0.8, () -> {
+//                    robot.setGliseraPower(-.474);
+//                })
+//                .addTemporalMarker(1.967, () -> {
+//                    robot.setGliseraPower(0);
+//                })
                 .build();
-        robot.followTrajectory(mai_ia_unu2);
-        robot.setGliseraPower(.8);
-        sleep(500);
+
+        robot.followTrajectory(fmm);
+        robot.setGliseraPower(-.474);
+        sleep(600);
         robot.setGliseraPower(0);
 
-        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu2.end())
-                .back(7)
-                .build();
-        robot.followTrajectory(mai_ia_unu3);
 
-        robot.turn(Math.toRadians(10));
-        robot.turn(Math.toRadians(-20));
-        robot.turn(Math.toRadians(20));
-        robot.turn(Math.toRadians(-10));
+        robot.setIntake(-1);
+        sleep(1000);
+//        robot.setIntake(0);
 
-        TrajectorySequence btb = robot.trajectorySequenceBuilder(mai_ia_unu3.end())
-                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
-                .addTemporalMarker(0, () -> {
-                    robot.setGliseraPower(1);
-                })
-                .addTemporalMarker(0.8, () -> {
-                    robot.setGliseraPower(0);
-                })
-                .forward(6.6)
+        robot.setGliseraPower(1);
+        sleep(850);
+        robot.setGliseraPower(0);
+
+        Trajectory bb = robot.trajectoryBuilder(fmm.end())
+                .back(20)
                 .build();
-        robot.followTrajectorySequence(btb);
+        robot.followTrajectory(bb);
+
+//        Trajectory pune_2 = robot.trajectoryBuilder(bb.end(), true)
+//                .splineToLinearHeading(new Pose2d(-30, -33, Math.toRadians(10)), Math.toRadians(-40))
+//                .build();
+//        robot.followTrajectory(pune_2);
+
+        TrajectorySequence pune_2 = robot.trajectorySequenceBuilder(bb.end())
+                .lineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(-33)),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, 20, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .forward(12)
+                .build();
+        robot.followTrajectorySequence(pune_2);
+
 
         robot.setIntake(1);
         sleep(2000);
         robot.setIntake(0);
 
-        Trajectory oleaka_inapoi_part2 = robot.trajectoryBuilder(btb.end())
+        TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
+                .back(7)
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
                 .build();
-        robot.followTrajectory(oleaka_inapoi_part2);
-        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi_part2.end())
-                .back(23)
-                .build();
-        robot.followTrajectory(hai_du_te_la_parcare);
+        robot.followTrajectorySequence(park);
+
+
     }
 
     private void dreapta() throws InterruptedException {
-        Trajectory pozitionare = robot.trajectoryBuilder(START_ST_RED_BLUE)
-                .lineToLinearHeading(POSITION_ST_RED_BLUE)
-                .addTemporalMarker(0, () -> {
+        Trajectory putin = robot.trajectoryBuilder(START_ST_RED_BLUE)
+                .lineToLinearHeading(new Pose2d(-37, -31, Math.toRadians(0)))
+                .addDisplacementMarker(t -> t * .1, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addTemporalMarker(1.4, () -> {
+                .addDisplacementMarker(t -> t * .8, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
-        robot.followTrajectory(pozitionare);
-
-        Trajectory pune_ceva_macar_te_rog = robot.trajectoryBuilder(pozitionare.end())
-                .forward(6.8)
+        robot.followTrajectory(putin);
+        TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
+                .forward(6.7)
+                .addTemporalMarker(1, () -> {
+                    robot.setIntake(1);
+                })
+                .waitSeconds(1.75)
+                .back(6)
                 .build();
-        robot.followTrajectory(pune_ceva_macar_te_rog);
+        robot.followTrajectorySequence(aproape_saPui);
 
-        robot.setIntake(1);
-        sleep(2000);
         robot.setIntake(0);
 
-        Trajectory oleaka_inapoi = robot.trajectoryBuilder(pune_ceva_macar_te_rog.end())
-                .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
+        TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
+                .lineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(90)))
+//                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
+                .lineToLinearHeading(new Pose2d(-57.5, -22, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(26)
+                )
+                .addDisplacementMarker(t -> t * 0.3, () -> {
+                    robot.setGliseraPower(-.32);
+                })
+                .addDisplacementMarker(t -> t * 0.379, () -> {
+                    robot.setGliseraPower(0);
+                })
                 .build();
-        robot.followTrajectory(oleaka_inapoi);
-
-//        DE AICI INCEPE AIA NOUA COPIAZA ANIMALE
-        Trajectory mai_ia_unu = robot.trajectoryBuilder(oleaka_inapoi.end())
-                .lineToLinearHeading(new Pose2d(-60, -44, Math.toRadians(180)))
-                .build();
-        robot.followTrajectory(mai_ia_unu);
-        robot.setGliseraPower(-.70);
-        sleep(460);
-        robot.setGliseraPower(0);
+        robot.followTrajectorySequence(ia);
 
         robot.setIntake(-1);
-        sleep(2000);
 
-        Trajectory mai_ia_unu2 = robot.trajectoryBuilder(mai_ia_unu.end())
-                .forward(1)
+        Trajectory fmm = robot.trajectoryBuilder(ia.end())
+                .forward(2.7,
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(23))
+//                .addDisplacementMarker(t -> t * 0.8, () -> {
+//                    robot.setGliseraPower(-.474);
+//                })
+//                .addTemporalMarker(1.967, () -> {
+//                    robot.setGliseraPower(0);
+//                })
                 .build();
-        robot.followTrajectory(mai_ia_unu2);
-        robot.setGliseraPower(.8);
-        sleep(500);
+
+        robot.followTrajectory(fmm);
+        robot.setGliseraPower(-.474);
+        sleep(600);
         robot.setGliseraPower(0);
 
-        Trajectory mai_ia_unu3 = robot.trajectoryBuilder(mai_ia_unu2.end())
-                .back(7)
-                .build();
-        robot.followTrajectory(mai_ia_unu3);
 
-        robot.turn(Math.toRadians(10));
-        robot.turn(Math.toRadians(-20));
-        robot.turn(Math.toRadians(20));
-        robot.turn(Math.toRadians(-10));
+        robot.setIntake(-1);
+        sleep(1000);
+//        robot.setIntake(0);
 
-        TrajectorySequence btb = robot.trajectorySequenceBuilder(mai_ia_unu3.end())
-                .lineToLinearHeading(new Pose2d(-36, -38, Math.toRadians(32)))
-                .addTemporalMarker(0, () -> {
-                    robot.setGliseraPower(1);
-                })
-                .addTemporalMarker(0.8, () -> {
-                    robot.setGliseraPower(0);
-                })
-                .forward(6.6)
+        robot.setGliseraPower(1);
+        sleep(850);
+        robot.setGliseraPower(0);
+
+        Trajectory bb = robot.trajectoryBuilder(fmm.end())
+                .back(20)
                 .build();
-        robot.followTrajectorySequence(btb);
+        robot.followTrajectory(bb);
+
+//        Trajectory pune_2 = robot.trajectoryBuilder(bb.end(), true)
+//                .splineToLinearHeading(new Pose2d(-30, -33, Math.toRadians(10)), Math.toRadians(-40))
+//                .build();
+//        robot.followTrajectory(pune_2);
+
+        TrajectorySequence pune_2 = robot.trajectorySequenceBuilder(bb.end())
+                .lineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(-33)),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, 20, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .forward(12)
+                .build();
+        robot.followTrajectorySequence(pune_2);
+
 
         robot.setIntake(1);
         sleep(2000);
         robot.setIntake(0);
 
-        Trajectory oleaka_inapoi_part2 = robot.trajectoryBuilder(btb.end())
+        TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
+                .back(7)
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
                 .build();
-        robot.followTrajectory(oleaka_inapoi_part2);
-        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(oleaka_inapoi_part2.end())
+        robot.followTrajectorySequence(park);
+
+
+        Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(park.end())
                 .forward(23)
                 .build();
         robot.followTrajectory(hai_du_te_la_parcare);

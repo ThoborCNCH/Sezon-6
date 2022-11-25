@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.ciordeles.opmodes;
 
 import static org.firstinspires.ftc.teamcode.ciordeles.libs.Globals.*;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.ciordeles.libs.FieldCentric;
 import org.firstinspires.ftc.teamcode.ciordeles.libs.Globals;
 
 @TeleOp(name="MainTele", group="teleop")
+@Disabled
 public class MainTele extends AutoImport {
 
     public MainTele() { super(31, -56, 225, 150, 255, 150); }
