@@ -42,10 +42,9 @@ public class TeleOpulAlaBlana extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
 
-//        robot.glisiera1.setDirection(DcMotor.Direction.REVERSE);
+        robot.glisiera1.setDirection(DcMotor.Direction.REVERSE);
 
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
 //        waitForStart();
 
         while (!opModeIsActive() && !isStopRequested()) {

@@ -132,6 +132,7 @@ public class v2 extends LinearOpMode {
             } else {
                 tagOfInterest.id = 2;
             }
+            robot.setIntake(-1);
 
             switch (tagOfInterest.id) {
                 case 1:
@@ -156,7 +157,7 @@ public class v2 extends LinearOpMode {
     }
 
 
-    private void stanga() throws InterruptedException{
+    private void stanga() throws InterruptedException {
         Trajectory putin = robot.trajectoryBuilder(START_ST_RED_BLUE)
                 .lineToLinearHeading(new Pose2d(-37, -31, Math.toRadians(0)))
                 .addDisplacementMarker(t -> t * .1, () -> {
@@ -249,22 +250,23 @@ public class v2 extends LinearOpMode {
         TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
                 .back(7)
                 .lineToLinearHeading(BACK_A_LITTLE_ST_RED_BLUE)
-                .back(23)
+                .forward(23)
                 .build();
         robot.followTrajectorySequence(park);
 
 
     }
 
-    private void mijloc() throws InterruptedException {  Trajectory putin = robot.trajectoryBuilder(START_ST_RED_BLUE)
-            .lineToLinearHeading(new Pose2d(-37, -31, Math.toRadians(0)))
-            .addDisplacementMarker(t -> t * .1, () -> {
-                robot.setGliseraPower(1);
-            })
-            .addDisplacementMarker(t -> t * .8, () -> {
-                robot.setGliseraPower(0);
-            })
-            .build();
+    private void mijloc() throws InterruptedException {
+        Trajectory putin = robot.trajectoryBuilder(START_ST_RED_BLUE)
+                .lineToLinearHeading(new Pose2d(-37, -31, Math.toRadians(0)))
+                .addDisplacementMarker(t -> t * .1, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addDisplacementMarker(t -> t * .8, () -> {
+                    robot.setGliseraPower(0);
+                })
+                .build();
         robot.followTrajectory(putin);
         TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
                 .forward(6.7)
@@ -452,7 +454,7 @@ public class v2 extends LinearOpMode {
 
 
         Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(park.end())
-                .forward(23)
+                .back(23)
                 .build();
         robot.followTrajectory(hai_du_te_la_parcare);
     }

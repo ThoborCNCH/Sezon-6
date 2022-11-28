@@ -131,6 +131,7 @@ public class v3 extends LinearOpMode {
             } else {
                 tagOfInterest.id = 2;
             }
+            robot.setIntake(-1);
 
             switch (tagOfInterest.id) {
                 case 1:
@@ -153,133 +154,34 @@ public class v3 extends LinearOpMode {
 
     }
 
-    private void stanga() throws InterruptedException{
+    private void stanga() throws InterruptedException {
         Trajectory putin = robot.trajectoryBuilder(START_DR_RED_BLUE)
                 .lineToLinearHeading(new Pose2d(37, -31, Math.toRadians(180)))
                 .addDisplacementMarker(t -> t * .1, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addDisplacementMarker(t -> t * .8, () -> {
+                .addDisplacementMarker(t -> t * .87, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
         robot.followTrajectory(putin);
         TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
-                .forward(6.7)
+                .forward(5.05)
                 .addTemporalMarker(1, () -> {
                     robot.setIntake(1);
                 })
                 .waitSeconds(1.75)
-                .back(6)
+                .back(3)
                 .build();
         robot.followTrajectorySequence(aproape_saPui);
 
         robot.setIntake(0);
 
-        TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
-                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(-90)))
-//                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
-                .lineToLinearHeading(new Pose2d(57.5, -22, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(26)
-                )
-                .addDisplacementMarker(t -> t * 0.3, () -> {
-                    robot.setGliseraPower(-.32);
-                })
-                .addDisplacementMarker(t -> t * 0.379, () -> {
-                    robot.setGliseraPower(0);
-                })
-                .build();
-        robot.followTrajectorySequence(ia);
-
-        robot.setIntake(-1);
-
-        Trajectory fmm = robot.trajectoryBuilder(ia.end())
-                .forward(2.7,
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(23))
-//                .addDisplacementMarker(t -> t * 0.8, () -> {
-//                    robot.setGliseraPower(-.474);
-//                })
-//                .addTemporalMarker(1.967, () -> {
-//                    robot.setGliseraPower(0);
-//                })
-                .build();
-
-        robot.followTrajectory(fmm);
-        robot.setGliseraPower(-.474);
-        sleep(600);
-        robot.setGliseraPower(0);
-
-
-        robot.setIntake(-1);
-        sleep(1000);
-//        robot.setIntake(0);
-
-        robot.setGliseraPower(1);
-        sleep(850);
-        robot.setGliseraPower(0);
-
-        Trajectory bb = robot.trajectoryBuilder(fmm.end())
-                .back(20)
-                .build();
-        robot.followTrajectory(bb);
-
-//        Trajectory pune_2 = robot.trajectoryBuilder(bb.end(), true)
-//                .splineToLinearHeading(new Pose2d(-30, -33, Math.toRadians(10)), Math.toRadians(-40))
-//                .build();
-//        robot.followTrajectory(pune_2);
-
-        TrajectorySequence pune_2 = robot.trajectorySequenceBuilder(bb.end())
-//                -- CUM SE TRECE DE LA 33 LA -33 VEDEM CURAND ---------------
-                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(180-33)),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, 20, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .forward(12)
-                .build();
-        robot.followTrajectorySequence(pune_2);
-
-
-        robot.setIntake(1);
-        sleep(2000);
-        robot.setIntake(0);
-
-        TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
-                .back(7)
-                .lineToLinearHeading(BACK_A_LITTLE_DR_RED_BLUE)
-                .back(23)
-                .build();
-        robot.followTrajectorySequence(park);
-
-
-    }
-
-    private void mijloc() throws InterruptedException {  Trajectory putin = robot.trajectoryBuilder(START_DR_RED_BLUE)
-            .lineToLinearHeading(new Pose2d(37, -31, Math.toRadians(180)))
-            .addDisplacementMarker(t -> t * .1, () -> {
-                robot.setGliseraPower(1);
-            })
-            .addDisplacementMarker(t -> t * .8, () -> {
-                robot.setGliseraPower(0);
-            })
-            .build();
-        robot.followTrajectory(putin);
-        TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
-                .forward(6.7)
-                .addTemporalMarker(1, () -> {
-                    robot.setIntake(1);
-                })
-                .waitSeconds(1.75)
-                .back(6)
-                .build();
-        robot.followTrajectorySequence(aproape_saPui);
-
-        robot.setIntake(0);
-
+        //coboara si se duce sa ia
         TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
                 .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(90)))
 //                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
-                .lineToLinearHeading(new Pose2d(57.5, -22, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(57.5, -20, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(26)
                 )
@@ -292,10 +194,11 @@ public class v3 extends LinearOpMode {
                 .build();
         robot.followTrajectorySequence(ia);
 
+        //mai jos si il abs
         robot.setIntake(-1);
 
         Trajectory fmm = robot.trajectoryBuilder(ia.end())
-                .forward(2.7,
+                .forward(1.4,
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(23))
 //                .addDisplacementMarker(t -> t * 0.8, () -> {
@@ -308,7 +211,7 @@ public class v3 extends LinearOpMode {
 
         robot.followTrajectory(fmm);
         robot.setGliseraPower(-.474);
-        sleep(600);
+        sleep(650);
         robot.setGliseraPower(0);
 
 
@@ -316,10 +219,13 @@ public class v3 extends LinearOpMode {
         sleep(1000);
 //        robot.setIntake(0);
 
+
+        //ridica
         robot.setGliseraPower(1);
-        sleep(850);
+        sleep(855);
         robot.setGliseraPower(0);
 
+        //oleaka in spate
         Trajectory bb = robot.trajectoryBuilder(fmm.end())
                 .back(20)
                 .build();
@@ -330,9 +236,10 @@ public class v3 extends LinearOpMode {
 //                .build();
 //        robot.followTrajectory(pune_2);
 
+        //il pune pe al 2 lea
         TrajectorySequence pune_2 = robot.trajectorySequenceBuilder(bb.end())
 //                --------- TRECEREA LA -33 ----------
-                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(180-33)),
+                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(-150)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, 20, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .forward(12)
@@ -344,42 +251,47 @@ public class v3 extends LinearOpMode {
         sleep(2000);
         robot.setIntake(0);
 
+
+        //park
         TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
                 .back(7)
                 .lineToLinearHeading(BACK_A_LITTLE_DR_RED_BLUE)
+                .forward(23)
                 .build();
         robot.followTrajectorySequence(park);
 
 
     }
 
-    private void dreapta() throws InterruptedException {
+    private void mijloc() throws InterruptedException {
+        //ridica si pune primu
         Trajectory putin = robot.trajectoryBuilder(START_DR_RED_BLUE)
                 .lineToLinearHeading(new Pose2d(37, -31, Math.toRadians(180)))
                 .addDisplacementMarker(t -> t * .1, () -> {
                     robot.setGliseraPower(1);
                 })
-                .addDisplacementMarker(t -> t * .8, () -> {
+                .addDisplacementMarker(t -> t * .87, () -> {
                     robot.setGliseraPower(0);
                 })
                 .build();
         robot.followTrajectory(putin);
         TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
-                .forward(6.7)
+                .forward(5.05)
                 .addTemporalMarker(1, () -> {
                     robot.setIntake(1);
                 })
                 .waitSeconds(1.75)
-                .back(6)
+                .back(3)
                 .build();
         robot.followTrajectorySequence(aproape_saPui);
 
         robot.setIntake(0);
 
+        //coboara si se duce sa ia
         TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
-                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(90)))
 //                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
-                .lineToLinearHeading(new Pose2d(57.5, -22, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(57.5, -20, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(26)
                 )
@@ -392,10 +304,11 @@ public class v3 extends LinearOpMode {
                 .build();
         robot.followTrajectorySequence(ia);
 
+        //mai jos si il abs
         robot.setIntake(-1);
 
         Trajectory fmm = robot.trajectoryBuilder(ia.end())
-                .forward(2.7,
+                .forward(1.1,
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(23))
 //                .addDisplacementMarker(t -> t * 0.8, () -> {
@@ -408,7 +321,7 @@ public class v3 extends LinearOpMode {
 
         robot.followTrajectory(fmm);
         robot.setGliseraPower(-.474);
-        sleep(600);
+        sleep(650);
         robot.setGliseraPower(0);
 
 
@@ -416,10 +329,13 @@ public class v3 extends LinearOpMode {
         sleep(1000);
 //        robot.setIntake(0);
 
+
+        //ridica
         robot.setGliseraPower(1);
-        sleep(850);
+        sleep(855);
         robot.setGliseraPower(0);
 
+        //oleaka in spate
         Trajectory bb = robot.trajectoryBuilder(fmm.end())
                 .back(20)
                 .build();
@@ -430,8 +346,10 @@ public class v3 extends LinearOpMode {
 //                .build();
 //        robot.followTrajectory(pune_2);
 
+        //il pune pe al 2 lea
         TrajectorySequence pune_2 = robot.trajectorySequenceBuilder(bb.end())
-                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(180-33)),
+//                --------- TRECEREA LA -33 ----------
+                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(-150)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, 20, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .forward(12)
@@ -443,15 +361,122 @@ public class v3 extends LinearOpMode {
         sleep(2000);
         robot.setIntake(0);
 
+
+        //park1111
+        TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
+                .back(7)
+               .lineToLinearHeading(BACK_A_LITTLE_DR_RED_BLUE)
+           .build();
+        robot.followTrajectorySequence(park);
+    }
+
+    private void dreapta() throws InterruptedException {
+        //ridica si pune primu
+        Trajectory putin = robot.trajectoryBuilder(START_DR_RED_BLUE)
+                .lineToLinearHeading(new Pose2d(37, -31, Math.toRadians(180)))
+                .addDisplacementMarker(t -> t * .1, () -> {
+                    robot.setGliseraPower(1);
+                })
+                .addDisplacementMarker(t -> t * .87, () -> {
+                    robot.setGliseraPower(0);
+                })
+                .build();
+        robot.followTrajectory(putin);
+        TrajectorySequence aproape_saPui = robot.trajectorySequenceBuilder(putin.end())
+                .forward(5.85)
+                .addTemporalMarker(1, () -> {
+                    robot.setIntake(1);
+                })
+                .waitSeconds(1.75)
+                .back(3)
+                .build();
+        robot.followTrajectorySequence(aproape_saPui);
+
+        robot.setIntake(0);
+
+        //coboara si se duce sa ia
+        TrajectorySequence ia = robot.trajectorySequenceBuilder(aproape_saPui.end())
+                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(90)))
+//                .splineToLinearHeading(new Pose2d(-40, -20, Math.toRadians(180)), Math.toRadians(-20))
+                .lineToLinearHeading(new Pose2d(57.5, -20, Math.toRadians(0)),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(26)
+                )
+                .addDisplacementMarker(t -> t * 0.3, () -> {
+                    robot.setGliseraPower(-.32);
+                })
+                .addDisplacementMarker(t -> t * 0.379, () -> {
+                    robot.setGliseraPower(0);
+                })
+                .build();
+        robot.followTrajectorySequence(ia);
+
+        //mai jos si il abs
+        robot.setIntake(-1);
+
+        Trajectory fmm = robot.trajectoryBuilder(ia.end())
+                .forward(1.1,
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(23))
+//                .addDisplacementMarker(t -> t * 0.8, () -> {
+//                    robot.setGliseraPower(-.474);
+//                })
+//                .addTemporalMarker(1.967, () -> {
+//                    robot.setGliseraPower(0);
+//                })
+                .build();
+
+        robot.followTrajectory(fmm);
+        robot.setGliseraPower(-.474);
+        sleep(650);
+        robot.setGliseraPower(0);
+
+
+        robot.setIntake(-1);
+        sleep(1000);
+//        robot.setIntake(0);
+
+
+        //ridica
+        robot.setGliseraPower(1);
+        sleep(855);
+        robot.setGliseraPower(0);
+
+        //oleaka in spate
+        Trajectory bb = robot.trajectoryBuilder(fmm.end())
+                .back(20)
+                .build();
+        robot.followTrajectory(bb);
+
+//        Trajectory pune_2 = robot.trajectoryBuilder(bb.end(), true)
+//                .splineToLinearHeading(new Pose2d(-30, -33, Math.toRadians(10)), Math.toRadians(-40))
+//                .build();
+//        robot.followTrajectory(pune_2);
+
+        //il pune pe al 2 lea
+        TrajectorySequence pune_2 = robot.trajectorySequenceBuilder(bb.end())
+//                --------- TRECEREA LA -33 ----------
+                .lineToLinearHeading(new Pose2d(40, -20, Math.toRadians(-150)),
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, 20, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .forward(12)
+                .build();
+        robot.followTrajectorySequence(pune_2);
+
+
+        robot.setIntake(1);
+        sleep(2000);
+        robot.setIntake(0);
+
+        //park1111
         TrajectorySequence park = robot.trajectorySequenceBuilder(pune_2.end())
                 .back(7)
                 .lineToLinearHeading(BACK_A_LITTLE_DR_RED_BLUE)
                 .build();
         robot.followTrajectorySequence(park);
 
-
         Trajectory hai_du_te_la_parcare = robot.trajectoryBuilder(park.end())
-                .forward(23)
+                .back(23)
                 .build();
         robot.followTrajectory(hai_du_te_la_parcare);
     }
