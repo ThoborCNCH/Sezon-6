@@ -10,8 +10,12 @@ public class NU_MAI_POT {
     public static double LR_DIRECTION = 1;
     public static double RR_DIRECTION = 0;
 
+    public  static double power_reven = 0.1;
+    public  static double poz_deschis = 0.6;
+    public  static double poz_inchis = 0.4;
+
     public static boolean GLISIERE_ENCODER = true;
-    public static double DISTANTA_GLISIERA = 0;
+    public static double DISTANTA_GLISIERA = 74; //CM
     public static int GLISIERA_COUNTS = 0;
 
     public static Pose2d START_ST_RED_BLUE = new Pose2d(-36, -68, Math.toRadians(-90));

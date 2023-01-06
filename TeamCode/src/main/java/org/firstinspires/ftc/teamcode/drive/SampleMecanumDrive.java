@@ -23,7 +23,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -31,7 +30,6 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
@@ -44,10 +42,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.*;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_BRAT;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_RATA;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POZITIE_ARUNCA_CUVA;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POZITIE_NORMAL_CUVA;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
@@ -66,9 +60,6 @@ import static java.lang.Thread.sleep;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public final DcMotor glisiera1;
-    public final DcMotor glisiera2;
-    public final CRServo marus;
     private double diameter_hex = 0.787402;
     private double ticks = 288;
     private double counts_per_inch = ticks / (diameter_hex * Math.PI);
@@ -93,6 +84,9 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private final DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private final List<DcMotorEx> motors;
+    private final DcMotor brat;
+    private CRServo top, bottom;
+    private Servo gheara;
 
     private final BNO055IMU imu;
     private final VoltageSensor batteryVoltageSensor;
@@ -127,15 +121,17 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightRear = hardwareMap.get(DcMotorEx.class, "rr");
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
 
-        glisiera1 = hardwareMap.get(DcMotor.class, "glisiera1");
-        glisiera2 = hardwareMap.get(DcMotor.class, "glisiera2");
+        top = hardwareMap.get(CRServo.class, "sus");
+        bottom = hardwareMap.get(CRServo.class, "jos");
 
-        glisiera1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        glisiera2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        gheara = hardwareMap.servo.get("gheara");
 
-        marus = hardwareMap.get(CRServo.class, "marus");
+        bottom.setDirection(CRServo.Direction.REVERSE);
 
+        brat = hardwareMap.dcMotor.get("brat");
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
+
+        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
@@ -156,28 +152,23 @@ public class SampleMecanumDrive extends MecanumDrive {
 
 //        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        if(RF_DIRECTION == 1){
+        if (RF_DIRECTION == 1) {
             rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         }
-        if(LF_DIRECTION == 1){
+        if (LF_DIRECTION == 1) {
             leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         }
-        if(LR_DIRECTION == 1){
+        if (LR_DIRECTION == 1) {
             leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         }
-        if(RR_DIRECTION == 1){
+        if (RR_DIRECTION == 1) {
             rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
 //        TEST PENTRU GLISIERE PE ENCODER
-        if(GLISIERE_ENCODER){
-            glisiera1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            glisiera2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-        setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
+//        setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
 
 //        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
@@ -367,30 +358,6 @@ public class SampleMecanumDrive extends MecanumDrive {
         return new ProfileAccelerationConstraint(maxAccel);
     }
 
-    public void moveGlisiera(double distance){
-        double COUNTS_PER_CM = GLISIERA_COUNTS / DISTANTA_GLISIERA;
-        int positieLeft = this.glisiera1.getCurrentPosition() + (int)(distance * COUNTS_PER_CM);
-        int positieRight = this.glisiera2.getCurrentPosition() + (int)(distance * COUNTS_PER_CM);
-
-        this.glisiera1.setTargetPosition(positieLeft);
-        this.glisiera2.setTargetPosition(positieRight);
-
-        this.glisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.glisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.glisiera1.setPower(1);
-        this.glisiera2.setPower(1);
-
-        while(this.glisiera1.isBusy() && this.glisiera2.isBusy()){
-            //vai
-        }
-
-        this.glisiera1.setPower(0);
-        this.glisiera2.setPower(0);
-
-        this.glisiera1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.glisiera2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-    }
 
     public synchronized void bagaViteza(double lfp, double rfp, double lrp, double rrp) {
         leftFront.setPower(lfp);
@@ -399,58 +366,21 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightRear.setPower(rrp);
     }
 
-    public void setGliseraPower(double power) {
-        glisiera1.setPower(-power);
-        glisiera2.setPower(power);
+    public void se_ridica_brat(double power) {
+        brat.setPower(power);
     }
 
-    public void glisierautonom(double power) throws InterruptedException {
-        glisiera1.setPower(-power);
-        glisiera2.setPower(power);
-        sleep(1000);
-        glisiera1.setPower(0);
-        glisiera2.setPower(0);
+    public void rotesteThing(double speed){
+        bottom.setPower(speed);
+        top.setPower(speed);
     }
-    public void glisierautono2(double power) throws InterruptedException {
-        glisiera1.setPower(-power);
-        glisiera2.setPower(power);
-        sleep(1000);
-        glisiera1.setPower(0);
-        glisiera2.setPower(0);
-    }
-    public void poquitosus(double power) throws InterruptedException {
-        bagaViteza(power,power,power,power);
-        sleep(300);
-        bagaViteza(0,0,0,0);
-    }
-    public void poquitojos(double power) throws InterruptedException {
-        bagaViteza(power,power,power,power);
-        sleep(300);
-        bagaViteza(0,0,0,0);
+    public void hoooma(){
+        bottom.setPower(0);
+        top.setPower(0);
     }
 
-    public void intakeautonom(double power) throws InterruptedException {
-        marus.setPower(power);
-        sleep(700);
-        marus.setPower(0);
+    public void apuca(double position){
+        gheara.setPosition(position);
     }
 
-    public void setIntake(double power) {
-        marus.setPower(power);
-    }
-
-//    public void testTakeIt(){
-//        if(this.distanceSensor.getDistance(DistanceUnit.CM) <= 11.5){
-//
-//        }
-//    }
-
-
-    public void putereSt(double power){
-        glisiera1.setPower(power);
-    }
-
-    public void putereDr(double power){
-        glisiera2.setPower(power);
-    }
 }

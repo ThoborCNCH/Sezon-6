@@ -11,24 +11,16 @@
  */
 package org.firstinspires.ftc.teamcode.Amin;
 
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.LOW_POWER;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.MEDIUM_POWER;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_BRAT_MARKER;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_BRAT_TELEOP;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_GHEARA_MARKER;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_GLISIERA;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_INTAKE;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POWER_RATA;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POZITIE_ARUNCA_CUVA;
-import static org.firstinspires.ftc.teamcode.Amin.NuSeMaiUmbla.POZITIE_NORMAL_CUVA;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_reven;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis;
+import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.LOW_POWER;
+import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.MEDIUM_POWER;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -37,6 +29,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class TeleOpulAlaBlana extends LinearOpMode {
 
     private double v1, v2, v3, v4;
+    private boolean test = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,7 +38,6 @@ public class TeleOpulAlaBlana extends LinearOpMode {
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
 
-        robot.glisiera2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 //        waitForStart();
 
@@ -64,6 +56,7 @@ public class TeleOpulAlaBlana extends LinearOpMode {
                             -gamepad1.right_stick_x * 0.8
                     )
             );
+
 
             // miscari din dpad uri
             while (gamepad1.dpad_down) {
@@ -86,23 +79,40 @@ public class TeleOpulAlaBlana extends LinearOpMode {
             while (gamepad1.left_trigger != 0) {
                 robot.bagaViteza(-LOW_POWER, LOW_POWER, -LOW_POWER, LOW_POWER);
             }
-            // glisiera
-            if (gamepad2.right_bumper) {
-                robot.setGliseraPower(POWER_GLISIERA);
-            } else if (gamepad2.left_bumper) {
-                robot.setGliseraPower(-POWER_GLISIERA);
-            } else {
-                robot.setGliseraPower(0);
+
+            while (gamepad1.right_bumper) {
+                robot.se_ridica_brat(1);
+                test = true;
             }
 
-            // intake
-            if (gamepad2.left_trigger!=0) {
-                robot.setIntake(POWER_INTAKE);
-            } else if (gamepad2.right_trigger !=0 ) {
-                robot.setIntake(-POWER_INTAKE);
-            } else {
-                robot.setIntake(0);
+            while (gamepad1.left_bumper) {
+                robot.se_ridica_brat(-1);
+                test = false;
             }
+
+            if (test) {
+                robot.se_ridica_brat(power_reven);
+
+            } else
+                robot.se_ridica_brat(0);
+
+            while (gamepad2.left_trigger != 0) {
+                robot.rotesteThing(1);
+            }
+            while (gamepad2.right_trigger != 0) {
+                robot.rotesteThing(-1);
+            }
+            robot.hoooma();
+
+//            robot.rotesteThing(0);
+
+            if (gamepad2.a) {
+                robot.apuca(poz_deschis);
+            }
+            if (gamepad2.b) {
+                robot.apuca(poz_inchis);
+            }
+
         }
 
         robot.update();
