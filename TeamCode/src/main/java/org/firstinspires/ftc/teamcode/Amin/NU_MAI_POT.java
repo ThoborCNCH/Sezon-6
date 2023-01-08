@@ -10,9 +10,13 @@ public class NU_MAI_POT {
     public static double LR_DIRECTION = 1;
     public static double RR_DIRECTION = 0;
 
+    public static double power_top = 0.3;
+
     public  static double power_reven = 0.1;
-    public  static double poz_deschis = 0.6;
-    public  static double poz_inchis = 0.4;
+    public  static double poz_deschis_st = 0.8;
+    public  static double poz_deschis_dr = 0.5;
+    public  static double poz_inchis_st =0.66;
+    public  static double poz_inchis_dr = 0.6;
 
     public static boolean GLISIERE_ENCODER = true;
     public static double DISTANTA_GLISIERA = 74; //CM

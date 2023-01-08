@@ -85,8 +85,8 @@ public class SampleMecanumDrive extends MecanumDrive {
     private final DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private final List<DcMotorEx> motors;
     private final DcMotor brat;
-    private CRServo top, bottom;
-    private Servo gheara;
+    private CRServo top;
+    private Servo gheara_stanga, gheara_dreapta;
 
     private final BNO055IMU imu;
     private final VoltageSensor batteryVoltageSensor;
@@ -122,11 +122,9 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightFront = hardwareMap.get(DcMotorEx.class, "rf");
 
         top = hardwareMap.get(CRServo.class, "sus");
-        bottom = hardwareMap.get(CRServo.class, "jos");
 
-        gheara = hardwareMap.servo.get("gheara");
-
-        bottom.setDirection(CRServo.Direction.REVERSE);
+        gheara_stanga = hardwareMap.servo.get("gheara_stanga");
+        gheara_dreapta = hardwareMap.servo.get("gheara_dreapta");
 
         brat = hardwareMap.dcMotor.get("brat");
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
@@ -370,17 +368,17 @@ public class SampleMecanumDrive extends MecanumDrive {
         brat.setPower(power);
     }
 
-    public void rotesteThing(double speed){
-        bottom.setPower(speed);
+    public void rotesteThing(double speed) {
         top.setPower(speed);
     }
-    public void hoooma(){
-        bottom.setPower(0);
+
+    public void hoooma() {
         top.setPower(0);
     }
 
-    public void apuca(double position){
-        gheara.setPosition(position);
+    public void apuca(double position_st, double position_dr) {
+        gheara_stanga.setPosition(position_st);
+        gheara_dreapta.setPosition(position_dr);
     }
 
 }

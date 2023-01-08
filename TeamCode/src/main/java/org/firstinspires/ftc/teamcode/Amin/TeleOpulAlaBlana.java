@@ -12,8 +12,11 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_reven;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_top;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_dr;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_st;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_dr;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_st;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.LOW_POWER;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.MEDIUM_POWER;
 
@@ -91,26 +94,27 @@ public class TeleOpulAlaBlana extends LinearOpMode {
             }
 
             if (test) {
-                robot.se_ridica_brat(power_reven);
+//                robot.se_ridica_brat(power_reven);
 
-            } else
-                robot.se_ridica_brat(0);
+            }
+
+            robot.se_ridica_brat(0);
 
             while (gamepad2.left_trigger != 0) {
-                robot.rotesteThing(1);
+                robot.rotesteThing(power_top);
             }
             while (gamepad2.right_trigger != 0) {
-                robot.rotesteThing(-1);
+                robot.rotesteThing(-power_top);
             }
             robot.hoooma();
 
 //            robot.rotesteThing(0);
 
             if (gamepad2.a) {
-                robot.apuca(poz_deschis);
+                robot.apuca(poz_deschis_st, poz_deschis_dr);
             }
             if (gamepad2.b) {
-                robot.apuca(poz_inchis);
+                robot.apuca(poz_inchis_st, poz_inchis_dr);
             }
 
         }
