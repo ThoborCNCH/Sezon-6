@@ -67,11 +67,11 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     //    public static PIDCoefficients TRANSLATIONAL_PIDc = new PIDCoefficients(1, 0, 0);
 //    public static PIDCoefficients HEADING_PID = new PIDCoefficients(1, 0, 0);
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(6, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
     //    public static double LATERAL_MULTIPLIER = 1.831658226804376;
-    public static double LATERAL_MULTIPLIER = 1.009344617100895;
+    public static double LATERAL_MULTIPLIER = 1;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -125,7 +125,6 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         gheara_stanga = hardwareMap.servo.get("gheara_stanga");
         gheara_dreapta = hardwareMap.servo.get("gheara_dreapta");
-
         brat = hardwareMap.dcMotor.get("brat");
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -166,7 +165,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        TEST PENTRU GLISIERE PE ENCODER
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-//        setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
+         setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
 
 //        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
@@ -364,8 +363,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightRear.setPower(rrp);
     }
 
-    public void se_ridica_brat(double power) {
-        brat.setPower(power);
+    public void se_ridica_brat(double power_brat, double power_forta) {
+        brat.setPower(power_brat);
     }
 
     public void rotesteThing(double speed) {

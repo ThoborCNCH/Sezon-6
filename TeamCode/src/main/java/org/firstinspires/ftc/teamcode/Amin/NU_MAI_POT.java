@@ -11,6 +11,8 @@ public class NU_MAI_POT {
     public static double RR_DIRECTION = 0;
 
     public static double power_top = 0.3;
+    public static double power_brat_dc = 1;
+    public static double power_brat_cr = 1;
 
     public  static double power_reven = 0.1;
     public  static double poz_deschis_st = 0.8;

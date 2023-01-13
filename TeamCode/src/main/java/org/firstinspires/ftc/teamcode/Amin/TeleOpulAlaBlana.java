@@ -11,6 +11,8 @@
  */
 package org.firstinspires.ftc.teamcode.Amin;
 
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_brat_cr;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_brat_dc;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_reven;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_top;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_dr;
@@ -41,13 +43,8 @@ public class TeleOpulAlaBlana extends LinearOpMode {
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
 
-
-//        waitForStart();
-
         while (!opModeIsActive() && !isStopRequested()) {
         }
-
-//        if (isStopRequested()) return;
 
         while (opModeIsActive() && !isStopRequested()) {
             // joysticks
@@ -84,21 +81,20 @@ public class TeleOpulAlaBlana extends LinearOpMode {
             }
 
             while (gamepad1.right_bumper) {
-                robot.se_ridica_brat(1);
+                robot.se_ridica_brat(power_brat_dc, power_brat_cr);
                 test = true;
             }
 
             while (gamepad1.left_bumper) {
-                robot.se_ridica_brat(-1);
+                robot.se_ridica_brat(-power_brat_dc, -power_brat_cr);
                 test = false;
             }
 
             if (test) {
 //                robot.se_ridica_brat(power_reven);
-
             }
 
-            robot.se_ridica_brat(0);
+            robot.se_ridica_brat(0, 0);
 
             while (gamepad2.left_trigger != 0) {
                 robot.rotesteThing(power_top);
