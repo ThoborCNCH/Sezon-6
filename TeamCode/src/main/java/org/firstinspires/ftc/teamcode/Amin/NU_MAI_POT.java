@@ -10,6 +10,11 @@ public class NU_MAI_POT {
     public static double LR_DIRECTION = 1;
     public static double RR_DIRECTION = 0;
 
+    public static double fr = 1;
+    public static double lr = 1;
+    public static double rr = 1;
+
+
     public static double power_top = 0.3;
     public static double power_brat_dc = 1;
     public static double power_brat_cr = 1;

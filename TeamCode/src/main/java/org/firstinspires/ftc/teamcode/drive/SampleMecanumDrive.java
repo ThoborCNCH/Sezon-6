@@ -89,7 +89,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private Servo gheara_stanga, gheara_dreapta;
 
     private final BNO055IMU imu;
-    private final VoltageSensor batteryVoltageSensor;
+    public final VoltageSensor batteryVoltageSensor;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
@@ -165,7 +165,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        TEST PENTRU GLISIERE PE ENCODER
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-         setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
+         setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
 //        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 

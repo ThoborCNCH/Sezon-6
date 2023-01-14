@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.drive;
 
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.lr;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.rr;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.fr;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.ActivamBore;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.teamcode.util.Encoder;
 
 import java.util.Arrays;
@@ -34,10 +38,10 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
     public static double LATERAL_DISTANCE = 2.8977; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = 6.01965434; // in; offset of the lateral wheel
-//6.51965434
-    public static double X_MULTIPLIER = 1.101523774554801; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 1.131676893672669; // Multiplier in the Y direction
+    public static double FORWARD_OFFSET = -5.314961; // in; offset of the lateral wheel
+    //6.51965434
+    public static double X_MULTIPLIER = 1.088270858524788; // Multiplier in the X direction
+    public static double Y_MULTIPLIER = 1; // Multiplier in the Y direction
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
@@ -53,7 +57,12 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "f"));
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
-        frontEncoder.setDirection(Encoder.Direction.REVERSE);
+        if (fr != 0)
+            frontEncoder.setDirection(Encoder.Direction.REVERSE);
+        if (lr != 0)
+            leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        if (rr != 0)
+            rightEncoder.setDirection(Encoder.Direction.REVERSE);
 
     }
 
@@ -78,20 +87,10 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         //  competing magnetic encoders), change Encoder.getRawVelocity() to Encoder.getCorrectedVelocity() to enable a
         //  compensation method
 
-        if(ActivamBore == 0)
-        {
-            return Arrays.asList(
-                    encoderTicksToInches(leftEncoder.getRawVelocity()) * X_MULTIPLIER,
-                    encoderTicksToInches(rightEncoder.getRawVelocity()) * X_MULTIPLIER,
-                    encoderTicksToInches(frontEncoder.getRawVelocity()) * Y_MULTIPLIER
-            );
-        }
-        else {
-            return Arrays.asList(
-                    encoderTicksToInches(leftEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
-                    encoderTicksToInches(rightEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
-                    encoderTicksToInches(frontEncoder.getCorrectedVelocity()) * Y_MULTIPLIER
-            );
-        }
+        return Arrays.asList(
+                encoderTicksToInches(leftEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
+                encoderTicksToInches(rightEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
+                encoderTicksToInches(frontEncoder.getCorrectedVelocity()) * Y_MULTIPLIER
+        );
     }
 }

@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -54,6 +55,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
 @Autonomous(group = "drive")
 public class DriveVelocityPIDTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
+    private VoltageSensor batteryVoltageSensor;
 
     enum Mode {
         DRIVER_MODE,
@@ -78,6 +80,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Mode mode = Mode.TUNING_MODE;
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
         double lastKp = MOTOR_VELO_PID.p;
         double lastKi = MOTOR_VELO_PID.i;
@@ -140,7 +143,8 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                 case DRIVER_MODE:
                     if (gamepad1.b) {
                         drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+                        telemetry.addLine(String.valueOf(drive.batteryVoltageSensor.getVoltage()));
+//                        telemetry.update();
                         mode = Mode.TUNING_MODE;
                         movingForwards = true;
                         activeProfile = generateProfile(movingForwards);
