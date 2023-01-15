@@ -21,6 +21,10 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_dr;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_st;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.LOW_POWER;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.MEDIUM_POWER;
+import static org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer.GEAR_RATIO;
+import static org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer.TICKS_PER_REV;
+import static org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer.WHEEL_RADIUS;
+import static org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer.X_MULTIPLIER;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -28,6 +32,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 
 //disper sa moara mama
 @TeleOp()
@@ -41,7 +46,7 @@ public class TeleOpulAlaBlana extends LinearOpMode {
         SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
 
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
+//        robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
 
         while (!opModeIsActive() && !isStopRequested()) {
         }
@@ -116,10 +121,21 @@ public class TeleOpulAlaBlana extends LinearOpMode {
         }
 
         robot.update();
+        Pose2d poseEstimate = robot.getPoseEstimate();
+        StandardTrackingWheelLocalizer a = new StandardTrackingWheelLocalizer(hardwareMap);
+        telemetry.addData("left:", encoderTicksToInches(a.leftEncoder.getCurrentPosition()) * X_MULTIPLIER);
+        telemetry.addData("right:", encoderTicksToInches(a.rightEncoder.getCurrentPosition()) * X_MULTIPLIER);
+        telemetry.addData("front:", encoderTicksToInches(a.frontEncoder.getCurrentPosition()) * X_MULTIPLIER);
 
+        telemetry.addData("x", poseEstimate.getX());
+        telemetry.addData("y", poseEstimate.getY());
+        telemetry.addData("heading", poseEstimate.getHeading());
+        telemetry.update();
 
     }
-
+    public static double encoderTicksToInches(double ticks) {
+        return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
+    }
 
 }
 
