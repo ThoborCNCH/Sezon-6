@@ -33,6 +33,7 @@ public class LocalizationTest extends LinearOpMode {
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        drive.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
+        drive.setPoseEstimate(new Pose2d(32.47, -61.5, Math.toRadians(90)));
 
         waitForStart();
 
@@ -48,10 +49,6 @@ public class LocalizationTest extends LinearOpMode {
             drive.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
-            StandardTrackingWheelLocalizer a = new StandardTrackingWheelLocalizer(hardwareMap);
-            telemetry.addData("left:", encoderTicksToInches(a.leftEncoder.getCurrentPosition()) * X_MULTIPLIER);
-            telemetry.addData("right:", encoderTicksToInches(a.rightEncoder.getCurrentPosition()) * X_MULTIPLIER);
-            telemetry.addData("front:", encoderTicksToInches(a.frontEncoder.getCurrentPosition()) * X_MULTIPLIER);
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());

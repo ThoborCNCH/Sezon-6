@@ -67,8 +67,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     //    public static PIDCoefficients TRANSLATIONAL_PIDc = new PIDCoefficients(1, 0, 0);
 //    public static PIDCoefficients HEADING_PID = new PIDCoefficients(1, 0, 0);
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(3, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(7, 0, 0);
 
     //    public static double LATERAL_MULTIPLIER = 1.831658226804376;
     public static double LATERAL_MULTIPLIER = 1.221643366873552;
@@ -164,9 +164,9 @@ public class SampleMecanumDrive extends MecanumDrive {
 
 //        TEST PENTRU GLISIERE PE ENCODER
         // TODO: if desired, use setLocalizer() to change the localization method
-        // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-         setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
-
+//         for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
+//         setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
+        setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
 //        setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, HEADING_PID);

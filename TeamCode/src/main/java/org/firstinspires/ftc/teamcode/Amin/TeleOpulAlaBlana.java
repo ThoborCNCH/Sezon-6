@@ -122,11 +122,6 @@ public class TeleOpulAlaBlana extends LinearOpMode {
 
         robot.update();
         Pose2d poseEstimate = robot.getPoseEstimate();
-        StandardTrackingWheelLocalizer a = new StandardTrackingWheelLocalizer(hardwareMap);
-        telemetry.addData("left:", encoderTicksToInches(a.leftEncoder.getCurrentPosition()) * X_MULTIPLIER);
-        telemetry.addData("right:", encoderTicksToInches(a.rightEncoder.getCurrentPosition()) * X_MULTIPLIER);
-        telemetry.addData("front:", encoderTicksToInches(a.frontEncoder.getCurrentPosition()) * X_MULTIPLIER);
-
         telemetry.addData("x", poseEstimate.getX());
         telemetry.addData("y", poseEstimate.getY());
         telemetry.addData("heading", poseEstimate.getHeading());

@@ -47,10 +47,6 @@ public class StrafeTest extends LinearOpMode {
         drive.followTrajectory(trajectory);
 
         Pose2d poseEstimate = drive.getPoseEstimate();
-        StandardTrackingWheelLocalizer a = new StandardTrackingWheelLocalizer(hardwareMap);
-        telemetry.addData("left:", encoderTicksToInches(a.leftEncoder.getCurrentPosition()) * X_MULTIPLIER);
-        telemetry.addData("right:", encoderTicksToInches(a.rightEncoder.getCurrentPosition()) * X_MULTIPLIER);
-        telemetry.addData("front:", encoderTicksToInches(a.frontEncoder.getCurrentPosition()) * X_MULTIPLIER);
         telemetry.addData("finalX", poseEstimate.getX());
         telemetry.addData("finalY", poseEstimate.getY());
         telemetry.addData("finalHeading", poseEstimate.getHeading());
