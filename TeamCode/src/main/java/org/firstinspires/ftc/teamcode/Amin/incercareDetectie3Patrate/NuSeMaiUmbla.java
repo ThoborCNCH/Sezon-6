@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
-@Config()
 public class NuSeMaiUmbla {
     public static double FULL_POWER = 1;
     public static double MEDIUM_POWER = 0.5;
