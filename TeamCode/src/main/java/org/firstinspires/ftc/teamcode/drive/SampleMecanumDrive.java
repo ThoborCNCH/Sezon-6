@@ -84,9 +84,9 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private final DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private final List<DcMotorEx> motors;
-    private final DcMotor brat;
+//    private final DcMotor brat;
     private CRServo top;
-    private Servo gheara_stanga, gheara_dreapta;
+    public Servo gheara_stanga, gheara_dreapta;
 
     private final BNO055IMU imu;
     public final VoltageSensor batteryVoltageSensor;
@@ -125,11 +125,12 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         gheara_stanga = hardwareMap.servo.get("gheara_stanga");
         gheara_dreapta = hardwareMap.servo.get("gheara_dreapta");
-        brat = hardwareMap.dcMotor.get("brat");
+//        brat = hardwareMap.dcMotor.get("brat"); ---------
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
-        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); ------
 
+//        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER); -----
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
             motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
@@ -363,9 +364,9 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightRear.setPower(rrp);
     }
 
-    public void se_ridica_brat(double power_brat, double power_forta) {
-        brat.setPower(power_brat);
-    }
+//    public void se_ridica_brat(double power_brat) {
+//        brat.setPower(power_brat);
+//    }
 
     public void rotesteThing(double speed) {
         top.setPower(speed);

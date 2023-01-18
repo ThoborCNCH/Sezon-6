@@ -86,20 +86,20 @@ public class TeleOpulAlaBlana extends LinearOpMode {
             }
 
             while (gamepad1.right_bumper) {
-                robot.se_ridica_brat(power_brat_dc, power_brat_cr);
+                robot.se_ridica_brat(power_brat_dc);
                 test = true;
             }
 
             while (gamepad1.left_bumper) {
-                robot.se_ridica_brat(-power_brat_dc, -power_brat_cr);
+                robot.se_ridica_brat(-power_brat_dc);
                 test = false;
             }
 
             if (test) {
-//                robot.se_ridica_brat(power_reven);
+                robot.se_ridica_brat(power_reven);
             }
 
-            robot.se_ridica_brat(0, 0);
+            robot.se_ridica_brat(0);
 
             while (gamepad2.left_trigger != 0) {
                 robot.rotesteThing(power_top);
@@ -111,10 +111,21 @@ public class TeleOpulAlaBlana extends LinearOpMode {
 
 //            robot.rotesteThing(0);
 
+//            if (gamepad2.x) {
+////                robot.apuca(poz_deschis_st, poz_deschis_dr);
+//                robot.gheara_dreapta.setPosition(1);
+//            }
+//            if (gamepad2.y) {
+//                robot.gheara_dreapta.setPosition(-1);
+////                robot.apuca(poz_inchis_st, poz_inchis_dr);
+//            }
+
             if (gamepad2.a) {
                 robot.apuca(poz_deschis_st, poz_deschis_dr);
+//                robot.gheara_stanga.setPosition(1);
             }
             if (gamepad2.b) {
+//                robot.gheara_stanga.setPosition(-1);
                 robot.apuca(poz_inchis_st, poz_inchis_dr);
             }
 
