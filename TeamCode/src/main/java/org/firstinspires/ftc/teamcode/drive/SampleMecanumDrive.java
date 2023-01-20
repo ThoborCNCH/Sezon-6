@@ -84,7 +84,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private final DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private final List<DcMotorEx> motors;
-//    private final DcMotor brat;
+    public final DcMotor brat, brat_pe_sub;
     private CRServo top;
     public Servo gheara_stanga, gheara_dreapta;
 
@@ -125,12 +125,16 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         gheara_stanga = hardwareMap.servo.get("gheara_stanga");
         gheara_dreapta = hardwareMap.servo.get("gheara_dreapta");
-//        brat = hardwareMap.dcMotor.get("brat"); ---------
+        brat = hardwareMap.dcMotor.get("brat");
+        brat_pe_sub = hardwareMap.dcMotor.get("brat_pe_sub");
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
-//        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); ------
+        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        brat_pe_sub.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        brat.setDirection(DcMotorSimple.Direction.REVERSE);
+//        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        brat_pe_sub.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER); -----
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
             motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
@@ -162,6 +166,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         if (RR_DIRECTION == 1) {
             rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         }
+
+//        brat.setTargetPosition(brat.getCurrentPosition());
+//        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        brat.setPower(1);
 
 //        TEST PENTRU GLISIERE PE ENCODER
         // TODO: if desired, use setLocalizer() to change the localization method
@@ -364,9 +372,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightRear.setPower(rrp);
     }
 
-//    public void se_ridica_brat(double power_brat) {
-//        brat.setPower(power_brat);
-//    }
+    public void se_ridica_brat(double power_brat) {
+        brat.setPower(power_brat);
+        brat_pe_sub.setPower(-power_brat);
+    }
 
     public void rotesteThing(double speed) {
         top.setPower(speed);
@@ -379,6 +388,33 @@ public class SampleMecanumDrive extends MecanumDrive {
     public void apuca(double position_st, double position_dr) {
         gheara_stanga.setPosition(position_st);
         gheara_dreapta.setPosition(position_dr);
+    }
+
+    public void unstop_brat_special(double directie)
+    {
+        brat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        brat.setPower(directie);
+    }
+
+    public void ridica_brat_special(double directie)
+    {
+        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        brat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        int pozActual = brat.getCurrentPosition();
+        brat.setTargetPosition(brat.getCurrentPosition());
+        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brat.setPower(1);
+//        if(directie > 0)
+//        {
+//            int pozUrm = pozActual + 100;
+//            brat.setTargetPosition(pozUrm);
+//        }else
+//        {
+//            int pozUrm = pozActual - 100;
+//            brat.setTargetPosition(pozUrm);
+//        }
+//        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        brat.setPower(1);
     }
 
 }

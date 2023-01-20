@@ -23,7 +23,7 @@ public class GlisiereHandler extends LinearOpMode {
         brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void miscaLa(int distance)
+    public void ridicaLa(int distance)
     {
         int positieActuala = brat.getCurrentPosition();
         int pozitieFinala = positieActuala + distance;
