@@ -27,6 +27,7 @@ import static org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalize
 import static org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer.X_MULTIPLIER;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,6 +37,7 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 
 //disper sa moara mama
 @TeleOp()
+@Disabled
 public class TeleOpulAlaBlana extends LinearOpMode {
 
     private double v1, v2, v3, v4;
@@ -46,6 +48,10 @@ public class TeleOpulAlaBlana extends LinearOpMode {
         SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
 
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        robot.brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
 
         while (!opModeIsActive() && !isStopRequested()) {
@@ -53,6 +59,8 @@ public class TeleOpulAlaBlana extends LinearOpMode {
 
         while (opModeIsActive() && !isStopRequested()) {
             // joysticks
+
+
 
             robot.setWeightedDrivePower(
                     new Pose2d(
@@ -85,26 +93,41 @@ public class TeleOpulAlaBlana extends LinearOpMode {
                 robot.bagaViteza(-LOW_POWER, LOW_POWER, -LOW_POWER, LOW_POWER);
             }
 
-            while (gamepad1.right_bumper) {
+            while (gamepad2.right_bumper) {
                 robot.se_ridica_brat(power_brat_dc);
+                if (gamepad2.left_trigger != 0) {
+                    robot.rotesteThing(power_top);
+                }
+                if (gamepad2.right_trigger != 0) {
+                    robot.rotesteThing(-power_top);
+                }
+
+                robot.hoooma();
+                if (gamepad2.a) {
+                    robot.apuca(poz_deschis_st, poz_deschis_dr);
+//                robot.gheara_stanga.setPosition(1);
+                }
+                if (gamepad2.b) {
+//                robot.gheara_stanga.setPosition(-1);
+                    robot.apuca(poz_inchis_st, poz_inchis_dr);
+                }
                 test = true;
             }
 
-            while (gamepad1.left_bumper) {
+            while (gamepad2.left_bumper) {
                 robot.se_ridica_brat(-power_brat_dc);
                 test = false;
             }
 
-            if (test) {
-                robot.se_ridica_brat(power_reven);
-            }
+//                robot.se_ridica_brat(power_reven);
+//            }
 
             robot.se_ridica_brat(0);
 
-            while (gamepad2.left_trigger != 0) {
+            if (gamepad2.left_trigger != 0) {
                 robot.rotesteThing(power_top);
             }
-            while (gamepad2.right_trigger != 0) {
+            if (gamepad2.right_trigger != 0) {
                 robot.rotesteThing(-power_top);
             }
             robot.hoooma();
