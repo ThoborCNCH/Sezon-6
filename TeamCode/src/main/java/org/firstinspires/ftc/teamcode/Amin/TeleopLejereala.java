@@ -21,10 +21,11 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class TeleopLejereala extends LinearOpMode {
 
     boolean test = false;
+    SampleMecanumDrive robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive robot = new SampleMecanumDrive(hardwareMap);
+        robot = new SampleMecanumDrive(hardwareMap);
 
         robot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        robot.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
@@ -34,13 +35,11 @@ public class TeleopLejereala extends LinearOpMode {
         }
 
         while (opModeIsActive() && !isStopRequested()) {
-
-
-
+//          joy-stick
             robot.setWeightedDrivePower(
                     new Pose2d(
-                            -gamepad1.left_stick_y ,
-                            -gamepad1.left_stick_x ,
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
                             -gamepad1.right_stick_x
                     )
             );
@@ -92,9 +91,9 @@ public class TeleopLejereala extends LinearOpMode {
 
                 robot.setWeightedDrivePower(
                         new Pose2d(
-                                -gamepad1.left_stick_y * 0.8,
-                                -gamepad1.left_stick_x * 0.8,
-                                -gamepad1.right_stick_x * 0.8
+                                -gamepad1.left_stick_y,
+                                -gamepad1.left_stick_x,
+                                -gamepad1.right_stick_x
                         )
                 );
 
@@ -132,9 +131,9 @@ public class TeleopLejereala extends LinearOpMode {
 
                 robot.setWeightedDrivePower(
                         new Pose2d(
-                                -gamepad1.left_stick_y * 0.8,
-                                -gamepad1.left_stick_x * 0.8,
-                                -gamepad1.right_stick_x * 0.8
+                                -gamepad1.left_stick_y,
+                                -gamepad1.left_stick_x,
+                                -gamepad1.right_stick_x
                         )
                 );
 
@@ -155,7 +154,7 @@ public class TeleopLejereala extends LinearOpMode {
                 while (gamepad2.left_trigger != 0) {
                     robot.rotesteThing(power_top);
                 }
-                while (gamepad2.right_trigger!=0) {
+                while (gamepad2.right_trigger != 0) {
                     robot.rotesteThing(-power_top);
                 }
                 robot.hoooma();
@@ -167,10 +166,10 @@ public class TeleopLejereala extends LinearOpMode {
             } else if (gamepad2.b) {
                 robot.apuca(poz_inchis_st, poz_inchis_dr);
             }
-            while (gamepad2.left_trigger!=0) {
+            while (gamepad2.left_trigger != 0) {
                 robot.rotesteThing(power_top);
             }
-            while (gamepad2.right_trigger!=0) {
+            while (gamepad2.right_trigger != 0) {
                 robot.rotesteThing(-power_top);
             }
             robot.hoooma();
