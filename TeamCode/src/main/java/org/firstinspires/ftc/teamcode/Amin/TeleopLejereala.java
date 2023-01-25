@@ -34,7 +34,7 @@ public class TeleopLejereala extends LinearOpMode {
         }
 
         while (opModeIsActive() && !isStopRequested()) {
-            // joysticks
+
 
 
             robot.setWeightedDrivePower(

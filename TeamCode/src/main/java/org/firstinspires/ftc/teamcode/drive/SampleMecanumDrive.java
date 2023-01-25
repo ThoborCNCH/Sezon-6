@@ -85,7 +85,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private final DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private final List<DcMotorEx> motors;
     public final DcMotor brat, brat_pe_sub;
-    private CRServo top;
+    public CRServo top;
     public Servo gheara_stanga, gheara_dreapta;
 
     private final BNO055IMU imu;
@@ -134,6 +134,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         brat.setDirection(DcMotorSimple.Direction.REVERSE);
 //        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        brat_pe_sub.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();

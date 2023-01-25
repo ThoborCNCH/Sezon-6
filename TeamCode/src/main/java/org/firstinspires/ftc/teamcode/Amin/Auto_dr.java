@@ -77,6 +77,7 @@ public class Auto_dr extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
+            robot.top.setPower(0);
             ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
 //            tagOfInterest.id = 2;
 
