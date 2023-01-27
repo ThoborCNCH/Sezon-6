@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_st_AUTO
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_dr;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_st;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -143,39 +144,38 @@ public class Auto_dr extends LinearOpMode {
                 .lineToLinearHeading(PRE_POSITION_DR_RED_BLUE,
                         SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(time -> time * 0, () -> {
-                    robot.se_ridica_brat(power_brat_dc);
-                })
+//                .addTemporalMarker(time -> time * 0, () -> {
+//                    robot.se_ridica_brat(power_brat_dc);
+//                })
                 .build();
         robot.followTrajectory(go_pune);
+        robot.se_ridica_brat(power_brat_dc);
 
-        sleep(200);
+//        sleep(200);
+        ;
+        robot.apuca(robot.gheara_stanga.getPosition(), robot.gheara_dreapta.getPosition());
 
         Trajectory efectiv = robot.trajectoryBuilder(go_pune.end())
                 .splineToConstantHeading(JUNCTION_PUNE_DR_RED_BLUE_VECTOR, Math.toRadians(90))
-                .addTemporalMarker(time -> time * 0, () -> {
-                    robot.se_ridica_brat(power_brat_dc);
-                })
+//                .addTemporalMarker(time -> time * 0, () -> {
+//                    robot.se_ridica_brat(power_brat_dc);
+//                })
+
                 .build();
 
         robot.followTrajectory(efectiv);
-        sleep(1000);
-        robot.se_ridica_brat(0);
 
-        sleep(200);
-        robot.apuca(poz_deschis_st_AUTO, poz_deschis_dr_AUTO);
+        robot.se_ridica_brat(power_brat_dc);
+
+//        sleep(1000);
 
         TrajectorySequence reven = robot.trajectorySequenceBuilder(efectiv.end())
+                .addTemporalMarker(0, () -> {
+                    robot.apuca(poz_deschis_st_AUTO, poz_deschis_dr_AUTO);
+                })
+                .waitSeconds(2)
                 .back(3)
-                .strafeLeft(17)
-
-//                .splineToLinearHeading(INTRE_TOT_DR_RED_BLUE, Math.toRadians(90),
-//                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)
-//                )
-////                    .advtoqrhit lRhg 9qru 3 0IW3dTemporalMarker(time -> time * 0.8, () -> {
-//                        robot.se_ridica_brat(-power_brat_dc);
-//                    })
+                .strafeLeft(13)
                 .build();
         robot.se_ridica_brat(0);
 
@@ -299,5 +299,16 @@ public class Auto_dr extends LinearOpMode {
         robot.se_ridica_brat(0);
 
         robot.followTrajectorySequence(reven);
+    }
+
+    private void pune_con(Pose2d pozitie) {
+        TrajectorySequence reven = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
+                .back(3)
+                .strafeRight(14)
+                .turn(90)
+                .build();
+
+        robot.followTrajectorySequence(reven);
+//        return robot.
     }
 }

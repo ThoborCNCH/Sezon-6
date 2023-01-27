@@ -148,6 +148,8 @@ public class Auto_st extends LinearOpMode {
                 })
                 .build();
         robot.followTrajectory(go_pune);
+//        --RIDICA ADAUGAT IARA ESTE NOU
+        robot.se_ridica_brat(power_brat_dc);
 
         sleep(200);
 
@@ -160,6 +162,7 @@ public class Auto_st extends LinearOpMode {
 
         robot.followTrajectory(efectiv);
         sleep(1000);
+//        --------AICI IN DREAPTA, BRATUL PRIMEA IARA PUTERE, AICI ESTE 0
         robot.se_ridica_brat(0);
 
         sleep(200);
@@ -292,6 +295,7 @@ public class Auto_st extends LinearOpMode {
         sleep(200);
         robot.apuca(poz_deschis_st_AUTO, poz_deschis_dr_AUTO);
 
+//        ---------DE CE STRAFE DACA EL TREBUIE SA REVINA IN POZITIA DINTRE || LINETO INTRE TOT
         TrajectorySequence reven = robot.trajectorySequenceBuilder(efectiv.end())
                 .back(3)
                 .strafeRight(14)

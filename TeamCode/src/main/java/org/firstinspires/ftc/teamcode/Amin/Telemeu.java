@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_coborare;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_thing_slow;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.LOW_POWER;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.MEDIUM_POWER;
 
@@ -13,7 +15,6 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @TeleOp
 public class Telemeu extends LinearOpMode {
-
     SampleMecanumDrive robot;
     double mana;
     double brat;
@@ -25,8 +26,7 @@ public class Telemeu extends LinearOpMode {
 
         waitForStart();
 
-        while(opModeIsActive())
-        {
+        while (opModeIsActive()) {
 
 //          MISCARE JOYSTICK
             robot.setWeightedDrivePower(
@@ -58,22 +58,41 @@ public class Telemeu extends LinearOpMode {
                 robot.bagaViteza(-LOW_POWER, LOW_POWER, -LOW_POWER, LOW_POWER);
             }
 
-
-            if(gamepad2.left_bumper || gamepad2.right_bumper)
-            {
-
-                if(gamepad2.left_bumper)
+            if (gamepad2.dpad_up || gamepad2.dpad_down) {
+                if (gamepad2.dpad_up)
                     brat = -1;
                 else
                     brat = 1;
                 robot.se_ridica_brat(brat);
+            } else {
+                robot.se_ridica_brat(0);
 
-                if(gamepad2.left_trigger != 0 || gamepad2.right_trigger != 0)
-                {
-                    if(gamepad2.left_trigger != 0)
-                        mana = -gamepad2.left_trigger;
-                    else if(gamepad2.right_trigger != 0)
-                        mana = gamepad2.right_trigger;
+            }
+
+//            ASTA NOUA
+            if (gamepad2.dpad_right || gamepad2.dpad_left) {
+                if (gamepad2.dpad_left)
+                    mana = power_thing_slow;
+                else if (gamepad2.dpad_right)
+                    mana = -power_thing_slow;
+                else
+                    mana = 0;
+                robot.rotesteThing(mana);
+            } else
+                robot.rotesteThing(0);
+
+            if (gamepad2.left_bumper || gamepad2.right_bumper) {
+                if (gamepad2.left_bumper)
+                    brat = power_coborare;
+                else
+                    brat = 1;
+                robot.se_ridica_brat(brat);
+
+                if (gamepad2.left_trigger != 0 || gamepad2.right_trigger != 0) {
+                    if (gamepad2.left_trigger != 0)
+                        mana = gamepad2.left_trigger;
+                    else if (gamepad2.right_trigger != 0)
+                        mana = -gamepad2.right_trigger;
                     else
                         mana = 0;
 
@@ -81,20 +100,19 @@ public class Telemeu extends LinearOpMode {
                 } else
                     robot.rotesteThing(0);
 
-                if(gamepad2.a)
+                if (gamepad2.a)
                     robot.apuca(NU_MAI_POT.poz_deschis_st, NU_MAI_POT.poz_deschis_dr);
-                if(gamepad2.b)
+                if (gamepad2.b)
                     robot.apuca(NU_MAI_POT.poz_inchis_st, NU_MAI_POT.poz_inchis_dr);
 
             } else {
                 robot.se_ridica_brat(0);
 
-                if(gamepad2.left_trigger != 0 || gamepad2.right_trigger != 0)
-                {
-                    if(gamepad2.left_trigger != 0)
-                        mana = -gamepad2.left_trigger;
-                    else if(gamepad2.right_trigger != 0)
-                        mana = gamepad2.right_trigger;
+                if (gamepad2.left_trigger != 0 || gamepad2.right_trigger != 0) {
+                    if (gamepad2.left_trigger != 0)
+                        mana = gamepad2.left_trigger;
+                    else if (gamepad2.right_trigger != 0)
+                        mana = -gamepad2.right_trigger;
                     else
                         mana = 0;
 
@@ -102,15 +120,11 @@ public class Telemeu extends LinearOpMode {
                 } else
                     robot.rotesteThing(0);
 
-                if(gamepad2.a)
+                if (gamepad2.a)
                     robot.apuca(NU_MAI_POT.poz_deschis_st, NU_MAI_POT.poz_deschis_dr);
-                if(gamepad2.b)
+                if (gamepad2.b)
                     robot.apuca(NU_MAI_POT.poz_inchis_st, NU_MAI_POT.poz_inchis_dr);
-
             }
-
         }
-
-
     }
 }
