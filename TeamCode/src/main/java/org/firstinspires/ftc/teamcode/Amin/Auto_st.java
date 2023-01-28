@@ -170,7 +170,7 @@ public class Auto_st extends LinearOpMode {
 
         TrajectorySequence reven = robot.trajectorySequenceBuilder(efectiv.end())
                 .back(3)
-                .strafeLeft(17)
+                .strafeLeft(34)
 
 //                .splineToLinearHeading(INTRE_TOT_DR_RED_BLUE, Math.toRadians(90),
 //                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -243,7 +243,7 @@ public class Auto_st extends LinearOpMode {
 
         TrajectorySequence reven = robot.trajectorySequenceBuilder(efectiv.end())
                 .back(3)
-                .strafeRight(34)
+                .strafeRight(12)
 
 //                .splineToLinearHeading(INTRE_TOT_DR_RED_BLUE, Math.toRadians(90),
 //                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -298,7 +298,7 @@ public class Auto_st extends LinearOpMode {
 //        ---------DE CE STRAFE DACA EL TREBUIE SA REVINA IN POZITIA DINTRE || LINETO INTRE TOT
         TrajectorySequence reven = robot.trajectorySequenceBuilder(efectiv.end())
                 .back(3)
-                .strafeRight(14)
+                .strafeLeft(10)
                 .build();
         robot.se_ridica_brat(0);
 
