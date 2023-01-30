@@ -9,10 +9,13 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_st_AUTO
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_dr;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_st;
 
+import android.net.wifi.aware.ParcelablePeerHandle;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
@@ -43,6 +46,8 @@ public class Auto_dr extends LinearOpMode {
     // UNITS ARE METERS
     double tagsize = 0.166;
     SampleMecanumDrive robot;
+
+    ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -164,6 +169,15 @@ public class Auto_dr extends LinearOpMode {
                 .build();
 
         robot.followTrajectory(efectiv);
+
+//        --------------------------------------------
+//        IN CAZ DE SENZOR IMPLEMENTARE
+//        timer.reset();
+//        while(timer.seconds() <= 2 && robot.ia_distanta()>=30)
+//        {
+//            robot.bagaViteza(0.2, -0.2, 0.2, -0.2);
+//        }
+//        ------------------------------
 
         robot.se_ridica_brat(power_brat_dc);
 

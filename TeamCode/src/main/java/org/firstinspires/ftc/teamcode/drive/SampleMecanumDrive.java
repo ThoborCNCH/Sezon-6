@@ -23,6 +23,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -30,6 +31,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
@@ -88,6 +90,10 @@ public class SampleMecanumDrive extends MecanumDrive {
     public CRServo top;
     public Servo gheara_stanga, gheara_dreapta;
 
+//    -----------------------------
+//    IMPLEMENTARE SENZOR
+//    private final DistanceSensor distance;
+
     private final BNO055IMU imu;
     public final VoltageSensor batteryVoltageSensor;
 
@@ -115,6 +121,9 @@ public class SampleMecanumDrive extends MecanumDrive {
         // upward (normal to the floor) using a command like the following:
         BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
 
+//        ------------------------------------------
+//        IMPLEMENTARE SENZOR
+//        distance = hardwareMap.get(DistanceSensor.class, "distanta");
 
         leftFront = hardwareMap.get(DcMotorEx.class, "lf");
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
@@ -417,5 +426,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        brat.setPower(1);
     }
+
+//    public double ia_distanta()
+//    {
+//        return distance.getDistance(DistanceUnit.CM);
+//    }
 
 }
