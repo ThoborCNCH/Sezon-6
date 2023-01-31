@@ -102,7 +102,7 @@ public class Telemeu extends LinearOpMode {
 
                 if (gamepad2.a)
                     robot.apuca(NU_MAI_POT.poz_deschis_st, NU_MAI_POT.poz_deschis_dr);
-                if (gamepad2.b)
+                else if (gamepad2.b)
                     robot.apuca(NU_MAI_POT.poz_inchis_st, NU_MAI_POT.poz_inchis_dr);
 
             } else {

@@ -24,13 +24,13 @@ public class NU_MAI_POT {
     public static double power_thing_slow = 0.2;
 
     public static double power_reven = 0.2;
-    public static double poz_deschis_st = 0.18;
-    public static double poz_deschis_dr = 0.65;
-    public static double poz_inchis_st = 0;
-    public static double poz_inchis_dr = 0.75;
+    public static double poz_deschis_st = 0.48; //0.18
+    public static double poz_deschis_dr = 0.86; //0.65
+    public static double poz_inchis_st = 0.35; //0
+    public static double poz_inchis_dr = 1; //0.75
 
-    public static double poz_deschis_st_AUTO = 0.7;
-    public static double poz_deschis_dr_AUTO = 0.4;
+    public static double poz_deschis_st_AUTO = 0.7; //0.7
+    public static double poz_deschis_dr_AUTO = 0.7; //0.4
 
 
     public static boolean GLISIERE_ENCODER = true;
