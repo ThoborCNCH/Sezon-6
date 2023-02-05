@@ -92,7 +92,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
 //    -----------------------------
 //    IMPLEMENTARE SENZOR
-//    private final DistanceSensor distance;
+    private final DistanceSensor distanceSensorSus;
+    private final DistanceSensor distanceSensorJos;
 
     private final BNO055IMU imu;
     public final VoltageSensor batteryVoltageSensor;
@@ -123,7 +124,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
 //        ------------------------------------------
 //        IMPLEMENTARE SENZOR
-//        distance = hardwareMap.get(DistanceSensor.class, "distanta");
+        distanceSensorSus = hardwareMap.get(DistanceSensor.class, "la_gheara");
+        distanceSensorJos = hardwareMap.get(DistanceSensor.class, "la_jos");
 
         leftFront = hardwareMap.get(DcMotorEx.class, "lf");
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
@@ -400,36 +402,102 @@ public class SampleMecanumDrive extends MecanumDrive {
         gheara_dreapta.setPosition(position_dr);
     }
 
-    public void unstop_brat_special(double directie)
-    {
+    public void cerseste() {
+        apuca(poz_deschis_st, poz_deschis_dr);
+    }
+
+    public void black() {
+        apuca(poz_inchis_st, poz_inchis_dr);
+    }
+
+    public void unstop_brat_special(double directie) {
         brat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         brat.setPower(directie);
     }
 
-    public void ridica_brat_special(double directie)
-    {
+    public void ridica_brat_special(double directie) {
         brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        brat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        int pozActual = brat.getCurrentPosition();
-        brat.setTargetPosition(brat.getCurrentPosition());
+        int pozActual = brat.getCurrentPosition() + (int) directie;
+        brat.setTargetPosition(pozActual);
         brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        brat.setPower(1);
-//        if(directie > 0)
-//        {
-//            int pozUrm = pozActual + 100;
-//            brat.setTargetPosition(pozUrm);
-//        }else
-//        {
-//            int pozUrm = pozActual - 100;
-//            brat.setTargetPosition(pozUrm);
-//        }
-//        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        brat.setPower(1);
+        brat.setPower(power_brat_dc);
     }
 
-//    public double ia_distanta()
-//    {
-//        return distance.getDistance(DistanceUnit.CM);
-//    }
+    public void ridica_dana(double dist, double power) {
+//        brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        brat_pe_sub.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        int poz = brat.getCurrentPosition() + (int) dist;
+        int poz2 = brat_pe_sub.getCurrentPosition() + (int) dist;
+
+        brat.setTargetPosition(poz);
+        brat_pe_sub.setTargetPosition(poz2);
+
+        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brat_pe_sub.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+//        se_ridica_brat(power);
+        brat.setPower(power);
+        brat_pe_sub.setPower(power);
+//        while(brat.isBusy() && brat_pe_sub.isBusy()){
+//
+//        }
+    }
+
+    public double getDistanceSensorSus()
+    {
+        return this.distanceSensorSus.getDistance(DistanceUnit.CM);
+    }
+
+    public double getDistanceSensorJos()
+    {
+        return this.distanceSensorJos.getDistance(DistanceUnit.CM);
+    }
+
+    public void senzor_auto(double distance, double speed)
+    {
+        while(  this.distanceSensorSus.getDistance(DistanceUnit.CM) >= distance){
+            this.se_ridica_brat(-speed);
+        }
+        this.se_ridica_brat(0);
+//        this.se_ridica_brat(speed);
+//        while(
+//                this.distanceSensor.getDistance(DistanceUnit.CM) >= distance
+//        )
+//        {
+//
+//        }
+//        this.se_ridica_brat(0);
+    }
+
+    public void pana_la_dana(double power) {
+        double raza = 3.7;
+        double lungime = 2 * Math.PI * raza;
+        double inaltime_pana_la_dana = 86.5;
+        double inaltime_pana_la_primul = 17.5;
+        double cerc_to_h = 36;
+        double dist_fin1 = (inaltime_pana_la_dana - inaltime_pana_la_primul) / cerc_to_h;
+
+        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        int poz = brat.getCurrentPosition() + (int) dist_fin1;
+        int poz2 = brat_pe_sub.getCurrentPosition() + (int) dist_fin1;
+
+        brat.setTargetPosition(poz);
+        brat_pe_sub.setTargetPosition(poz2);
+
+        brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brat_pe_sub.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+//        se_ridica_brat(power);
+        brat.setPower(power);
+        brat_pe_sub.setPower(power);
+
+
+    }
 }

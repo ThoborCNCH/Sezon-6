@@ -1,47 +1,60 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 public class GlisiereHandler extends LinearOpMode {
 
-    public DcMotor brat;
+    SampleMecanumDrive robot;
+
 
     @Override
     public void runOpMode()
     {
-        initMotor();
+//        initMotor();
+        telemetry.addData("dadadada", "dadadada");
+        telemetry.update();
     }
 
     public void initMotor()
     {
-        brat = hardwareMap.get(DcMotor.class, "brat");
-        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot = new SampleMecanumDrive(hardwareMap);
+//        brat = hardwareMap.dcMotor.get("brat");
+//        brat2 = hardwareMap.dcMotor.get("brat_pe_sub");
+////        brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+////        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        brat.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+////        brat2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+////        brat2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        brat2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        distanceSensor = hardwareMap.get(DistanceSensor.class, "la_gheara");
 
-        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void ridicaLa(int distance)
+    public double distanta()
     {
-        int positieActuala = brat.getCurrentPosition();
-        int pozitieFinala = positieActuala + distance;
-
-//        ASTA CARE SE OPRESTE CAND AUJUNEGE
-//        SAU V2 IN CARE DOAR SCHIMB TARGETUL/POZITIA LUI SI EL
-//        MERGE ACOLO FARA SA MAI SCHIMBE MODUL
-
-         brat.setTargetPosition(pozitieFinala);
-         brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-         brat.setPower(1);
-         while(brat.isBusy())
-         {
-
-         }
-
-        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        return robot.getDistanceSensorSus();
     }
+
+//    public void ridicaLa(double distance, double power)
+//    {
+//        this.se_ridica_brat(power);
+//        while (distanceSensor.getDistance(DistanceUnit.CM) >= distance)
+//        {
+//
+//        }
+//        this.se_ridica_brat(0);
+//
+//    }
+
+//    public void se_ridica_brat(double power_brat) {
+//        brat.setPower(power_brat);
+//        brat2.setPower(-power_brat);
+//    }
 
 }

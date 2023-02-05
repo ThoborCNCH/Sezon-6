@@ -27,13 +27,15 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 public class LocalizationTest extends LinearOpMode {
     public static double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
-    } @Override
+    }
+
+    @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        drive.setPoseEstimate(new Pose2d(-36, -68, Math.toRadians(-90)));
-        drive.setPoseEstimate(new Pose2d(32.47, -61.5, Math.toRadians(90)));
+//        drive.setPoseEstimate(new Pose2d(32.47, -61.5, Math.toRadians(90)));
 
         waitForStart();
 

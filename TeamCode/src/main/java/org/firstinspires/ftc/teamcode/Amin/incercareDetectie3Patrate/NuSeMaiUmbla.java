@@ -7,7 +7,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 public class NuSeMaiUmbla {
     public static double FULL_POWER = 1;
     public static double MEDIUM_POWER = 0.5;
-    public static double LOW_POWER = 0.35;
+    public static double LOW_POWER = 0.2;
 
     public static final double POWER_RATA = 1;
     public static final double POWER_BRAT = 1;
