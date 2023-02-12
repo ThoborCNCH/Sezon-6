@@ -27,6 +27,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -90,10 +91,12 @@ public class SampleMecanumDrive extends MecanumDrive {
     public CRServo top;
     public Servo gheara_stanga, gheara_dreapta;
 
-//    -----------------------------
+    //    -----------------------------
 //    IMPLEMENTARE SENZOR
     private final DistanceSensor distanceSensorSus;
     private final DistanceSensor distanceSensorJos;
+    public final TouchSensor buci;
+    public final TouchSensor mama;
 
     private final BNO055IMU imu;
     public final VoltageSensor batteryVoltageSensor;
@@ -126,6 +129,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        IMPLEMENTARE SENZOR
         distanceSensorSus = hardwareMap.get(DistanceSensor.class, "la_gheara");
         distanceSensorJos = hardwareMap.get(DistanceSensor.class, "la_jos");
+        buci = hardwareMap.get(TouchSensor.class, "magnet");
+        mama = hardwareMap.get(TouchSensor.class, "buci");
 
         leftFront = hardwareMap.get(DcMotorEx.class, "lf");
         leftRear = hardwareMap.get(DcMotorEx.class, "lr");
@@ -145,6 +150,12 @@ public class SampleMecanumDrive extends MecanumDrive {
         brat.setDirection(DcMotorSimple.Direction.REVERSE);
 //        brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        brat_pe_sub.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        if(GLISIERE_ENCODER)
+//        {
+//            brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        }
 
 
         for (DcMotorEx motor : motors) {
@@ -448,19 +459,20 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        }
     }
 
-    public double getDistanceSensorSus()
-    {
+    public double getDistanceSensorSus() {
         return this.distanceSensorSus.getDistance(DistanceUnit.CM);
     }
 
-    public double getDistanceSensorJos()
-    {
+    public double getDistanceSensorJos() {
         return this.distanceSensorJos.getDistance(DistanceUnit.CM);
     }
 
-    public void senzor_auto(double distance, double speed)
-    {
-        while(  this.distanceSensorSus.getDistance(DistanceUnit.CM) >= distance){
+    public boolean getMagnetAtingere() {
+        return buci.isPressed();
+    }
+
+    public void senzor_auto(double distance, double speed) {
+        while (this.distanceSensorSus.getDistance(DistanceUnit.CM) >= distance) {
             this.se_ridica_brat(-speed);
         }
         this.se_ridica_brat(0);
@@ -497,7 +509,24 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        se_ridica_brat(power);
         brat.setPower(power);
         brat_pe_sub.setPower(power);
+    }
 
+    public boolean getMama() {
+        return mama.isPressed();
+    }
 
+    public void ceBuciConduci(double power) {
+        while (!getMagnetAtingere())
+            rotesteThing(power);
+        rotesteThing(0);
+    }
+
+    public void stangaGheara(double power) {
+        rotesteThing(Math.abs(power));
+    }
+
+    public void dreaptaGheara(double power) {
+        rotesteThing(-(Math.abs(power)));
     }
 }
+

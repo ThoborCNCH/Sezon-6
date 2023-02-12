@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Amin;
 
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_DR_RED_BLUE;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -23,6 +25,7 @@ public class PokerFace extends LinearOpMode {
         scula = new SampleMecanumDrive(hardwareMap);
         osama = new SampleMecanumDrive(hardwareMap);
         al_6_lea_simt = hardwareMap.get(DistanceSensor.class, "la_gheara");
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
 //        osama.setPoseEstimate(START_DR_RED_BLUE);
         waitForStart();
@@ -43,6 +46,8 @@ public class PokerFace extends LinearOpMode {
 
             telemetry.addLine(String.valueOf(osama.getDistanceSensorJos()));
             telemetry.addLine(String.valueOf(osama.getDistanceSensorSus()));
+            telemetry.addLine(String.valueOf(osama.getMagnetAtingere()));
+//            telemetry.addLine(String.valueOf(osama.getbuci1()));
             telemetry.update();
 
 //            osama.cerseste();

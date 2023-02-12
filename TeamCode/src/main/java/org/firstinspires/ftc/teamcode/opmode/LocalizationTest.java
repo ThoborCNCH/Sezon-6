@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "drive")
-//@Disabled()\@Disabled
+@Disabled()
 
 public class LocalizationTest extends LinearOpMode {
     public static double encoderTicksToInches(double ticks) {
@@ -53,7 +53,8 @@ public class LocalizationTest extends LinearOpMode {
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
+//            telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("heading", drive.batteryVoltageSensor.getVoltage());
             telemetry.update();
         }
     }

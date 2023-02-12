@@ -1,13 +1,7 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.INTRE_TOT_DR_RED_BLUE;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_PUNE_INAINTE_DR_RED_BLUE;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_PUNE_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_PUNE_DR_RED_BLUE_VECTOR;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_PUNE_INAINTE_DR_RED_BLUE;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_PUNE_ST_RED_BLUE_VECTOR;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE3;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_DR_RED_BLUE;
@@ -16,16 +10,13 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_dr_AUTO
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_st_AUTO;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_dr;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_st;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.sleep_for_strafe;
-
-import android.net.wifi.aware.ParcelablePeerHandle;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -33,15 +24,13 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.opencv.core.Mat;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-import java.util.ArrayList;
-
 @Autonomous
+@Disabled
 public class Auto_dr extends LinearOpMode {
     AprilTagDetection tagOfInterest;
     double cx = 402.145;
@@ -204,7 +193,7 @@ public class Auto_dr extends LinearOpMode {
 //                        new Pose2d(robot.getPoseEstimate().getX(),
 //                                robot.getPoseEstimate().getY() + 2.6,
 //                                Math.toRadians(90)))
-                .forward(9, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .forward(8, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(18))
 //                .lineToConstantHeading(JUNCTION_PUNE_DR_RED_BLUE_VECTOR)
                 .build();
@@ -240,15 +229,20 @@ public class Auto_dr extends LinearOpMode {
         robot.followTrajectorySequence(reven);
 
 
-        while (robot.getDistanceSensorSus() >= 23) {
-            robot.bagaViteza(-0.22, -0.22, 0.42, -0.22);
-            if(robot.getDistanceSensorSus() >= 40){
+        while (robot.getDistanceSensorSus() >= 22.7) {
+
+            telemetry.addData("1: ",String.valueOf(robot.getDistanceSensorSus()));
+            telemetry.update();
+            robot.bagaViteza(-0.07, -0.18, 0.3, -0.18);
+            if (robot.getDistanceSensorSus() >= 40) {
                 robot.se_ridica_brat(-0.6);
-            }else{
+            } else {
                 robot.se_ridica_brat(-0.27);
             }
         }
-        while(robot.getDistanceSensorSus() <= 20) {
+        while (robot.getDistanceSensorSus() <= 15.5) {
+            telemetry.addData("2: ",String.valueOf(robot.getDistanceSensorSus()));
+            telemetry.update();
             robot.se_ridica_brat(0.27);
         }
         robot.se_ridica_brat(0.05);
@@ -261,25 +255,24 @@ public class Auto_dr extends LinearOpMode {
         robot.followTrajectory(rr);
 
         timer.reset();
-        while (robot.getDistanceSensorJos() >= 12 && timer.seconds() >= 2) {
+        while (robot.getDistanceSensorJos() >= 13.9) {
 //            robot.se_ridica_brat(-0.6);
             robot.bagaViteza(0.2, 0.2, 0.2, 0.2);
         }
         robot.bagaViteza(0, 0, 0, 0);
 
+        while (robot.getDistanceSensorJos() <= 5) {
+            robot.bagaViteza(-0.2, -0.2, -0.2, -0.2);
+        }
+        robot.bagaViteza(0, 0, 0, 0);
 
-//        while (robot.getDistanceSensorJos() >= 8) {
-//            robot.bagaViteza(0.2, 0.2, 0.2, 0.2);
-//        }
-//        robot.bagaViteza(0, 0, 0, 0);
-//        robot.se_ridica_brat(0);
 
         sleep(100);
 
 //        if (robot.getDistanceSensorJos() <= 11) {
-            robot.black();
+//        robot.black();
 //        }
-        sleep(300);
+        sleep(500);
 
         robot.se_ridica_brat(1);
         robot.update();
@@ -298,24 +291,30 @@ public class Auto_dr extends LinearOpMode {
 //        robot.se_ridica_brat(1);
 
         Trajectory fata2 = robot.trajectoryBuilder(back.end())
-                .forward(10, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .forward(8, SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(18))
+
                 .build();
         robot.followTrajectory(fata2);
-        robot.se_ridica_brat(1);
+//        robot.se_ridica_brat(1);
 
 
-        TrajectorySequence reven2 = robot.trajectorySequenceBuilder(fata2.end())
-                .addTemporalMarker(0, () -> {
-                    robot.apuca(poz_deschis_st_AUTO, poz_deschis_dr_AUTO);
-                })
-                .waitSeconds(0.2)
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(20, -10, Math.toRadians(90)), Math.toRadians(12))
+        sleep(200);
+        robot.apuca(poz_deschis_st_AUTO, poz_deschis_dr_AUTO);
+        sleep(200);
+
+        Trajectory reven2 = robot.trajectoryBuilder(fata2.end(), true)
+//                .waitSeconds(0.2)
+//                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(20, -8, Math.toRadians(90)), Math.toRadians(20))
                 .build();
-        robot.followTrajectorySequence(reven2);
+        robot.followTrajectory(reven2);
 
         robot.se_ridica_brat(0);
+        Trajectory f = robot.trajectoryBuilder(reven2.end())
+                .forward(10)
+                .build();
+        robot.followTrajectory(f);
 
     }
 

@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 /*
  * This is a simple routine to test translational drive capabilities.
  */
-
+@Disabled
 @Config
 @Autonomous(group = "drive")
 public class StrafeTest extends LinearOpMode {

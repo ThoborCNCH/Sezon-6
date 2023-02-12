@@ -12,6 +12,7 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inchis_st;
 
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -26,6 +27,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
+@Disabled
 public class Auto_st extends LinearOpMode {
     AprilTagDetection tagOfInterest;
     double cx = 402.145;
