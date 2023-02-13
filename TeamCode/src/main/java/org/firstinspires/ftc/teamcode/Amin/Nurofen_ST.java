@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_ST_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_ST_RED_BLUE2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_ST_RED_BLUE;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.TIMER_SENZOR_ST;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_brat_dc;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -200,9 +201,12 @@ public class Nurofen_ST extends LinearOpMode {
             se_ridica_brat(0);
             osama.followTrajectorySequence(reven);
 
+            timer.reset();
             //thing revenire 1
             while (opModeIsActive() && !osama.getMagnetAtingere()) {
                 osama.rotesteThing(0.4);
+                if(timer.seconds() >= TIMER_SENZOR_ST)
+                    break;
             }
             osama.rotesteThing(0);
 
@@ -214,8 +218,8 @@ public class Nurofen_ST extends LinearOpMode {
 
             double ticks = 320;
 
-            brat.setTargetPosition(brat.getCurrentPosition() - 1461);
-            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1461);
+            brat.setTargetPosition(brat.getCurrentPosition() - 1471); //am facut de la 61 71
+            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1471);
             brat.setPower(-0.6);
             brat_pe_sub.setPower(0.6);
 //
@@ -237,21 +241,29 @@ public class Nurofen_ST extends LinearOpMode {
 
             //traj to stack 1
             Trajectory rr = osama.trajectoryBuilder(reven.end())
-                    .splineToLinearHeading(STACK_ST_RED_BLUE, Math.toRadians(180))
+                    .splineToLinearHeading(STACK_ST_RED_BLUE, Math.toRadians(180),
+                            SampleMecanumDrive.getVelocityConstraint(
+                                    35,
+                                    DriveConstants.MAX_ANG_VEL,
+                                    DriveConstants.TRACK_WIDTH),
+                            SampleMecanumDrive.getAccelerationConstraint(
+                                    35
+                    ))
                     .build();
             osama.followTrajectory(rr);
 
             //miscare sasiu senzor dist 1
-            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10.9) {
-                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
-
-            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
-
+//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10.9) {
+//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+//
+//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
+//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+//
+            /////////^^^^^^^^senzor nu mai
             sleep(100);
 
             //apuca con 2
@@ -290,8 +302,11 @@ public class Nurofen_ST extends LinearOpMode {
             sleep(200);
 
             //revenire thing pt alt con
+            timer.reset();
             while (opModeIsActive() && !osama.getMagnetAtingere()) {
                 osama.rotesteThing(0.4);
+                if(timer.seconds() >= TIMER_SENZOR_ST)
+                    break;
             }
             //opreste rotire thing
             osama.rotesteThing(0);
@@ -324,20 +339,28 @@ public class Nurofen_ST extends LinearOpMode {
 
             //traj la stack 2
             Trajectory rr2 = osama.trajectoryBuilder(osama.getPoseEstimate())
-                    .splineToLinearHeading(STACK_ST_RED_BLUE2, Math.toRadians(180))
+                    .splineToLinearHeading(STACK_ST_RED_BLUE2, Math.toRadians(180),
+                            SampleMecanumDrive.getVelocityConstraint(
+                                    35,
+                                    DriveConstants.MAX_ANG_VEL,
+                                    DriveConstants.TRACK_WIDTH),
+                            SampleMecanumDrive.getAccelerationConstraint(
+                                    35
+                            ))
                     .build();
             osama.followTrajectory(rr2);
 
             //miscare sasiu senzor dist 2
-            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10) {
-                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
-
-            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
+//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10) {
+//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+//
+//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
+//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+            //////^^senzor nu mai
 
             //apuca con 3
             sleep(100);
@@ -395,14 +418,19 @@ public class Nurofen_ST extends LinearOpMode {
         }
     }
 
-    private void stanga() {
+    private void dreapta() {
         TrajectorySequence park = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
                 .strafeLeft(4)
                 .back(18)
                 .build();
         osama.followTrajectorySequence(park);
-        while (opModeIsActive() && !osama.getMagnetAtingere())
+
+        timer.reset();
+        while (opModeIsActive() && !osama.getMagnetAtingere()) {
             osama.rotesteThing(1);
+            if(timer.seconds() >= TIMER_SENZOR_ST)
+                break;
+        }
         osama.rotesteThing(0);
     }
 
@@ -411,20 +439,28 @@ public class Nurofen_ST extends LinearOpMode {
                 .forward(4)
                 .build();
         osama.followTrajectory(park);
-        while (opModeIsActive() && !osama.getMagnetAtingere())
+
+        timer.reset();
+        while (opModeIsActive() && !osama.getMagnetAtingere()) {
             osama.rotesteThing(1);
+            if(timer.seconds() >= TIMER_SENZOR_ST)
+                break;
+        }
         osama.rotesteThing(0);
     }
 
-    private void dreapta () {
+    private void stanga () {
 //        Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
 //                .lineToLinearHeading(new Pose2d(62, -8.2, Math.toRadians(0)))
 //                .build();
 //        osama.followTrajectory(park);
 
         //revenire thing pt con 4
+        timer.reset();
         while (opModeIsActive() && !osama.getMagnetAtingere()) {
             osama.rotesteThing(0.5);
+            if(timer.seconds() >= TIMER_SENZOR_ST)
+                break;
         }
         osama.rotesteThing(0);
 

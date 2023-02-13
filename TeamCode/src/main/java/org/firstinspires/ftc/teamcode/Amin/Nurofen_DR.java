@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_DR_RED_BLUE2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_DR_RED_BLUE;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.TIMER_SENZOR_DR;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.cob1;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.cob2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_brat_dc;
@@ -207,9 +208,12 @@ public class Nurofen_DR extends LinearOpMode {
             se_ridica_brat(0);
             osama.followTrajectorySequence(reven);
 
+            timer.reset();
             //thing revenire 1
             while (opModeIsActive() && !osama.getMagnetAtingere()) {
                 osama.rotesteThing(-0.7);
+                if(timer.seconds() >= TIMER_SENZOR_DR)
+                    break;
             }
             osama.rotesteThing(0);
 
@@ -244,20 +248,29 @@ public class Nurofen_DR extends LinearOpMode {
 
             //traj to stack 1
             Trajectory rr = osama.trajectoryBuilder(reven.end())
-                    .splineToLinearHeading(STACK_DR_RED_BLUE, Math.toRadians(0))
+                    .splineToLinearHeading(STACK_DR_RED_BLUE, Math.toRadians(0),
+                            SampleMecanumDrive.getVelocityConstraint(
+                                    35,
+                                    DriveConstants.MAX_ANG_VEL,
+                                    DriveConstants.TRACK_WIDTH),
+                            SampleMecanumDrive.getAccelerationConstraint(
+                                    35
+                            )
+                    )
                     .build();
             osama.followTrajectory(rr);
 
             //miscare sasiu senzor dist 1
-            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10.6) {
-                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
-
-            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
+//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10.6) {
+//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+//
+//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
+//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+            //////^^^^^^^^^^^senzor nu mai este
 
             sleep(100);
 
@@ -292,13 +305,19 @@ public class Nurofen_DR extends LinearOpMode {
             osama.rotesteThing(0);
 
             //lasa con 2
-            sleep(200);
+//            se_ridica_brat(-0.4);
+            osama.se_ridica_brat(-0.4);
+            sleep(400);
             osama.cerseste();
-            sleep(200);
+            sleep(400);
+            osama.se_ridica_brat(0);
 
+            timer.reset();
             //revenire thing pt alt con
-            while (opModeIsActive() && !osama.getMagnetAtingere()) {
+            while ( (opModeIsActive() && !osama.getMagnetAtingere() ) ) {
                 osama.rotesteThing(-0.7);
+                if(timer.seconds() >= TIMER_SENZOR_DR)
+                    break;
             }
             //opreste rotire thing
             osama.rotesteThing(0);
@@ -331,20 +350,28 @@ public class Nurofen_DR extends LinearOpMode {
 
             //traj la stack 2
             Trajectory rr2 = osama.trajectoryBuilder(osama.getPoseEstimate())
-                    .splineToLinearHeading(STACK_DR_RED_BLUE2, Math.toRadians(0))
+                    .splineToLinearHeading(STACK_DR_RED_BLUE2, Math.toRadians(0),
+                            SampleMecanumDrive.getVelocityConstraint(
+                                    35,
+                                    DriveConstants.MAX_ANG_VEL,
+                                    DriveConstants.TRACK_WIDTH),
+                            SampleMecanumDrive.getAccelerationConstraint(
+                                    35
+                            ))
                     .build();
             osama.followTrajectory(rr2);
 
             //miscare sasiu senzor dist 2
-            while (opModeIsActive() && osama.getDistanceSensorJos() >= 9.9) {
-                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
-
-            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-            }
-            osama.bagaViteza(0, 0, 0, 0);
+//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 9.9) {
+//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+//
+//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
+//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
+//            }
+//            osama.bagaViteza(0, 0, 0, 0);
+            /////////^^^^^^^^senzor nu mai este
 
             //apuca con 3
             sleep(100);
@@ -408,6 +435,7 @@ public class Nurofen_DR extends LinearOpMode {
                 .back(18)
                 .build();
         osama.followTrajectorySequence(park);
+        timer.reset();
         while (opModeIsActive() && !osama.getMagnetAtingere())
             osama.rotesteThing(-1);
         osama.rotesteThing(0);
@@ -418,6 +446,7 @@ public class Nurofen_DR extends LinearOpMode {
                 .forward(4)
                 .build();
         osama.followTrajectory(park);
+        timer.reset();
         while (opModeIsActive() && !osama.getMagnetAtingere())
             osama.rotesteThing(-1);
         osama.rotesteThing(0);
@@ -430,6 +459,7 @@ public class Nurofen_DR extends LinearOpMode {
 //        osama.followTrajectory(park);
 
         //revenire thing pt con 4
+        timer.reset();
         while (opModeIsActive() && !osama.getMagnetAtingere()) {
             osama.rotesteThing(-0.5);
         }

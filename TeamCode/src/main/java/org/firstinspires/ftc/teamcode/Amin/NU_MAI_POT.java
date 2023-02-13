@@ -15,6 +15,8 @@ public class NU_MAI_POT {
     public static double lr = 1;
     public static double rr = 0;
 
+    public static double TIMER_SENZOR_ST = 0.6;
+    public static double TIMER_SENZOR_DR = 0.6;
 
     public static double power_top = 0.3;
     public static double power_brat_dc = .6;
@@ -57,25 +59,25 @@ public class NU_MAI_POT {
     public static Pose2d PRE_POSITION_DR_RED_BLUE2 = new Pose2d(43, -10, Math.toRadians(90));
 
     public static Pose2d PRE_POSITION_DR_RED_BLUE = new Pose2d(42.8, -6.8, Math.toRadians(139));
-    public static Pose2d PRE_POSITION_DR_RED_BLUE_KKK = new Pose2d(34.6, -5.9, Math.toRadians(0));
+    public static Pose2d PRE_POSITION_DR_RED_BLUE_KKK = new Pose2d(37, -5.2, Math.toRadians(0)); //-5.9 inainte de filmare
     public static Pose2d PRE_POSITION_DR_RED_BLUE3 = new Pose2d(43.5, -5.5, Math.toRadians(138));
 
     public static Pose2d JUNCTION_PUNE_INAINTE_DR_RED_BLUE = new Pose2d(38.3, -4.5, Math.toRadians(90));
     public static Pose2d JUNCTION_PUNE_DR_RED_BLUE = new Pose2d(38.3, -1.5, Math.toRadians(130));
     public static Vector2d JUNCTION_PUNE_DR_RED_BLUE_VECTOR = new Vector2d(32, -3.5);
-    public static Pose2d STACK_DR_RED_BLUE = new Pose2d(60, -8.2, Math.toRadians(0));
-    public static Pose2d STACK_DR_RED_BLUE2 = new Pose2d(60, -9, Math.toRadians(0));
-    public static Pose2d JUNCTION_THING_DR_RED_BLUE = new Pose2d(38.1, -7.3, Math.toRadians(0));
-    public static Pose2d JUNCTION_THING_DR_RED_BLUE2 = new Pose2d(36, -8.4, Math.toRadians(0));
+    public static Pose2d STACK_DR_RED_BLUE = new Pose2d(66, -8.2, Math.toRadians(0)); //ERA 60 BY SENZOR LA X
+    public static Pose2d STACK_DR_RED_BLUE2 = new Pose2d(66, -9, Math.toRadians(0));
+    public static Pose2d JUNCTION_THING_DR_RED_BLUE = new Pose2d(38.5, -4.3, Math.toRadians(0));
+    public static Pose2d JUNCTION_THING_DR_RED_BLUE2 = new Pose2d(36, -6.4, Math.toRadians(0));
     public static Vector2d STACK_DR_RED_BLUE_VECTOR = new Vector2d(68, -8.5);
     public static Pose2d BACK_A_LITTLE_DR_RED_BLUE = new Pose2d(-36, -40, Math.toRadians(180));
 
-    public static Pose2d PRE_POSITION_ST_RED_BLUE = new Pose2d(-43, -10, Math.toRadians(90));
-    public static Pose2d PRE_POSITION_ST_RED_BLUE_KKK = new Pose2d(-33, -7, Math.toRadians(180));
-    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-32, -7, Math.toRadians(180));
-    public static Pose2d JUNCTION_THING_ST_RED_BLUE = new Pose2d(-32, -7, Math.toRadians(180));
-    public static Pose2d STACK_ST_RED_BLUE = new Pose2d(-60, -7.2, Math.toRadians(180));
-    public static Pose2d STACK_ST_RED_BLUE2 = new Pose2d(-60, -7.2, Math.toRadians(180));
+    public static Pose2d PRE_POSITION_ST_RED_BLUE = new Pose2d(-43.6, -10, Math.toRadians(90));
+    public static Pose2d PRE_POSITION_ST_RED_BLUE_KKK = new Pose2d(-34.8, -7, Math.toRadians(180));
+    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-37.1, -7, Math.toRadians(180));
+    public static Pose2d JUNCTION_THING_ST_RED_BLUE = new Pose2d(-36, -7, Math.toRadians(180));
+    public static Pose2d STACK_ST_RED_BLUE = new Pose2d(-64, -8.2, Math.toRadians(180));
+    public static Pose2d STACK_ST_RED_BLUE2 = new Pose2d(-64, -9, Math.toRadians(180));
 
 
     public static Vector2d JUNCTION_PUNE_ST_RED_BLUE_VECTOR = new Vector2d(-31, -3.5);
