@@ -34,9 +34,10 @@ public class NU_MAI_POT {
     public static int cob3 = 406;
 
     public static double power_reven = 0.2;
-    public static double poz_deschis_st = 0.47; //0.18
+
+    public static double poz_deschis_st = 0.35; //0.18
     public static double poz_deschis_dr = 0.65; //0.65
-    public static double poz_inchis_st = 0.33; //0
+    public static double poz_inchis_st = 0.2; //0
     public static double poz_inchis_dr = 0.8; //0.75
 
     public static double poz_deschis_st_AUTO = 0.7; //0.7
