@@ -15,8 +15,8 @@ public class NU_MAI_POT {
     public static double lr = 1;
     public static double rr = 0;
 
-    public static double TIMER_SENZOR_ST = 0.6;
-    public static double TIMER_SENZOR_DR = 0.6;
+    public static double TIMER_SENZOR_ST = 0.65;
+    public static double TIMER_SENZOR_DR = 0.65;
 
     public static double power_top = 0.3;
     public static double power_brat_dc = .6;
@@ -75,7 +75,7 @@ public class NU_MAI_POT {
 
     public static Pose2d PRE_POSITION_ST_RED_BLUE = new Pose2d(-43.6, -10, Math.toRadians(90));
     public static Pose2d PRE_POSITION_ST_RED_BLUE_KKK = new Pose2d(-34.8, -7, Math.toRadians(180));
-    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-37.1, -7, Math.toRadians(180));
+    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-37.1, -7, Math.toRadians(180)); //era -36
     public static Pose2d JUNCTION_THING_ST_RED_BLUE = new Pose2d(-36, -7, Math.toRadians(180));
     public static Pose2d STACK_ST_RED_BLUE = new Pose2d(-64, -8.2, Math.toRadians(180));
     public static Pose2d STACK_ST_RED_BLUE2 = new Pose2d(-64, -9, Math.toRadians(180));

@@ -187,11 +187,15 @@ public class Nurofen_ST extends LinearOpMode {
             //tine brat ridicat 1
             se_ridica_brat(power_brat_dc);
 
+            se_ridica_brat(-0.3);
             //traj revenire 1 && lasa con 1
             TrajectorySequence reven = osama.trajectorySequenceBuilder(go_pune.end())
                     .waitSeconds(0.2)
                     .addTemporalMarker(0, () -> {
                         osama.cerseste();
+                    })
+                    .addTemporalMarker(0.3, ()->{
+                        se_ridica_brat(0);
                     })
                     .waitSeconds(0.2)
                     .strafeLeft(2)

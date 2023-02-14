@@ -50,7 +50,7 @@ public class Telemeu extends LinearOpMode {
 
             if (servoGheara != 0 && !robot.getMagnetAtingere()) {
                 if (servoGheara == -1)
-                    robot.rotesteThing(-0.3);
+                    robot.rotesteThing(-1);
                 else
                     robot.rotesteThing(1);
             } else {
