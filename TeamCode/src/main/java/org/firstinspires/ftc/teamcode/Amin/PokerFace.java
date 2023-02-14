@@ -24,7 +24,7 @@ public class PokerFace extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         scula = new SampleMecanumDrive(hardwareMap);
         osama = new SampleMecanumDrive(hardwareMap);
-        al_6_lea_simt = hardwareMap.get(DistanceSensor.class, "la_gheara");
+//        al_6_lea_simt = hardwareMap.get(DistanceSensor.class, "la_gheara");
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
 //        osama.setPoseEstimate(START_DR_RED_BLUE);
@@ -32,8 +32,8 @@ public class PokerFace extends LinearOpMode {
         double power = 0.6;
 
 //        scula.senzor_auto(30, 0.6);
-        telemetry.addData("", (int) al_6_lea_simt.getDistance(DistanceUnit.CM));
-        telemetry.update();
+//        telemetry.addData("", (int) al_6_lea_simt.getDistance(DistanceUnit.CM));
+//        telemetry.update();
 
 
         while (opModeIsActive()) {
@@ -44,8 +44,8 @@ public class PokerFace extends LinearOpMode {
 //            else
 //                osama.top.setPower(1);
 
-            telemetry.addLine(String.valueOf(osama.getDistanceSensorJos()));
-            telemetry.addLine(String.valueOf(osama.getDistanceSensorSus()));
+//            telemetry.addLine(String.valueOf(osama.getDistanceSensorJos()));
+//            telemetry.addLine(String.valueOf(osama.getDistanceSensorSus()));
             telemetry.addLine(String.valueOf(osama.getMagnetAtingere()));
 //            telemetry.addLine(String.valueOf(osama.getbuci1()));
             telemetry.update();

@@ -17,15 +17,6 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 //AUIMA AUE AUIMA AUE IN THE JUNGLE THE MIGHTY JUNGLE THE LION SLEEP TOONIGHTTTTT
-            /*
-                             _                     _                            _
-                            (_)                   (_)                          | |
-             _ __ ___  _   _ _  ___            ___ _  ___   ___ __ _ _ __   ___| |
-            | '_ ` _ \| | | | |/ _ \          / __| |/ _ \ / __/ _` | '_ \ / _ \ |
-            | | | | | | |_| | |  __/         | (__| | (_) | (_| (_| | | | |  __/ |
-            |_| |_| |_|\__,_|_|\___|          \___|_|\___/ \___\__,_|_| |_|\___|_|
-
-             */
 
 
 @TeleOp

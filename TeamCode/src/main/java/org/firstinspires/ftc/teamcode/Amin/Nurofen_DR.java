@@ -196,6 +196,12 @@ public class Nurofen_DR extends LinearOpMode {
 
             //traj revenire 1 && lasa con 1
             TrajectorySequence reven = osama.trajectorySequenceBuilder(go_pune.end())
+                    .addTemporalMarker(0, ()-> {
+                        osama.se_ridica_brat(-0.3);
+                    })
+                    .addTemporalMarker(1.8, ()->{
+                        osama.se_ridica_brat(0);
+                    })
                     .waitSeconds(0.2)
                     .addTemporalMarker(0, () -> {
                         osama.cerseste();
@@ -306,11 +312,11 @@ public class Nurofen_DR extends LinearOpMode {
 
             //lasa con 2
 //            se_ridica_brat(-0.4);
-            osama.se_ridica_brat(-0.4);
-            sleep(400);
+//            osama.se_ridica_brat(-0.4);
+            sleep(200);
             osama.cerseste();
-            sleep(400);
-            osama.se_ridica_brat(0);
+            sleep(200);
+//            osama.se_ridica_brat(0);
 
             timer.reset();
             //revenire thing pt alt con
@@ -344,9 +350,9 @@ public class Nurofen_DR extends LinearOpMode {
             brat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             brat_pe_sub.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            osama.bagaViteza(0, 0, 0, 0);
+            brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//speram sa fie bine sa nu fie rau
+            brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//stim ce facem aici nu e o problema
+            osama.bagaViteza(0, 0, 0, 0);//respectele mele ce pot sa zic aici decat speram sa mearga
 
             //traj la stack 2
             Trajectory rr2 = osama.trajectoryBuilder(osama.getPoseEstimate())
@@ -491,7 +497,7 @@ public class Nurofen_DR extends LinearOpMode {
 
 //
         TrajectorySequence rr2 = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(60, -9.8, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(66, -9.8, Math.toRadians(0)))
 //                    .strafeRight(3)
 //                .splineToLinearHeading(new Pose2d(50, -8, Math.toRadians(0)), Math.toRadians(0))
 //                .splineToLinearHeading(new Pose2d(63, -8, Math.toRadians(0)), Math.toRadians(0))
@@ -500,16 +506,16 @@ public class Nurofen_DR extends LinearOpMode {
                 .build();
         osama.followTrajectorySequence(rr2);
 
-        while (opModeIsActive() && osama.getDistanceSensorJos() >= 9.8) {
-            osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-        }
-        osama.bagaViteza(0, 0, 0, 0);
-
-        while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-            osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-        }
-        osama.bagaViteza(0, 0, 0, 0);
-        osama.update();
+//        while (opModeIsActive() && osama.getDistanceSensorJos() >= 9.8) {
+//            osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
+//        }
+//        osama.bagaViteza(0, 0, 0, 0);
+//
+//        while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
+//            osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
+//        }
+//        osama.bagaViteza(0, 0, 0, 0);
+//        osama.update();
 
         sleep(100);
 

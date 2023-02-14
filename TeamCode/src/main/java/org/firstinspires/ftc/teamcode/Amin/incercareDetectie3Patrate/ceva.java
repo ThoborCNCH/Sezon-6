@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 @Autonomous
+@Disabled
 public class ceva extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "/storage/emulated/0/FIRST/tflitemodels/conurit.tflite";
     // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomTeamModel.tflite";

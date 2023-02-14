@@ -93,8 +93,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     //    -----------------------------
 //    IMPLEMENTARE SENZOR
-    private final DistanceSensor distanceSensorSus;
-    private final DistanceSensor distanceSensorJos;
+//    private final DistanceSensor distanceSensorSus;
+//    private final DistanceSensor distanceSensorJos;
     public final TouchSensor buci;
     public final TouchSensor mama;
 
@@ -127,8 +127,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
 //        ------------------------------------------
 //        IMPLEMENTARE SENZOR
-        distanceSensorSus = hardwareMap.get(DistanceSensor.class, "la_gheara");
-        distanceSensorJos = hardwareMap.get(DistanceSensor.class, "la_jos");
+//        distanceSensorSus = hardwareMap.get(DistanceSensor.class, "la_gheara");
+//        distanceSensorJos = hardwareMap.get(DistanceSensor.class, "la_jos");
         buci = hardwareMap.get(TouchSensor.class, "magnet");
         mama = hardwareMap.get(TouchSensor.class, "buci");
 
@@ -459,32 +459,32 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        }
     }
 
-    public double getDistanceSensorSus() {
-        return this.distanceSensorSus.getDistance(DistanceUnit.CM);
-    }
-
-    public double getDistanceSensorJos() {
-        return this.distanceSensorJos.getDistance(DistanceUnit.CM);
-    }
+//    public double getDistanceSensorSus() {
+//        return this.distanceSensorSus.getDistance(DistanceUnit.CM);
+//    }
+//
+//    public double getDistanceSensorJos() {
+//        return this.distanceSensorJos.getDistance(DistanceUnit.CM);
+//    }
 
     public boolean getMagnetAtingere() {
         return buci.isPressed();
     }
 
-    public void senzor_auto(double distance, double speed) {
-        while (this.distanceSensorSus.getDistance(DistanceUnit.CM) >= distance) {
-            this.se_ridica_brat(-speed);
-        }
-        this.se_ridica_brat(0);
-//        this.se_ridica_brat(speed);
-//        while(
-//                this.distanceSensor.getDistance(DistanceUnit.CM) >= distance
-//        )
-//        {
-//
+//    public void senzor_auto(double distance, double speed) {
+//        while (this.distanceSensorSus.getDistance(DistanceUnit.CM) >= distance) {
+//            this.se_ridica_brat(-speed);
 //        }
 //        this.se_ridica_brat(0);
-    }
+////        this.se_ridica_brat(speed);
+////        while(
+////                this.distanceSensor.getDistance(DistanceUnit.CM) >= distance
+////        )
+////        {
+////
+////        }
+////        this.se_ridica_brat(0);
+//    }
 
     public void pana_la_dana(double power) {
         double raza = 3.7;
