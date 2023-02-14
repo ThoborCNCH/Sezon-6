@@ -34,9 +34,10 @@ public class NU_MAI_POT {
     public static int cob3 = 406;
 
     public static double power_reven = 0.2;
-    public static double poz_deschis_st = 0.2; //0.18
+
+    public static double poz_deschis_st = 0.35; //0.18
     public static double poz_deschis_dr = 0.65; //0.65
-    public static double poz_inchis_st = 0.1; //0
+    public static double poz_inchis_st = 0.2; //0
     public static double poz_inchis_dr = 0.8; //0.75
 
     public static double poz_deschis_st_AUTO = 0.7; //0.7
@@ -74,7 +75,7 @@ public class NU_MAI_POT {
 
     public static Pose2d PRE_POSITION_ST_RED_BLUE = new Pose2d(-43.6, -10, Math.toRadians(90));
     public static Pose2d PRE_POSITION_ST_RED_BLUE_KKK = new Pose2d(-34.8, -7, Math.toRadians(180));
-    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-36, -7, Math.toRadians(180));
+    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-37.1, -7, Math.toRadians(180));
     public static Pose2d JUNCTION_THING_ST_RED_BLUE = new Pose2d(-36, -7, Math.toRadians(180));
     public static Pose2d STACK_ST_RED_BLUE = new Pose2d(-64, -8.2, Math.toRadians(180));
     public static Pose2d STACK_ST_RED_BLUE2 = new Pose2d(-64, -9, Math.toRadians(180));
