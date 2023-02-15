@@ -74,9 +74,9 @@ public class NU_MAI_POT {
     public static Pose2d BACK_A_LITTLE_DR_RED_BLUE = new Pose2d(-36, -40, Math.toRadians(180));
 
     public static Pose2d PRE_POSITION_ST_RED_BLUE = new Pose2d(-43.6, -10, Math.toRadians(90));
-    public static Pose2d PRE_POSITION_ST_RED_BLUE_KKK = new Pose2d(-34.8, -7, Math.toRadians(180));
-    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-37.1, -7, Math.toRadians(180)); //era -36
-    public static Pose2d JUNCTION_THING_ST_RED_BLUE = new Pose2d(-36, -7, Math.toRadians(180));
+    public static Pose2d PRE_POSITION_ST_RED_BLUE_KKK = new Pose2d(-36, -7, Math.toRadians(180));
+    public static Pose2d JUNCTION_THING_ST_RED_BLUE2 = new Pose2d(-38, -6.4, Math.toRadians(180)); //era -36
+    public static Pose2d JUNCTION_THING_ST_RED_BLUE = new Pose2d(-38, -6, Math.toRadians(180));
     public static Pose2d STACK_ST_RED_BLUE = new Pose2d(-64, -8.2, Math.toRadians(180));
     public static Pose2d STACK_ST_RED_BLUE2 = new Pose2d(-64, -9, Math.toRadians(180));
 

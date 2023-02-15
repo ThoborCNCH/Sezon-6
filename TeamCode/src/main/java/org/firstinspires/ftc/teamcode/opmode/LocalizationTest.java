@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "drive")
-@Disabled()
+//@Disabled()
 
 public class LocalizationTest extends LinearOpMode {
     public static double encoderTicksToInches(double ticks) {

@@ -494,7 +494,7 @@ public class Nurofen_ST extends LinearOpMode {
 
 //
         TrajectorySequence rr2 = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(-65, -9, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-63.4, -8.7, Math.toRadians(180)))
 //                    .strafeRight(3)
 //                .splineToLinearHeading(new Pose2d(50, -8, Math.toRadians(0)), Math.toRadians(0))
 //                .splineToLinearHeading(new Pose2d(63, -8, Math.toRadians(0)), Math.toRadians(0))
@@ -519,14 +519,14 @@ public class Nurofen_ST extends LinearOpMode {
         osama.black();
 
         sleep(500);
-        osama.rotesteThing(1);
 
         se_ridica_brat(0.8);
         sleep(550);
+        osama.rotesteThing(1);
         se_ridica_brat(0.01);
 
         Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
-                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() + 6.2, osama.getPoseEstimate().getY() - 2.8))
+                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() + 6.5, osama.getPoseEstimate().getY() - 3.5))
                 .addDisplacementMarker(() -> {
                     osama.cerseste();
                 })
@@ -534,9 +534,11 @@ public class Nurofen_ST extends LinearOpMode {
         osama.followTrajectory(park);
 
         Trajectory ok = osama.trajectoryBuilder(park.end())
-                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() - 2.3, osama.getPoseEstimate().getY() + 4.7))
+                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() - 4, osama.getPoseEstimate().getY() + 4.8))
                 .build();
         osama.followTrajectory(ok);
+
+        osama.rotesteThing(1);
 
         //        sleep(50);
 //        osama.rotesteThing(1);

@@ -120,48 +120,89 @@ public class Nurofen_DR extends LinearOpMode {
             }
         });
 
+        tagOfInterest = new AprilTagDetection();
+        tagOfInterest.id = 3;
+
+        //detectie
+        ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+        if (detections != null) {
+            telemetry.addData("FPS", camera.getFps());
+            telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+            telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+
+            // If we don't see any tags
+            if (detections.size() == 0) {
+                numFramesWithoutDetection++;
+
+                // If we haven't seen a tag for a few frames, lower the decimation
+                // so we can hopefully pick one up if we're e.g. far back
+                if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+                    aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
+                }
+            }
+            // We do see tags!
+            else {
+                numFramesWithoutDetection = 0;
+
+                // If the target is within 1 meter, turn on high decimation to
+                // increase the frame rate
+                if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+                    aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
+                }
+                for (AprilTagDetection tag : detections) {
+                    if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
+                        telemetry.addLine(String.valueOf(tag));
+                        telemetry.update();
+                        tagOfInterest = tag;
+                    }
+                }
+            }
+        }
+
         osama.black();
 
         waitForStart();
         while (opModeIsActive() && opModeIsActive()) {
-            tagOfInterest = new AprilTagDetection();
-            tagOfInterest.id = 3;
 
-            //detectie
-            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
-            if (detections != null) {
-                telemetry.addData("FPS", camera.getFps());
-                telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
-                telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
 
-                // If we don't see any tags
-                if (detections.size() == 0) {
-                    numFramesWithoutDetection++;
-
-                    // If we haven't seen a tag for a few frames, lower the decimation
-                    // so we can hopefully pick one up if we're e.g. far back
-                    if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
-                        aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
-                    }
-                }
-                // We do see tags!
-                else {
-                    numFramesWithoutDetection = 0;
-
-                    // If the target is within 1 meter, turn on high decimation to
-                    // increase the frame rate
-                    if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
-                        aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
-                    }
-                    for (AprilTagDetection tag : detections) {
-                        if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
-                            telemetry.addLine(String.valueOf(tag));
-                            telemetry.update();
-                            tagOfInterest = tag;
-                        }
-                    }
-                }
-            }
+//            tagOfInterest = new AprilTagDetection();
+//            tagOfInterest.id = 3;
+//
+//            //detectie
+//            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+//            if (detections != null) {
+//                telemetry.addData("FPS", camera.getFps());
+//                telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+//                telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+//
+//                // If we don't see any tags
+//                if (detections.size() == 0) {
+//                    numFramesWithoutDetection++;
+//
+//                    // If we haven't seen a tag for a few frames, lower the decimation
+//                    // so we can hopefully pick one up if we're e.g. far back
+//                    if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+//                        aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
+//                    }
+//                }
+//                // We do see tags!
+//                else {
+//                    numFramesWithoutDetection = 0;
+//
+//                    // If the target is within 1 meter, turn on high decimation to
+//                    // increase the frame rate
+//                    if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+//                        aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
+//                    }
+//                    for (AprilTagDetection tag : detections) {
+//                        if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
+//                            telemetry.addLine(String.valueOf(tag));
+//                            telemetry.update();
+//                            tagOfInterest = tag;
+//                        }
+//                    }
+//                }
+//            }
 
             camera.closeCameraDevice();
 
@@ -196,12 +237,6 @@ public class Nurofen_DR extends LinearOpMode {
 
             //traj revenire 1 && lasa con 1
             TrajectorySequence reven = osama.trajectorySequenceBuilder(go_pune.end())
-                    .addTemporalMarker(0, ()-> {
-                        osama.se_ridica_brat(-0.3);
-                    })
-                    .addTemporalMarker(1.8, ()->{
-                        osama.se_ridica_brat(0);
-                    })
                     .waitSeconds(0.2)
                     .addTemporalMarker(0, () -> {
                         osama.cerseste();
@@ -217,7 +252,7 @@ public class Nurofen_DR extends LinearOpMode {
             timer.reset();
             //thing revenire 1
             while (opModeIsActive() && !osama.getMagnetAtingere()) {
-                osama.rotesteThing(-0.7);
+                osama.rotesteThing(-1);
                 if(timer.seconds() >= TIMER_SENZOR_DR)
                     break;
             }
@@ -321,7 +356,7 @@ public class Nurofen_DR extends LinearOpMode {
             timer.reset();
             //revenire thing pt alt con
             while ( (opModeIsActive() && !osama.getMagnetAtingere() ) ) {
-                osama.rotesteThing(-0.7);
+                osama.rotesteThing(-1);
                 if(timer.seconds() >= TIMER_SENZOR_DR)
                     break;
             }
@@ -467,7 +502,7 @@ public class Nurofen_DR extends LinearOpMode {
         //revenire thing pt con 4
         timer.reset();
         while (opModeIsActive() && !osama.getMagnetAtingere()) {
-            osama.rotesteThing(-0.5);
+            osama.rotesteThing(-1);
         }
         osama.rotesteThing(0);
 
@@ -535,6 +570,8 @@ public class Nurofen_DR extends LinearOpMode {
                 })
                 .build();
         osama.followTrajectory(park);
+
+        osama.rotesteThing(1);
 
         Trajectory ok = osama.trajectoryBuilder(park.end())
                 .strafeTo(new Vector2d(osama.getPoseEstimate().getX() + 2.3, osama.getPoseEstimate().getY() + 4.7))
