@@ -25,7 +25,7 @@ public class NU_MAI_POT {
     public static double power_brat_dc_cob = .7;
     public static double power_thing_slow = 0.3;
 
-    public static double power_de_cosmin = 0.8;
+    public static double power_de_putin = 0.8;
 
     public static long sleep_for_strafe = 400;
 

@@ -5,7 +5,6 @@ import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_THING_ST_R
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_ST_RED_BLUE_KKK;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_ST_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_ST_RED_BLUE2;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_ST_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.TIMER_SENZOR_ST;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_brat_dc;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 
 @Autonomous()
 public class Nurofen_ST extends LinearOpMode {
-    SampleMecanumDrive osama;
+    SampleMecanumDrive robot;
     public VoltageSensor batteryVoltageSensor;
     private DcMotor brat, brat_pe_sub;
 
@@ -79,8 +78,8 @@ public class Nurofen_ST extends LinearOpMode {
         brat = hardwareMap.dcMotor.get("brat");
         brat_pe_sub = hardwareMap.dcMotor.get("brat_pe_sub");
 
-        osama = new SampleMecanumDrive(hardwareMap);
-        osama.setPoseEstimate(START_ST_RED_BLUE);
+        robot = new SampleMecanumDrive(hardwareMap);
+        robot.setPoseEstimate(START_ST_RED_BLUE);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
@@ -113,7 +112,7 @@ public class Nurofen_ST extends LinearOpMode {
             }
         });
 
-        osama.black();
+        robot.strange();
 
         waitForStart();
         while (opModeIsActive() && opModeIsActive()) {
@@ -164,14 +163,14 @@ public class Nurofen_ST extends LinearOpMode {
 
             //APUCA CON 1
 //            sleep(400);
-            osama.black();
+            robot.strange();
 
             //RIDICA BRAT 1
             sleep(300);
             se_ridica_brat(power_brat_dc);
 
             //TRAJ JUNCTION 1
-            TrajectorySequence go_pune = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
+            TrajectorySequence go_pune = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
                     .lineToLinearHeading(new Pose2d(-41.5, -40, Math.toRadians(180)))
                     .lineToLinearHeading(PRE_POSITION_ST_RED_BLUE_KKK,
                             SampleMecanumDrive.getVelocityConstraint(40,
@@ -179,20 +178,20 @@ public class Nurofen_ST extends LinearOpMode {
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(30))
                     .addTemporalMarker(time -> time * 0.4, () -> {
-                        osama.black();
-                        osama.rotesteThing(-1);
+                        robot.strange();
+                        robot.rotesteThing(-1);
                     })
                     .build();
-            osama.followTrajectorySequence(go_pune);
+            robot.followTrajectorySequence(go_pune);
             //tine brat ridicat 1
             se_ridica_brat(power_brat_dc);
 
             se_ridica_brat(-0.3);
             //traj revenire 1 && lasa con 1
-            TrajectorySequence reven = osama.trajectorySequenceBuilder(go_pune.end())
+            TrajectorySequence reven = robot.trajectorySequenceBuilder(go_pune.end())
                     .waitSeconds(0.2)
                     .addTemporalMarker(0, () -> {
-                        osama.cerseste();
+                        robot.deschide_gheara();
                     })
                     .addTemporalMarker(0.3, ()->{
                         se_ridica_brat(0);
@@ -203,18 +202,18 @@ public class Nurofen_ST extends LinearOpMode {
 
             //opreste ridicare
             se_ridica_brat(0);
-            osama.followTrajectorySequence(reven);
+            robot.followTrajectorySequence(reven);
 
             timer.reset();
             //thing revenire 1
-            while (opModeIsActive() && !osama.getMagnetAtingere()) {
-                osama.rotesteThing(0.4);
+            while (opModeIsActive() && !robot.getMagnetAtingere()) {
+                robot.rotesteThing(0.4);
                 if(timer.seconds() >= TIMER_SENZOR_ST)
                     break;
             }
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
-            osama.bagaViteza(0, 0, 0, 0);
+            robot.bagaViteza(0, 0, 0, 0);
 
             //coboara brat 1
 //            brat.setTargetPosition(-cob1);
@@ -244,7 +243,7 @@ public class Nurofen_ST extends LinearOpMode {
 
 
             //traj to stack 1
-            Trajectory rr = osama.trajectoryBuilder(reven.end())
+            Trajectory rr = robot.trajectoryBuilder(reven.end())
                     .splineToLinearHeading(STACK_ST_RED_BLUE, Math.toRadians(180),
                             SampleMecanumDrive.getVelocityConstraint(
                                     35,
@@ -254,36 +253,24 @@ public class Nurofen_ST extends LinearOpMode {
                                     35
                     ))
                     .build();
-            osama.followTrajectory(rr);
+            robot.followTrajectory(rr);
 
-            //miscare sasiu senzor dist 1
-//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10.9) {
-//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-//
-//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-//
-            /////////^^^^^^^^senzor nu mai
             sleep(100);
 
             //apuca con 2
-            osama.black();
+            robot.strange();
             sleep(400);
 
             //ridica brat 2
             se_ridica_brat(power_brat_dc);
 
             //updateaza pozitia robot
-            osama.update();
+            robot.update();
 
             //traj la junction con 2
-            Trajectory back = osama.trajectoryBuilder(osama.getPoseEstimate())
+            Trajectory back = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .addTemporalMarker(time -> time * 0.4, () -> {
-                        osama.rotesteThing(-0.4);
+                        robot.rotesteThing(-0.4);
                     })
 //                    .lineToConstantHeading(new Vector2d(40, -5))
                     .lineToLinearHeading(JUNCTION_THING_ST_RED_BLUE,
@@ -292,28 +279,28 @@ public class Nurofen_ST extends LinearOpMode {
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(30))
                     .build();
-            osama.followTrajectory(back);
+            robot.followTrajectory(back);
 
             //tine brat ridicat  2
             se_ridica_brat(power_brat_dc);
 
             //opreste rotire thing
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
             //lasa con 2
             sleep(200);
-            osama.cerseste();
+            robot.deschide_gheara();
             sleep(200);
 
             //revenire thing pt alt con
             timer.reset();
-            while (opModeIsActive() && !osama.getMagnetAtingere()) {
-                osama.rotesteThing(0.4);
+            while (opModeIsActive() && !robot.getMagnetAtingere()) {
+                robot.rotesteThing(0.4);
                 if(timer.seconds() >= TIMER_SENZOR_ST)
                     break;
             }
             //opreste rotire thing
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
             //coboara brat 3
 //            brat.setTargetPosition(cob2);
@@ -339,10 +326,10 @@ public class Nurofen_ST extends LinearOpMode {
 
             brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            osama.bagaViteza(0, 0, 0, 0);
+            robot.bagaViteza(0, 0, 0, 0);
 
             //traj la stack 2
-            Trajectory rr2 = osama.trajectoryBuilder(osama.getPoseEstimate())
+            Trajectory rr2 = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .splineToLinearHeading(STACK_ST_RED_BLUE2, Math.toRadians(180),
                             SampleMecanumDrive.getVelocityConstraint(
                                     35,
@@ -352,23 +339,11 @@ public class Nurofen_ST extends LinearOpMode {
                                     35
                             ))
                     .build();
-            osama.followTrajectory(rr2);
-
-            //miscare sasiu senzor dist 2
-//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10) {
-//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-//
-//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-            //////^^senzor nu mai
+            robot.followTrajectory(rr2);
 
             //apuca con 3
             sleep(100);
-            osama.black();
+            robot.strange();
             sleep(300);
 
             //ridica brat 3
@@ -376,12 +351,12 @@ public class Nurofen_ST extends LinearOpMode {
 //            sleep(400);
 
             //miscare sasiu senzor dist 1
-            osama.update();
+            robot.update();
 
             //traj la junction con 3
-            Trajectory back2 = osama.trajectoryBuilder(osama.getPoseEstimate())
+            Trajectory back2 = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .addTemporalMarker(time -> time * 0.4, () -> {
-                        osama.rotesteThing(-0.4);
+                        robot.rotesteThing(-0.4);
                     })
 //                    .lineToConstantHeading(new Vector2d(39.2, -5))
                     .lineToLinearHeading(JUNCTION_THING_ST_RED_BLUE2,
@@ -390,17 +365,17 @@ public class Nurofen_ST extends LinearOpMode {
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(30))
                     .build();
-            osama.followTrajectory(back2);
+            robot.followTrajectory(back2);
 
             //tine brat ridicat 3
             se_ridica_brat(power_brat_dc);
 
             //opreste rotire thing
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
             //lasa con 3
             sleep(200);
-            osama.cerseste();
+            robot.deschide_gheara();
             sleep(200);
 
             //parcare
@@ -423,52 +398,49 @@ public class Nurofen_ST extends LinearOpMode {
     }
 
     private void dreapta() {
-        TrajectorySequence park = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
+        TrajectorySequence park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
                 .strafeLeft(4)
                 .back(18)
                 .build();
-        osama.followTrajectorySequence(park);
+        robot.followTrajectorySequence(park);
 
         timer.reset();
-        while (opModeIsActive() && !osama.getMagnetAtingere()) {
-            osama.rotesteThing(1);
+        while (opModeIsActive() && !robot.getMagnetAtingere()) {
+            robot.rotesteThing(1);
             if(timer.seconds() >= TIMER_SENZOR_ST)
                 break;
         }
-        osama.rotesteThing(0);
+        robot.rotesteThing(0);
     }
 
     private void mijloc() {
-        Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
+        Trajectory park = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .forward(4)
                 .build();
-        osama.followTrajectory(park);
+        robot.followTrajectory(park);
 
         timer.reset();
-        while (opModeIsActive() && !osama.getMagnetAtingere()) {
-            osama.rotesteThing(1);
+        while (opModeIsActive() && !robot.getMagnetAtingere()) {
+            robot.rotesteThing(1);
             if(timer.seconds() >= TIMER_SENZOR_ST)
                 break;
         }
-        osama.rotesteThing(0);
+        robot.rotesteThing(0);
     }
 
     private void stanga () {
-//        Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
-//                .lineToLinearHeading(new Pose2d(62, -8.2, Math.toRadians(0)))
-//                .build();
-//        osama.followTrajectory(park);
 
         //revenire thing pt con 4
         timer.reset();
-        while (opModeIsActive() && !osama.getMagnetAtingere()) {
-            osama.rotesteThing(0.5);
+        while (opModeIsActive() && !robot.getMagnetAtingere()) {
+            robot.rotesteThing(0.5);
             if(timer.seconds() >= TIMER_SENZOR_ST)
                 break;
         }
-        osama.rotesteThing(0);
+        robot.rotesteThing(0);
 
 
+        //coboara brat
         brat.setTargetPosition(brat.getCurrentPosition() - 1750);
         brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1750);
 
@@ -490,55 +462,43 @@ public class Nurofen_ST extends LinearOpMode {
         brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        osama.bagaViteza(0, 0, 0, 0);
+        robot.bagaViteza(0, 0, 0, 0);
 
-//
-        TrajectorySequence rr2 = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
+        //mergi la stack
+        TrajectorySequence rr2 = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-63.4, -8.7, Math.toRadians(180)))
-//                    .strafeRight(3)
-//                .splineToLinearHeading(new Pose2d(50, -8, Math.toRadians(0)), Math.toRadians(0))
-//                .splineToLinearHeading(new Pose2d(63, -8, Math.toRadians(0)), Math.toRadians(0))
-//            SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(30)
-//                    .lineToConstantHeading(new Vector2d(60, -8))
                 .build();
-        osama.followTrajectorySequence(rr2);
-
-//        while (opModeIsActive() && osama.getDistanceSensorJos() >= 9.8) {
-//            osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-//        }
-//        osama.bagaViteza(0, 0, 0, 0);
-//
-//        while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-//            osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-//        }
-//        osama.bagaViteza(0, 0, 0, 0);
-//        osama.update();
+        robot.followTrajectorySequence(rr2);
 
         sleep(100);
 
-        osama.black();
+        //apuca con
+        robot.strange();
 
         sleep(500);
 
+        //ridica && roteste thing
         se_ridica_brat(0.8);
         sleep(550);
-        osama.rotesteThing(1);
+        robot.rotesteThing(1);
         se_ridica_brat(0.01);
 
-        Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
-                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() + 6.5, osama.getPoseEstimate().getY() - 3.5))
+        //mergi la low junction
+        Trajectory park = robot.trajectoryBuilder(robot.getPoseEstimate())
+                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() + 6.5, robot.getPoseEstimate().getY() - 3.5))
                 .addDisplacementMarker(() -> {
-                    osama.cerseste();
+                    robot.deschide_gheara();
                 })
                 .build();
-        osama.followTrajectory(park);
+        robot.followTrajectory(park);
 
-        Trajectory ok = osama.trajectoryBuilder(park.end())
-                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() - 4, osama.getPoseEstimate().getY() + 4.8))
+        //parcheaza
+        Trajectory ok = robot.trajectoryBuilder(park.end())
+                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() - 4, robot.getPoseEstimate().getY() + 4.8))
                 .build();
-        osama.followTrajectory(ok);
+        robot.followTrajectory(ok);
 
-        osama.rotesteThing(1);
+        robot.rotesteThing(1);
 
         //        sleep(50);
 //        osama.rotesteThing(1);
@@ -548,10 +508,7 @@ public class Nurofen_ST extends LinearOpMode {
     }
 
     private void se_ridica_brat(double putere) {
-        brat.setPower(putere);//eu si stefanut ne bazam pe robot la regionala ca sa fim top 15 asa ca nu il stricati va kiss va alea
-        brat_pe_sub.setPower(-putere); // daca nu ne calificam la nationala inseamna ca nu ati lucrat corect va kiss love va alea
+        brat.setPower(putere);
+        brat_pe_sub.setPower(-putere);
     }
-    //imi pare rau daca am stricat ceva sincer dar nu am vrut sa stiti ca nu am modificat nimic dar sper ca  nu am schimbat ceva din greseala sorry va kiss va alea
-
-    //va omor, va kiss va alea
 }

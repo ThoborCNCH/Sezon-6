@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.limitare_vit;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_coborare;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_de_cosmin;
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_de_putin;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_thing_slow;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.LOW_POWER;
 import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSeMaiUmbla.MEDIUM_POWER;
@@ -10,9 +9,6 @@ import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSe
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -160,9 +156,9 @@ public class Telemeu extends LinearOpMode {
 
             if (gamepad2.left_bumper || gamepad2.right_bumper) {
                 if (gamepad2.left_bumper)
-                    brat = -power_de_cosmin;
+                    brat = -power_de_putin;
                 else
-                    brat = power_de_cosmin;
+                    brat = power_de_putin;
                 //                robot.se_ridica_brat(brat);
 
                 if (gamepad2.left_trigger != 0 || gamepad2.right_trigger != 0) {

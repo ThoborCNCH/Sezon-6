@@ -1,21 +1,12 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_THING_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_THING_DR_RED_BLUE2;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE3;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE_KKK;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_DR_RED_BLUE2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.START_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.TIMER_SENZOR_DR;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.cob1;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.cob2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.power_brat_dc;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_dr;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_deschis_st;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inschis_dr_AUTO;
-import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.poz_inschis_st_AUTO;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -120,7 +111,7 @@ public class Tester_DR extends LinearOpMode {
             }
         });
 
-        osama.black();
+        osama.strange();
 
         waitForStart();
         while (opModeIsActive() && opModeIsActive()) {
@@ -180,7 +171,7 @@ public class Tester_DR extends LinearOpMode {
 
             //apuca con 1
 //            sleep(400);
-            osama.black();
+            osama.strange();
 
             //ridica brat 1
             sleep(300);
@@ -195,7 +186,7 @@ public class Tester_DR extends LinearOpMode {
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(30))
                     .addTemporalMarker(time -> time * 0.4, () -> {
-                        osama.black();
+                        osama.strange();
                         osama.rotesteThing(1);
                     })
                     .build();
@@ -213,7 +204,7 @@ public class Tester_DR extends LinearOpMode {
 //                    })
                     .waitSeconds(0.2)
                     .addTemporalMarker(0, () -> {
-                        osama.cerseste();
+                        osama.deschide_gheara();
                     })
                     .waitSeconds(0.2)
                     .strafeRight(2)
@@ -290,7 +281,7 @@ public class Tester_DR extends LinearOpMode {
             sleep(100);
 
             //apuca con 2
-            osama.black();
+            osama.strange();
             sleep(400);
 
             //ridica brat 2
@@ -323,7 +314,7 @@ public class Tester_DR extends LinearOpMode {
 //            se_ridica_brat(-0.4);
 //            osama.se_ridica_brat(-0.4);
             sleep(200);
-            osama.cerseste();
+            osama.deschide_gheara();
             sleep(200);
 //            osama.se_ridica_brat(0);
 
@@ -390,7 +381,7 @@ public class Tester_DR extends LinearOpMode {
 
             //apuca con 3
             sleep(100);
-            osama.black();
+            osama.strange();
             sleep(300);
 
             //ridica brat 3
@@ -422,7 +413,7 @@ public class Tester_DR extends LinearOpMode {
 
             //lasa con 3
             sleep(200);
-            osama.cerseste();
+            osama.deschide_gheara();
             sleep(200);
 
             //parcare
@@ -528,7 +519,7 @@ public class Tester_DR extends LinearOpMode {
 
         sleep(100);
 
-        osama.black();
+        osama.strange();
 
         sleep(500);
         osama.rotesteThing(-1);
@@ -540,7 +531,7 @@ public class Tester_DR extends LinearOpMode {
         Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
                 .strafeTo(new Vector2d(osama.getPoseEstimate().getX() - 5.1, osama.getPoseEstimate().getY() - 3.2))
                 .addDisplacementMarker(() -> {
-                    osama.cerseste();
+                    osama.deschide_gheara();
                 })
                 .build();
         osama.followTrajectory(park);
