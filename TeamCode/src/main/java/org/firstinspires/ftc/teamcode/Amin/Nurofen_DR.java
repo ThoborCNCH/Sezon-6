@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_THING_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_THING_DR_RED_BLUE2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE_KKK;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_DR_RED_BLUE;
@@ -95,6 +96,7 @@ public class Nurofen_DR extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         AprilTagDetectionPipeline aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        tagOfInterest = new AprilTagDetection();
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -108,55 +110,55 @@ public class Nurofen_DR extends LinearOpMode {
             public void onError(int errorCode) {
                 telemetry.addData("eroare: ", String.valueOf(errorCode));
                 telemetry.update();
+                tagOfInterest.id = 3;
             }
         });
 
         //detectie inainte de start
-        tagOfInterest = new AprilTagDetection();
-        tagOfInterest.id = 3;
+//        tagOfInterest.id = 3;
 
         //detectie
-        ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
-        if (detections != null) {
-            telemetry.addData("FPS", camera.getFps());
-            telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
-            telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
-
-            // If we don't see any tags
-            if (detections.size() == 0) {
-                numFramesWithoutDetection++;
-
-                // If we haven't seen a tag for a few frames, lower the decimation
-                // so we can hopefully pick one up if we're e.g. far back
-                if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
-                    aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
-                }
-            }
-            // We do see tags!
-            else {
-                numFramesWithoutDetection = 0;
-
-                // If the target is within 1 meter, turn on high decimation to
-                // increase the frame rate
-                if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
-                    aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
-                }
-                for (AprilTagDetection tag : detections) {
-                    if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
-                        telemetry.addLine(String.valueOf(tag.id));
-                        telemetry.update();
-                        tagOfInterest = tag;
-                    }
-                }
-            }
-        }
+//        ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+//        if (detections != null) {
+//            telemetry.addData("FPS", camera.getFps());
+//            telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+//            telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+//
+//            // If we don't see any tags
+//            if (detections.size() == 0) {
+//                numFramesWithoutDetection++;
+//
+//                // If we haven't seen a tag for a few frames, lower the decimation
+//                // so we can hopefully pick one up if we're e.g. far back
+//                if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+//                    aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
+//                }
+//            }
+//            // We do see tags!
+//            else {
+//                numFramesWithoutDetection = 0;
+//
+//                // If the target is within 1 meter, turn on high decimation to
+//                // increase the frame rate
+//                if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+//                    aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
+//                }
+//                for (AprilTagDetection tag : detections) {
+//                    if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
+//                        telemetry.addLine(String.valueOf(tag.id));
+//                        telemetry.update();
+//                        tagOfInterest = tag;
+//                    }
+//                }
+//            }
+//        }
 
         robot.strange();
 
         waitForStart();
         while (opModeIsActive() && opModeIsActive()) {
 
-        //detectie dupa start
+            //detectie dupa start
 
 //            tagOfInterest = new AprilTagDetection();
 //            tagOfInterest.id = 3;
@@ -196,6 +198,42 @@ public class Nurofen_DR extends LinearOpMode {
 //                    }
 //                }
 //            }
+
+            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+            if (detections != null) {
+                telemetry.addData("FPS", camera.getFps());
+                telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+                telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+
+                // If we don't see any tags
+                if (detections.size() == 0) {
+                    numFramesWithoutDetection++;
+
+                    // If we haven't seen a tag for a few frames, lower the decimation
+                    // so we can hopefully pick one up if we're e.g. far back
+                    if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+                        aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
+                    }
+                }
+                // We do see tags!
+                else {
+                    numFramesWithoutDetection = 0;
+
+                    // If the target is within 1 meter, turn on high decimation to
+                    // increase the frame rate
+                    if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+                        aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
+                    }
+                    for (AprilTagDetection tag : detections) {
+                        if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
+                            telemetry.addLine(String.valueOf(tag.id));
+                            telemetry.update();
+                            tagOfInterest = tag;
+                        }
+                    }
+                }
+            }
+            sleep(500);
 
             camera.closeCameraDevice();
 
@@ -246,7 +284,7 @@ public class Nurofen_DR extends LinearOpMode {
             //thing revenire 1
             while (opModeIsActive() && !robot.getMagnetAtingere()) {
                 robot.rotesteThing(-1);
-                if(timer.seconds() >= TIMER_SENZOR_DR)
+                if (timer.seconds() >= TIMER_SENZOR_DR)
                     break;
             }
             robot.rotesteThing(0);
@@ -259,8 +297,8 @@ public class Nurofen_DR extends LinearOpMode {
 
             double ticks = 320;
 
-            brat.setTargetPosition(brat.getCurrentPosition() - 1461);
-            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1461);
+            brat.setTargetPosition(brat.getCurrentPosition() - 1455);
+            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1455);
             brat.setPower(-0.6);
             brat_pe_sub.setPower(0.6);
 //
@@ -312,7 +350,7 @@ public class Nurofen_DR extends LinearOpMode {
                         robot.rotesteThing(0.5);
                     })
 //                    .lineToConstantHeading(new Vector2d(40, -5))
-                    .lineToLinearHeading(JUNCTION_THING_DR_RED_BLUE2,
+                    .lineToLinearHeading(JUNCTION_THING_DR_RED_BLUE,
                             SampleMecanumDrive.getVelocityConstraint(40,
                                     DriveConstants.MAX_ANG_VEL,
                                     DriveConstants.TRACK_WIDTH),
@@ -333,9 +371,9 @@ public class Nurofen_DR extends LinearOpMode {
 
             timer.reset();
             //revenire thing pt alt con
-            while ( (opModeIsActive() && !robot.getMagnetAtingere() ) ) {
+            while ((opModeIsActive() && !robot.getMagnetAtingere())) {
                 robot.rotesteThing(-1);
-                if(timer.seconds() >= TIMER_SENZOR_DR)
+                if (timer.seconds() >= TIMER_SENZOR_DR)
                     break;
             }
             //opreste rotire thing
@@ -345,8 +383,8 @@ public class Nurofen_DR extends LinearOpMode {
 //            brat.setTargetPosition(cob2);
 //            brat_pe_sub.setTargetPosition(cob2);
 
-            brat.setTargetPosition(brat.getCurrentPosition() - 1675);
-            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1675);
+            brat.setTargetPosition(brat.getCurrentPosition() - 1682);
+            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1682);
 
             brat.setPower(-0.6);
             brat_pe_sub.setPower(0.6);
@@ -375,7 +413,7 @@ public class Nurofen_DR extends LinearOpMode {
                                     DriveConstants.MAX_ANG_VEL,
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(
-                                    35
+                                    30
                             ))
                     .build();
             robot.followTrajectory(rr2);
@@ -386,7 +424,7 @@ public class Nurofen_DR extends LinearOpMode {
             sleep(300);
 
             //ridica brat 3
-            se_ridica_brat(0.6);
+            se_ridica_brat(power_brat_dc);
 //            sleep(400);
 
             //miscare sasiu senzor dist 1
@@ -399,10 +437,10 @@ public class Nurofen_DR extends LinearOpMode {
                     })
 //                    .lineToConstantHeading(new Vector2d(39.2, -5))
                     .lineToLinearHeading(JUNCTION_THING_DR_RED_BLUE2,
-                            SampleMecanumDrive.getVelocityConstraint(40,
+                            SampleMecanumDrive.getVelocityConstraint(38,
                                     DriveConstants.MAX_ANG_VEL,
                                     DriveConstants.TRACK_WIDTH),
-                            SampleMecanumDrive.getAccelerationConstraint(30))
+                            SampleMecanumDrive.getAccelerationConstraint(30)) //era 35
                     .build();
             robot.followTrajectory(back2);
 
@@ -429,7 +467,7 @@ public class Nurofen_DR extends LinearOpMode {
                     mijloc();
                     break;
                 default:
-                    mijloc();
+                    dreapta();
                     break;
             }
             stop();
@@ -439,7 +477,7 @@ public class Nurofen_DR extends LinearOpMode {
     private void stanga() {
         TrajectorySequence park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
                 .strafeRight(4)
-                .back(18)
+                .back(16)
                 .build();
         robot.followTrajectorySequence(park);
         timer.reset();
@@ -450,7 +488,7 @@ public class Nurofen_DR extends LinearOpMode {
 
     private void mijloc() {
         Trajectory park = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .forward(4)
+                .forward(5)
                 .build();
         robot.followTrajectory(park);
         timer.reset();
@@ -470,8 +508,8 @@ public class Nurofen_DR extends LinearOpMode {
 
 
         //coboara brat
-        brat.setTargetPosition(brat.getCurrentPosition() - 1750);
-        brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1750);
+        brat.setTargetPosition(brat.getCurrentPosition() - 1747);
+        brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1747);
 
         brat.setPower(-0.6);
         brat_pe_sub.setPower(0.6);
@@ -496,7 +534,11 @@ public class Nurofen_DR extends LinearOpMode {
 
         //mergi al stack
         TrajectorySequence rr2 = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(66, -9.8, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(68.7, -9.8, Math.toRadians(0)),
+                        SampleMecanumDrive.getVelocityConstraint(40,
+                                DriveConstants.MAX_ANG_VEL,
+                                DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(30))
                 .build();
         robot.followTrajectorySequence(rr2);
 
@@ -505,26 +547,31 @@ public class Nurofen_DR extends LinearOpMode {
         robot.strange();
 
         sleep(500);
+        se_ridica_brat(0.9);
+        sleep(120);
         robot.rotesteThing(-1);
+        sleep(350);
+        se_ridica_brat(0.01);
+        sleep(320);
 
-        se_ridica_brat(0.8);
-        sleep(550);
+//        robot.rotesteThing(0);
+
         se_ridica_brat(0.01);
 
         //mergi la junction low
         Trajectory park = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() - 5.1, robot.getPoseEstimate().getY() - 3.2))
+                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() - 6.1, robot.getPoseEstimate().getY() - 2.5))
                 .addDisplacementMarker(() -> {
                     robot.deschide_gheara();
                 })
                 .build();
         robot.followTrajectory(park);
 
-        robot.rotesteThing(1);
+        robot.rotesteThing(0.7);
 
         //parcheaza
         Trajectory ok = robot.trajectoryBuilder(park.end())
-                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() + 2.3, robot.getPoseEstimate().getY() + 4.7))
+                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() + 4, robot.getPoseEstimate().getY() + 4))
                 .build();
         robot.followTrajectory(ok);
 

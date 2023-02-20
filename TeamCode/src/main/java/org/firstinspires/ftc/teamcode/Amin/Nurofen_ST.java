@@ -109,6 +109,8 @@ public class Nurofen_ST extends LinearOpMode {
             public void onError(int errorCode) {
                 telemetry.addData("eroare: ", String.valueOf(errorCode));
                 telemetry.update();
+                tagOfInterest = new AprilTagDetection();
+                tagOfInterest.id = 3;
             }
         });
 
@@ -221,8 +223,8 @@ public class Nurofen_ST extends LinearOpMode {
 
             double ticks = 320;
 
-            brat.setTargetPosition(brat.getCurrentPosition() - 1471); //am facut de la 61 71
-            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1471);
+            brat.setTargetPosition(brat.getCurrentPosition() - 1478); //am facut de la 61 71
+            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1478);
             brat.setPower(-0.6);
             brat_pe_sub.setPower(0.6);
 //
@@ -306,8 +308,8 @@ public class Nurofen_ST extends LinearOpMode {
 //            brat.setTargetPosition(cob2);
 //            brat_pe_sub.setTargetPosition(cob2);
 
-            brat.setTargetPosition(brat.getCurrentPosition() - 1675);
-            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1675);
+            brat.setTargetPosition(brat.getCurrentPosition() - 1685);
+            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1685);
 
             brat.setPower(-0.6);
             brat_pe_sub.setPower(0.6);
@@ -400,7 +402,7 @@ public class Nurofen_ST extends LinearOpMode {
     private void dreapta() {
         TrajectorySequence park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
                 .strafeLeft(4)
-                .back(18)
+                .back(22)
                 .build();
         robot.followTrajectorySequence(park);
 
@@ -466,7 +468,7 @@ public class Nurofen_ST extends LinearOpMode {
 
         //mergi la stack
         TrajectorySequence rr2 = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(-63.4, -8.7, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-63.1, -8.7, Math.toRadians(180)))
                 .build();
         robot.followTrajectorySequence(rr2);
 
@@ -479,7 +481,7 @@ public class Nurofen_ST extends LinearOpMode {
 
         //ridica && roteste thing
         se_ridica_brat(0.8);
-        sleep(550);
+        sleep(600);
         robot.rotesteThing(1);
         se_ridica_brat(0.01);
 

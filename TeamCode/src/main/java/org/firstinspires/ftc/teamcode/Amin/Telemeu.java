@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.Amin.incercareDetectie3Patrate.NuSe
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -23,23 +24,37 @@ public class Telemeu extends LinearOpMode {
 
     int servoGheara = 0;
 
+    double multi = 1;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         robot = new SampleMecanumDrive(hardwareMap);
+        robot.brat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.brat_pe_sub.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        waitForStart();
+//        waitForStart();
+
+        while (!opModeIsActive() && !isStopRequested()) {
+        }
 
         while (opModeIsActive()) {
+
+            if (gamepad1.left_bumper) {
+                multi = 0.7;
+            }
+            if (!gamepad1.left_bumper) {
+                multi = 1;
+            }
 
             //          MISCARE JOYSTICK
             if (!(gamepad1.dpad_right || gamepad1.dpad_left || gamepad1.dpad_up || gamepad1.dpad_down)) {
 
                 robot.setWeightedDrivePower(
                         new Pose2d(
-                                -gamepad1.left_stick_y * limitare_vit,
-                                -gamepad1.left_stick_x * limitare_vit,
-                                -gamepad1.right_stick_x * limitare_vit//X ul trebuie
+                                -gamepad1.left_stick_y * limitare_vit * multi,
+                                -gamepad1.left_stick_x * limitare_vit * multi,
+                                -gamepad1.right_stick_x * limitare_vit * multi//X ul trebuie
                         )
                 );
             }
@@ -63,7 +78,7 @@ public class Telemeu extends LinearOpMode {
 
             // miscari din dpad uri
             if (gamepad1.dpad_up) {
-                robot.bagaViteza(MEDIUM_POWER, MEDIUM_POWER, MEDIUM_POWER, MEDIUM_POWER);
+                robot.bagaViteza(MEDIUM_POWER * multi, MEDIUM_POWER * multi, MEDIUM_POWER * multi, MEDIUM_POWER * multi);
                 //                robot.setWeightedDrivePower(
                 //                        new Pose2d(
                 //                                0.3,
@@ -72,7 +87,7 @@ public class Telemeu extends LinearOpMode {
                 //                        )
                 //                );
             } else if (gamepad1.dpad_down) {
-                robot.bagaViteza(-MEDIUM_POWER, -MEDIUM_POWER, -MEDIUM_POWER, -MEDIUM_POWER);
+                robot.bagaViteza(-MEDIUM_POWER * multi, -MEDIUM_POWER * multi, -MEDIUM_POWER * multi, -MEDIUM_POWER * multi);
                 //                robot.setWeightedDrivePower(
                 //                        new Pose2d(
                 //                                -0.3,
@@ -81,7 +96,7 @@ public class Telemeu extends LinearOpMode {
                 //                        )
                 //                );
             } else if (gamepad1.dpad_left) {
-                robot.bagaViteza(-MEDIUM_POWER, MEDIUM_POWER, MEDIUM_POWER, -MEDIUM_POWER);
+                robot.bagaViteza(-MEDIUM_POWER * multi, MEDIUM_POWER * multi, MEDIUM_POWER * multi, -MEDIUM_POWER * multi);
                 //                robot.setWeightedDrivePower(
                 //                        new Pose2d(
                 //                                0,
@@ -90,7 +105,7 @@ public class Telemeu extends LinearOpMode {
                 //                        )
                 //                );
             } else if (gamepad1.dpad_right) {
-                robot.bagaViteza(MEDIUM_POWER, -MEDIUM_POWER, -MEDIUM_POWER, MEDIUM_POWER);
+                robot.bagaViteza(MEDIUM_POWER * multi, -MEDIUM_POWER * multi, -MEDIUM_POWER * multi, MEDIUM_POWER * multi);
                 //                robot.setWeightedDrivePower(
                 //                        new Pose2d(
                 //                                0,
@@ -113,10 +128,10 @@ public class Telemeu extends LinearOpMode {
 
             // rotiri fine din triggere
             while (gamepad1.right_trigger != 0) {
-                robot.bagaViteza(LOW_POWER, -LOW_POWER, LOW_POWER, -LOW_POWER);
+                robot.bagaViteza(LOW_POWER * multi, -LOW_POWER * multi, LOW_POWER * multi, -LOW_POWER * multi);
             }
             while (gamepad1.left_trigger != 0) {
-                robot.bagaViteza(-LOW_POWER, LOW_POWER, -LOW_POWER, LOW_POWER);
+                robot.bagaViteza(-LOW_POWER * multi, LOW_POWER * multi, -LOW_POWER * multi, LOW_POWER * multi);
             }
 
             //            if (gamepad2.dpad_up || gamepad2.dpad_down) {
@@ -178,6 +193,10 @@ public class Telemeu extends LinearOpMode {
                 }
 
 
+                if (gamepad2.dpad_up)
+                    robot.apuca(0.1, 1);
+
+
                 if (gamepad2.a)
                     robot.apuca(NU_MAI_POT.poz_deschis_st, NU_MAI_POT.poz_deschis_dr);
                 else if (gamepad2.b)
@@ -207,6 +226,9 @@ public class Telemeu extends LinearOpMode {
                     ///////////////--------------AM ADAUGAT AICI ONDITIE
                     if (servoGheara == 0)
                         robot.rotesteThing(0);
+
+                if (gamepad2.dpad_up)
+                    robot.apuca(0.1, 1);
 
                 if (gamepad2.a)
                     robot.apuca(NU_MAI_POT.poz_deschis_st, NU_MAI_POT.poz_deschis_dr);

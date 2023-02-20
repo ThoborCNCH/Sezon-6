@@ -85,7 +85,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private final DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private final List<DcMotorEx> motors;
-    public final DcMotor brat, brat_pe_sub;
+    public DcMotor brat, brat_pe_sub;
     public CRServo top;
     public Servo gheara_stanga, gheara_dreapta;
 
