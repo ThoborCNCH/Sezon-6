@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Amin;
 
+import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_THING_DR_RED_BLUE;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.JUNCTION_THING_DR_RED_BLUE2;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.PRE_POSITION_DR_RED_BLUE_KKK;
 import static org.firstinspires.ftc.teamcode.Amin.NU_MAI_POT.STACK_DR_RED_BLUE;
@@ -14,7 +15,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -33,11 +33,12 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous()
-@Disabled()
 public class Tester_DR extends LinearOpMode {
-    SampleMecanumDrive osama;
+    SampleMecanumDrive robot;
     public VoltageSensor batteryVoltageSensor;
     private DcMotor brat, brat_pe_sub;
+
+    TestThread threadKamikaze;
 
     AprilTagDetection tagOfInterest;
     double cx = 402.145;
@@ -76,11 +77,14 @@ public class Tester_DR extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         timer = new ElapsedTime();
 
+
         brat = hardwareMap.dcMotor.get("brat");
         brat_pe_sub = hardwareMap.dcMotor.get("brat_pe_sub");
 
-        osama = new SampleMecanumDrive(hardwareMap);
-        osama.setPoseEstimate(START_DR_RED_BLUE);
+        threadKamikaze = new TestThread(hardwareMap);
+
+        robot = new SampleMecanumDrive(hardwareMap);
+        robot.setPoseEstimate(START_DR_RED_BLUE);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
@@ -97,6 +101,7 @@ public class Tester_DR extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         AprilTagDetectionPipeline aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        tagOfInterest = new AprilTagDetection();
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -110,31 +115,100 @@ public class Tester_DR extends LinearOpMode {
             public void onError(int errorCode) {
                 telemetry.addData("eroare: ", String.valueOf(errorCode));
                 telemetry.update();
+                tagOfInterest.id = 3;
             }
         });
 
-        osama.strange();
+        //detectie inainte de start
+//        tagOfInterest.id = 3;
+
+        //detectie
+//        ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+//        if (detections != null) {
+//            telemetry.addData("FPS", camera.getFps());
+//            telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+//            telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+//
+//            // If we don't see any tags
+//            if (detections.size() == 0) {
+//                numFramesWithoutDetection++;
+//
+//                // If we haven't seen a tag for a few frames, lower the decimation
+//                // so we can hopefully pick one up if we're e.g. far back
+//                if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+//                    aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
+//                }
+//            }
+//            // We do see tags!
+//            else {
+//                numFramesWithoutDetection = 0;
+//
+//                // If the target is within 1 meter, turn on high decimation to
+//                // increase the frame rate
+//                if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+//                    aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
+//                }
+//                for (AprilTagDetection tag : detections) {
+//                    if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
+//                        telemetry.addLine(String.valueOf(tag.id));
+//                        telemetry.update();
+//                        tagOfInterest = tag;
+//                    }
+//                }
+//            }
+//        }
+
+        robot.strange();
 
         waitForStart();
         while (opModeIsActive() && opModeIsActive()) {
-            tagOfInterest = new AprilTagDetection();
-            tagOfInterest.id = 3;
 
-            //detectie
+            //detectie dupa start
+
+//            tagOfInterest = new AprilTagDetection();
+//            tagOfInterest.id = 3;
+//
+//            //detectie
+//            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+//            if (detections != null) {
+//                telemetry.addData("FPS", camera.getFps());
+//                telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+//                telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+//
+//                // If we don't see any tags
+//                if (detections.size() == 0) {
+//                    numFramesWithoutDetection++;
+//
+//                    // If we haven't seen a tag for a few frames, lower the decimation
+//                    // so we can hopefully pick one up if we're e.g. far back
+//                    if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+//                        aprilTagDetectionPipeline.setDecimation(DECIMATION_LOW);
+//                    }
+//                }
+//                // We do see tags!
+//                else {
+//                    numFramesWithoutDetection = 0;
+//
+//                    // If the target is within 1 meter, turn on high decimation to
+//                    // increase the frame rate
+//                    if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+//                        aprilTagDetectionPipeline.setDecimation(DECIMATION_HIGH);
+//                    }
+//                    for (AprilTagDetection tag : detections) {
+//                        if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
+//                            telemetry.addLine(String.valueOf(tag.id));
+//                            telemetry.update();
+//                            tagOfInterest = tag;
+//                        }
+//                    }
+//                }
+//            }
+
             ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
             if (detections != null) {
                 telemetry.addData("FPS", camera.getFps());
                 telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
                 telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
-
-                for (AprilTagDetection tag : detections) {
-                    if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
-                        telemetry.addLine(String.valueOf(tag));
-                        telemetry.update();
-                        tagOfInterest = tag;
-                    }
-                }
-                telemetry.update();
 
                 // If we don't see any tags
                 if (detections.size() == 0) {
@@ -157,13 +231,14 @@ public class Tester_DR extends LinearOpMode {
                     }
                     for (AprilTagDetection tag : detections) {
                         if (tag.id == 1 || tag.id == 2 || tag.id == 3) {
-                            telemetry.addLine(String.valueOf(tag));
+                            telemetry.addLine(String.valueOf(tag.id));
                             telemetry.update();
                             tagOfInterest = tag;
                         }
                     }
                 }
             }
+            sleep(500);
 
             camera.closeCameraDevice();
 
@@ -173,14 +248,14 @@ public class Tester_DR extends LinearOpMode {
 
             //apuca con 1
 //            sleep(400);
-            osama.strange();
+            robot.strange();
 
             //ridica brat 1
             sleep(300);
-            se_ridica_brat(power_brat_dc);
+//            se_ridica_brat(power_brat_dc);
 
             //traj junction 1
-            TrajectorySequence go_pune = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
+            TrajectorySequence go_pune = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
                     .lineToLinearHeading(new Pose2d(41.5, -40, Math.toRadians(0)))
                     .lineToLinearHeading(PRE_POSITION_DR_RED_BLUE_KKK,
                             SampleMecanumDrive.getVelocityConstraint(40,
@@ -188,25 +263,19 @@ public class Tester_DR extends LinearOpMode {
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(30))
                     .addTemporalMarker(time -> time * 0.4, () -> {
-                        osama.strange();
-                        osama.rotesteThing(1);
+                        robot.strange();
+                        robot.rotesteThing(1);
                     })
                     .build();
-            osama.followTrajectorySequence(go_pune);
+            robot.followTrajectorySequence(go_pune);
             //tine brat ridicat 1
             se_ridica_brat(power_brat_dc);
 
             //traj revenire 1 && lasa con 1
-            TrajectorySequence reven = osama.trajectorySequenceBuilder(go_pune.end())
-//                    .addTemporalMarker(0, ()-> {
-//                        osama.se_ridica_brat(-0.3);
-//                    })
-//                    .addTemporalMarker(1.8, ()->{
-//                        osama.se_ridica_brat(0);
-//                    })
+            TrajectorySequence reven = robot.trajectorySequenceBuilder(go_pune.end())
                     .waitSeconds(0.2)
                     .addTemporalMarker(0, () -> {
-                        osama.deschide_gheara();
+                        robot.deschide_gheara();
                     })
                     .waitSeconds(0.2)
                     .strafeRight(2)
@@ -214,18 +283,20 @@ public class Tester_DR extends LinearOpMode {
 
             //opreste ridicare
             se_ridica_brat(0);
-            osama.followTrajectorySequence(reven);
+            robot.followTrajectorySequence(reven);
 
             timer.reset();
             //thing revenire 1
-            while (opModeIsActive() && !osama.getMagnetAtingere()) {
-                osama.rotesteThing(-1);
-                if(timer.seconds() >= TIMER_SENZOR_DR)
+            while (opModeIsActive() && !robot.getMagnetAtingere()) {
+                robot.rotesteThing(-1);
+                if (timer.seconds() >= TIMER_SENZOR_DR)
                     break;
             }
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
-            osama.bagaViteza(0, 0, 0, 0);
+            threadKamikaze.interrupt();
+
+            robot.bagaViteza(0, 0, 0, 0);
 
             //coboara brat 1
 //            brat.setTargetPosition(-cob1);
@@ -233,8 +304,8 @@ public class Tester_DR extends LinearOpMode {
 
             double ticks = 320;
 
-            brat.setTargetPosition(brat.getCurrentPosition() - 1461);
-            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1461);
+            brat.setTargetPosition(brat.getCurrentPosition() - 1455);
+            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1455);
             brat.setPower(-0.6);
             brat_pe_sub.setPower(0.6);
 //
@@ -255,7 +326,7 @@ public class Tester_DR extends LinearOpMode {
 
 
             //traj to stack 1
-            Trajectory rr = osama.trajectoryBuilder(reven.end())
+            Trajectory rr = robot.trajectoryBuilder(reven.end())
                     .splineToLinearHeading(STACK_DR_RED_BLUE, Math.toRadians(0),
                             SampleMecanumDrive.getVelocityConstraint(
                                     35,
@@ -266,76 +337,61 @@ public class Tester_DR extends LinearOpMode {
                             )
                     )
                     .build();
-            osama.followTrajectory(rr);
-
-            //miscare sasiu senzor dist 1
-//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 10.6) {
-//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-//
-//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-            //////^^^^^^^^^^^senzor nu mai este
+            robot.followTrajectory(rr);
 
             sleep(100);
 
             //apuca con 2
-            osama.strange();
+            robot.strange();
             sleep(400);
 
             //ridica brat 2
             se_ridica_brat(power_brat_dc);
 
             //updateaza pozitia robot
-            osama.update();
+            robot.update();
 
             //traj la junction con 2
-            Trajectory back = osama.trajectoryBuilder(osama.getPoseEstimate())
+            Trajectory back = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .addTemporalMarker(time -> time * 0.4, () -> {
-                        osama.rotesteThing(0.5);
+                        robot.rotesteThing(0.5);
                     })
 //                    .lineToConstantHeading(new Vector2d(40, -5))
-                    .lineToLinearHeading(JUNCTION_THING_DR_RED_BLUE2,
+                    .lineToLinearHeading(JUNCTION_THING_DR_RED_BLUE,
                             SampleMecanumDrive.getVelocityConstraint(40,
                                     DriveConstants.MAX_ANG_VEL,
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(30))
                     .build();
-            osama.followTrajectory(back);
+            robot.followTrajectory(back);
 
             //tine brat ridicat  2
             se_ridica_brat(power_brat_dc);
 
             //opreste rotire thing
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
             //lasa con 2
-//            se_ridica_brat(-0.4);
-//            osama.se_ridica_brat(-0.4);
             sleep(200);
-            osama.deschide_gheara();
+            robot.deschide_gheara();
             sleep(200);
-//            osama.se_ridica_brat(0);
 
             timer.reset();
             //revenire thing pt alt con
-            while ( (opModeIsActive() && !osama.getMagnetAtingere() ) ) {
-                osama.rotesteThing(-1);
-                if(timer.seconds() >= TIMER_SENZOR_DR)
+            while ((opModeIsActive() && !robot.getMagnetAtingere())) {
+                robot.rotesteThing(-1);
+                if (timer.seconds() >= TIMER_SENZOR_DR)
                     break;
             }
             //opreste rotire thing
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
             //coboara brat 3
 //            brat.setTargetPosition(cob2);
 //            brat_pe_sub.setTargetPosition(cob2);
 
-            brat.setTargetPosition(brat.getCurrentPosition() - 1675);
-            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1675);
+            brat.setTargetPosition(brat.getCurrentPosition() - 1682);
+            brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1682);
 
             brat.setPower(-0.6);
             brat_pe_sub.setPower(0.6);
@@ -354,68 +410,56 @@ public class Tester_DR extends LinearOpMode {
 
             brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//speram sa fie bine sa nu fie rau
             brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//stim ce facem aici nu e o problema
-            osama.bagaViteza(0, 0, 0, 0);//respectele mele ce pot sa zic aici decat speram sa mearga
+            robot.bagaViteza(0, 0, 0, 0);//respectele mele ce pot sa zic aici decat speram sa mearga
 
             //traj la stack 2
-            Trajectory rr2 = osama.trajectoryBuilder(osama.getPoseEstimate())
+            Trajectory rr2 = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .splineToLinearHeading(STACK_DR_RED_BLUE2, Math.toRadians(0),
                             SampleMecanumDrive.getVelocityConstraint(
                                     35,
                                     DriveConstants.MAX_ANG_VEL,
                                     DriveConstants.TRACK_WIDTH),
                             SampleMecanumDrive.getAccelerationConstraint(
-                                    35
+                                    30
                             ))
                     .build();
-            osama.followTrajectory(rr2);
-
-            //miscare sasiu senzor dist 2
-//            while (opModeIsActive() && osama.getDistanceSensorJos() >= 9.9) {
-//                osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-//
-//            while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-//                osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-//            }
-//            osama.bagaViteza(0, 0, 0, 0);
-            /////////^^^^^^^^senzor nu mai este
+            robot.followTrajectory(rr2);
 
             //apuca con 3
             sleep(100);
-            osama.strange();
+            robot.strange();
             sleep(300);
 
             //ridica brat 3
-            se_ridica_brat(0.6);
+            se_ridica_brat(power_brat_dc);
 //            sleep(400);
 
             //miscare sasiu senzor dist 1
-            osama.update();
+            robot.update();
 
             //traj la junction con 3
-            Trajectory back2 = osama.trajectoryBuilder(osama.getPoseEstimate())
+            Trajectory back2 = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .addTemporalMarker(time -> time * 0.4, () -> {
-                        osama.rotesteThing(0.5);
+                        robot.rotesteThing(0.5);
                     })
 //                    .lineToConstantHeading(new Vector2d(39.2, -5))
                     .lineToLinearHeading(JUNCTION_THING_DR_RED_BLUE2,
-                            SampleMecanumDrive.getVelocityConstraint(40,
+                            SampleMecanumDrive.getVelocityConstraint(38,
                                     DriveConstants.MAX_ANG_VEL,
                                     DriveConstants.TRACK_WIDTH),
-                            SampleMecanumDrive.getAccelerationConstraint(30))
+                            SampleMecanumDrive.getAccelerationConstraint(30)) //era 35
                     .build();
-            osama.followTrajectory(back2);
+            robot.followTrajectory(back2);
 
             //tine brat ridicat 3
             se_ridica_brat(power_brat_dc);
 
             //opreste rotire thing
-            osama.rotesteThing(0);
+            robot.rotesteThing(0);
 
             //lasa con 3
             sleep(200);
-            osama.deschide_gheara();
+            robot.deschide_gheara();
             sleep(200);
 
             //parcare
@@ -430,7 +474,7 @@ public class Tester_DR extends LinearOpMode {
                     mijloc();
                     break;
                 default:
-                    mijloc();
+                    dreapta();
                     break;
             }
             stop();
@@ -438,44 +482,41 @@ public class Tester_DR extends LinearOpMode {
     }
 
     private void stanga() {
-        TrajectorySequence park = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
+        TrajectorySequence park = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
                 .strafeRight(4)
-                .back(18)
+                .back(16)
                 .build();
-        osama.followTrajectorySequence(park);
+        robot.followTrajectorySequence(park);
         timer.reset();
-        while (opModeIsActive() && !osama.getMagnetAtingere())
-            osama.rotesteThing(-1);
-        osama.rotesteThing(0);
+        while (opModeIsActive() && !robot.getMagnetAtingere())
+            robot.rotesteThing(-1);
+        robot.rotesteThing(0);
     }
 
     private void mijloc() {
-        Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
-                .forward(4)
+        Trajectory park = robot.trajectoryBuilder(robot.getPoseEstimate())
+                .forward(5)
                 .build();
-        osama.followTrajectory(park);
+        robot.followTrajectory(park);
         timer.reset();
-        while (opModeIsActive() && !osama.getMagnetAtingere())
-            osama.rotesteThing(-1);
-        osama.rotesteThing(0);
+        while (opModeIsActive() && !robot.getMagnetAtingere())
+            robot.rotesteThing(-1);
+        robot.rotesteThing(0);
     }
 
     private void dreapta() {
-//        Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
-//                .lineToLinearHeading(new Pose2d(62, -8.2, Math.toRadians(0)))
-//                .build();
-//        osama.followTrajectory(park);
 
         //revenire thing pt con 4
         timer.reset();
-        while (opModeIsActive() && !osama.getMagnetAtingere()) {
-            osama.rotesteThing(-1);
+        while (opModeIsActive() && !robot.getMagnetAtingere()) {
+            robot.rotesteThing(-1);
         }
-        osama.rotesteThing(0);
+        robot.rotesteThing(0);
 
 
-        brat.setTargetPosition(brat.getCurrentPosition() - 1750);
-        brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1750);
+        //coboara brat
+        brat.setTargetPosition(brat.getCurrentPosition() - 1747);
+        brat_pe_sub.setTargetPosition(brat_pe_sub.getCurrentPosition() - 1747);
 
         brat.setPower(-0.6);
         brat_pe_sub.setPower(0.6);
@@ -495,53 +536,51 @@ public class Tester_DR extends LinearOpMode {
         brat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brat_pe_sub.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        osama.bagaViteza(0, 0, 0, 0);
+        robot.bagaViteza(0, 0, 0, 0);
 
-//
-        TrajectorySequence rr2 = osama.trajectorySequenceBuilder(osama.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(66, -9.8, Math.toRadians(0)))
-//                    .strafeRight(3)
-//                .splineToLinearHeading(new Pose2d(50, -8, Math.toRadians(0)), Math.toRadians(0))
-//                .splineToLinearHeading(new Pose2d(63, -8, Math.toRadians(0)), Math.toRadians(0))
-//            SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(30)
-//                    .lineToConstantHeading(new Vector2d(60, -8))
+
+        //mergi al stack
+        TrajectorySequence rr2 = robot.trajectorySequenceBuilder(robot.getPoseEstimate())
+                .lineToLinearHeading(new Pose2d(68.7, -9.8, Math.toRadians(0)),
+                        SampleMecanumDrive.getVelocityConstraint(40,
+                                DriveConstants.MAX_ANG_VEL,
+                                DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(30))
                 .build();
-        osama.followTrajectorySequence(rr2);
-
-//        while (opModeIsActive() && osama.getDistanceSensorJos() >= 9.8) {
-//            osama.bagaViteza(0.2, 0.2, 0.2, 0.2);
-//        }
-//        osama.bagaViteza(0, 0, 0, 0);
-//
-//        while (opModeIsActive() && osama.getDistanceSensorJos() <= 4) {
-//            osama.bagaViteza(-0.2, -0.2, -0.2, -0.2);
-//        }
-//        osama.bagaViteza(0, 0, 0, 0);
-//        osama.update();
+        robot.followTrajectorySequence(rr2);
 
         sleep(100);
 
-        osama.strange();
+        robot.strange();
 
         sleep(500);
-        osama.rotesteThing(-1);
+        se_ridica_brat(0.9);
+        sleep(120);
+        robot.rotesteThing(-1);
+        sleep(350);
+        se_ridica_brat(0.01);
+        sleep(320);
 
-        se_ridica_brat(0.8);
-        sleep(550);
+//        robot.rotesteThing(0);
+
         se_ridica_brat(0.01);
 
-        Trajectory park = osama.trajectoryBuilder(osama.getPoseEstimate())
-                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() - 5.1, osama.getPoseEstimate().getY() - 3.2))
+        //mergi la junction low
+        Trajectory park = robot.trajectoryBuilder(robot.getPoseEstimate())
+                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() - 6.1, robot.getPoseEstimate().getY() - 2.5))
                 .addDisplacementMarker(() -> {
-                    osama.deschide_gheara();
+                    robot.deschide_gheara();
                 })
                 .build();
-        osama.followTrajectory(park);
+        robot.followTrajectory(park);
 
-        Trajectory ok = osama.trajectoryBuilder(park.end())
-                .strafeTo(new Vector2d(osama.getPoseEstimate().getX() + 2.3, osama.getPoseEstimate().getY() + 4.7))
+        robot.rotesteThing(0.7);
+
+        //parcheaza
+        Trajectory ok = robot.trajectoryBuilder(park.end())
+                .strafeTo(new Vector2d(robot.getPoseEstimate().getX() + 4, robot.getPoseEstimate().getY() + 4))
                 .build();
-        osama.followTrajectory(ok);
+        robot.followTrajectory(ok);
 
         //        sleep(50);
 //        osama.rotesteThing(1);
@@ -551,10 +590,7 @@ public class Tester_DR extends LinearOpMode {
     }
 
     private void se_ridica_brat(double putere) {
-        brat.setPower(putere);//eu si stefanut ne bazam pe robot la regionala ca sa fim top 15 asa ca nu il stricati va kiss va alea
-        brat_pe_sub.setPower(-putere); // daca nu ne calificam la nationala inseamna ca nu ati lucrat corect va kiss love va alea
+        brat.setPower(putere);
+        brat_pe_sub.setPower(-putere);
     }
-    //imi pare rau daca am stricat ceva sincer dar nu am vrut sa stiti ca nu am modificat nimic dar sper ca  nu am schimbat ceva din greseala sorry va kiss va alea
-
-    //va omor, va kiss va alea
 }
